@@ -1,0 +1,96 @@
+// Prisma schema for aipromptgen.app
+// Add your database connection string to .env.local as DATABASE_URL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  credits   Int      @default(70)
+  plan      String   @default("free")
+  stripeCustomerId String?
+  subscriptionId   String?
+  subscriptionStatus String?
+  trialEndsAt      DateTime?
+  subscriptionEndsAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  subscriptions Subscription[]
+  payments      Payment[]
+}
+
+model Subscription {
+  id        String   @id @default(uuid())
+  userId    String
+  planId    String
+  status    String   // active, canceled, past_due, trialing
+  stripeSubscriptionId String? @unique
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  cancelAtPeriodEnd  Boolean @default(false)
+  trialStart DateTime?
+  trialEnd   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String
+  amount    Int      // in cents
+  currency  String   @default("usd")
+  status    String   // succeeded, failed, pending
+  paymentMethod String // stripe, 2checkout
+  stripePaymentIntentId String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([status])
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  excerpt     String?
+  content     String
+  author      String   @default("AI News Bot")
+  category    String   @default("AI News")
+  tags        String[] @default([])
+  featured    Boolean  @default(false)
+  readTime    String?
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+  @@index([category])
+  @@index([featured])
+}
+
+model BlogAutomation {
+  id                String    @id @default("blog_automation")
+  lastGeneration    DateTime?
+  nextGeneration    DateTime?
+  isEnabled         Boolean   @default(true)
+  generationInterval Int      @default(3) // days
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
