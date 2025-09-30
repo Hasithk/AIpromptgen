@@ -21,8 +21,8 @@ export function PricingPage({ currentPlan = 'free', onUpgrade }: PricingPageProp
       if (onUpgrade) {
         await onUpgrade(planId);
       } else {
-        // Default upgrade action - redirect to checkout
-        window.location.href = `/api/payments/checkout?plan=${planId}`;
+        // Payment gateway to be configured
+        alert('Payment gateway integration coming soon!');
       }
     } catch (error) {
       console.error('Upgrade error:', error);

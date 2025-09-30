@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
-import { createPortalSession } from '@/lib/stripe';
 
 export async function GET(request: NextRequest) {
   try {
@@ -67,25 +66,22 @@ export async function POST(request: NextRequest) {
       where: { email: session.user.email },
     });
 
-    if (!user || !user.stripeCustomerId) {
-      return NextResponse.json({ error: 'No subscription found' }, { status: 404 });
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     switch (action) {
       case 'manage': {
-        // Create Stripe Customer Portal session
-        const portalSession = await createPortalSession(
-          user.stripeCustomerId,
-          `${process.env.NEXTAUTH_URL}/dashboard`
-        );
-        
-        return NextResponse.json({ url: portalSession.url });
+        // TODO: Integrate with chosen payment gateway for subscription management
+        return NextResponse.json({ 
+          message: 'Subscription management will be available once payment gateway is configured' 
+        });
       }
 
       case 'cancel': {
-        // This will be handled through Stripe Customer Portal
+        // TODO: Integrate with chosen payment gateway for cancellation
         return NextResponse.json({ 
-          message: 'Please use the customer portal to manage your subscription' 
+          message: 'Subscription cancellation will be available once payment gateway is configured' 
         });
       }
 

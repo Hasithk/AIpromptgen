@@ -14,7 +14,7 @@ export interface SubscriptionPlan {
     generations: number | 'unlimited';
     savedPrompts: number | 'unlimited';
     apiCalls?: number;
-    teamMembers?: number;
+    teamMembers?: number | 'unlimited';
   };
 }
 

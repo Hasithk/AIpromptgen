@@ -16,7 +16,6 @@ model User {
   name      String?
   credits   Int      @default(70)
   plan      String   @default("free")
-  stripeCustomerId String?
   subscriptionId   String?
   subscriptionStatus String?
   trialEndsAt      DateTime?
@@ -34,7 +33,6 @@ model Subscription {
   userId    String
   planId    String
   status    String   // active, canceled, past_due, trialing
-  stripeSubscriptionId String? @unique
   currentPeriodStart DateTime
   currentPeriodEnd   DateTime
   cancelAtPeriodEnd  Boolean @default(false)
@@ -55,8 +53,7 @@ model Payment {
   amount    Int      // in cents
   currency  String   @default("usd")
   status    String   // succeeded, failed, pending
-  paymentMethod String // stripe, 2checkout
-  stripePaymentIntentId String?
+  paymentMethod String // to be configured
   metadata  Json?
   createdAt DateTime @default(now())
   

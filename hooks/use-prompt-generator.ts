@@ -12,6 +12,7 @@ interface PromptParams {
   creativity: number;
   duration?: number;
   includeNegative: boolean;
+  type?: 'image' | 'video';
 }
 
 export function usePromptGenerator() {
