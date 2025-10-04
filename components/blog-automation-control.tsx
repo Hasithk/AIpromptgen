@@ -36,12 +36,12 @@ export function BlogAutomationControl() {
     }
   };
 
-  const triggerAutomatedGeneration = async () => {
+  const initializeBlog = async () => {
     setIsGenerating(true);
     setError(null);
 
     try {
-      const response = await fetch('/api/blog/cron-simple', {
+      const response = await fetch('/api/blog/initialize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,8 +51,8 @@ export function BlogAutomationControl() {
       const result = await response.json();
       setLastResult(result);
 
-      if (!result.success && result.error) {
-        setError(result.error);
+      if (!result.success) {
+        setError(result.error || 'Failed to initialize blog posts');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred');
@@ -88,15 +88,15 @@ export function BlogAutomationControl() {
             </Button>
 
             <Button
-              onClick={triggerAutomatedGeneration}
+              onClick={initializeBlog}
               disabled={isGenerating}
-              variant="outline"
+              variant="secondary"
               className="h-20 flex-col space-y-2"
             >
-              <RefreshCw className="h-6 w-6" />
+              <Calendar className="h-6 w-6" />
               <div className="text-center">
-                <div className="font-semibold">Check Automation</div>
-                <div className="text-xs opacity-90">Trigger 3-day automation</div>
+                <div className="font-semibold">Initialize Blog</div>
+                <div className="text-xs opacity-90">Create sample blog posts</div>
               </div>
             </Button>
           </div>
