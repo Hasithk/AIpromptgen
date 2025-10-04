@@ -21,19 +21,30 @@ export function BlogPage() {
     try {
       setLoading(true);
       setError(null);
-      const response = await getBlogPosts({
-        category: selectedCategory === 'All' ? undefined : selectedCategory,
-        search: searchTerm || undefined,
-        limit: 20
-      });
       
-      if (response.success) {
-        setBlogPosts((response as any).posts || []);
+      const response = await fetch(`/api/blog?${
+        new URLSearchParams({
+          ...(selectedCategory !== 'All' && { category: selectedCategory }),
+          ...(searchTerm && { search: searchTerm }),
+          limit: '20'
+        })
+      }`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setBlogPosts(data.posts || []);
       } else {
-        throw new Error(response.error || 'Failed to fetch blog posts');
+        throw new Error(data.error || 'Failed to fetch blog posts');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch blog posts');
+      console.error('Blog fetch error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch blog posts. Please try again later.');
+      setBlogPosts([]); // Clear posts on error
     } finally {
       setLoading(false);
     }
