@@ -28,7 +28,9 @@ const navigation = [
 export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { data: session, status } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const status = sessionData?.status;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
@@ -65,7 +67,7 @@ export function Navigation() {
           <CreditDisplay />
           <ThemeToggle />
           
-          {status === 'loading' ? (
+          {(typeof window === 'undefined' || status === 'loading') ? (
             <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
           ) : session ? (
             <div className="flex items-center space-x-3">
@@ -175,12 +177,38 @@ export function Navigation() {
             <div className="pt-4 border-t space-y-3">
               <CreditDisplay />
               <div className="flex space-x-2">
-                <Button variant="outline" className="flex-1">
-                  Sign In
-                </Button>
-                <Button className="flex-1 btn-primary">
-                  Upgrade
-                </Button>
+                {(typeof window === 'undefined' || status === 'loading') ? (
+                  <>
+                    <div className="flex-1 h-9 bg-muted rounded animate-pulse" />
+                    <div className="flex-1 h-9 bg-muted rounded animate-pulse" />
+                  </>
+                ) : session ? (
+                  <>
+                    <Button className="flex-1 btn-primary">
+                      Upgrade
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => signOut()}
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => signIn('google')}
+                    >
+                      Sign In
+                    </Button>
+                    <Button className="flex-1 btn-primary">
+                      Upgrade
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

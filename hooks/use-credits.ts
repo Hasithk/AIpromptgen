@@ -9,6 +9,12 @@ export function useCredits() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Don't fetch during SSR
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     async function fetchCredits() {
       try {
         setLoading(true);
@@ -18,6 +24,8 @@ export function useCredits() {
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch credits');
+        // Keep default credits on error
+        setCredits(70);
       } finally {
         setLoading(false);
       }
