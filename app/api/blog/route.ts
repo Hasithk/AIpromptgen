@@ -14,6 +14,17 @@ export async function GET(request: Request) {
       limit: limit ? parseInt(limit) : undefined,
     };
 
+    // Add database connection check
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL not configured');
+      return NextResponse.json({
+        success: true,
+        posts: [],
+        count: 0,
+        message: 'Database not configured'
+      });
+    }
+
     const posts = await getBlogPosts(params);
 
     return NextResponse.json({

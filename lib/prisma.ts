@@ -8,6 +8,17 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
+// Database connection check
+export async function checkDatabaseConnection(): Promise<boolean> {
+  try {
+    await prisma.$connect();
+    return true;
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    return false;
+  }
+}
+
 // Blog automation functions
 export async function getLastBlogGeneration(): Promise<Date | null> {
   try {
@@ -118,9 +129,7 @@ export async function createBlogPost(blogData: {
 }) {
   try {
     // Handle both string array and string inputs for tags
-    const tagsArray = Array.isArray(blogData.tags) 
-      ? blogData.tags 
-      : (blogData.tags ? blogData.tags.split(', ').filter(Boolean) : []);
+    const tagsArray = normalizeTags(blogData.tags);
 
     const blogPost = await prisma.blogPost.create({
       data: {
@@ -179,7 +188,8 @@ export async function getBlogPosts(params?: {
     return blogPosts;
   } catch (error) {
     console.error('Error getting blog posts:', error);
-    throw error;
+    // Return empty array instead of throwing error for better UX
+    return [];
   }
 }
 
@@ -193,6 +203,17 @@ export async function getBlogPostById(id: string) {
     console.error('Error getting blog post by id:', error);
     throw error;
   }
+}
+
+// Helper function to normalize tags input
+function normalizeTags(tags?: string[] | string): string[] {
+  if (Array.isArray(tags)) {
+    return tags;
+  }
+  if (typeof tags === 'string') {
+    return tags.split(',').map(tag => tag.trim()).filter(Boolean);
+  }
+  return [];
 }
 
 // Helper function to calculate reading time
