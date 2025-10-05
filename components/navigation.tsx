@@ -10,7 +10,7 @@ import { SessionWrapper } from '@/components/session-wrapper-temp';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Generator', href: '/generator' },
+  { name: 'Generator', href: '/#generator' },
   { name: 'Blog', href: '/blog' },
   { name: 'AI News', href: '/ai-news' },
   { name: 'Library', href: '/library' },
