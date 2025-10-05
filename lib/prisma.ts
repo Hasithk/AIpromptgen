@@ -35,7 +35,7 @@ export async function getLastBlogGeneration(): Promise<Date | null> {
 export async function updateLastBlogGeneration(): Promise<void> {
   try {
     const now = new Date();
-    const nextGeneration = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days later
+    const nextGeneration = new Date(now.getTime() + 1 * 24 * 60 * 60 * 1000); // 1 day later
 
     await prisma.blogAutomation.upsert({
       where: { id: 'blog_automation' },
@@ -44,7 +44,7 @@ export async function updateLastBlogGeneration(): Promise<void> {
         lastGeneration: now,
         nextGeneration: nextGeneration,
         isEnabled: true,
-        generationInterval: 3
+        generationInterval: 1
       },
       update: {
         lastGeneration: now,
@@ -84,7 +84,7 @@ export async function checkIfShouldGenerateBlog(): Promise<boolean> {
     const now = new Date();
     const daysSinceLastGeneration = (now.getTime() - lastGeneration.getTime()) / (1000 * 60 * 60 * 24);
     
-    return daysSinceLastGeneration >= 3;
+    return daysSinceLastGeneration >= 1;
   } catch (error) {
     console.error('Error checking if should generate blog:', error);
     // Default to allowing generation if there's an error
@@ -106,7 +106,7 @@ export async function getBlogAutomationStatus() {
       nextGeneration: automation?.nextGeneration?.toISOString() || null,
       shouldGenerate,
       isEnabled: automation?.isEnabled ?? true,
-      generationInterval: automation?.generationInterval ?? 3,
+      generationInterval: automation?.generationInterval ?? 1,
       timeUntilNext: automation?.nextGeneration ? 
         Math.max(0, automation.nextGeneration.getTime() - now.getTime()) : 0
     };

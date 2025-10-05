@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     console.log('Starting automatic blog generation...');
 
-    // Check if we should generate (every 3 days)
+    // Check if we should generate (daily)
     const shouldGenerate = await checkIfShouldGenerateBlog();
     
     if (!shouldGenerate) {

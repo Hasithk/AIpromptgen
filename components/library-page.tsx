@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, Heart, Copy, ExternalLink, Star } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock data for prompt library
 const prompts = [
@@ -89,10 +90,27 @@ const categories = ['All', 'Cinematography', 'Character', 'Abstract', 'Product',
 const platforms = ['All Platforms', 'Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai'];
 
 export function LibraryPage() {
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPlatform, setSelectedPlatform] = useState('All Platforms');
   const [sortBy, setSortBy] = useState('popular');
+
+  const copyToClipboard = async (text: string, title: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Prompt Copied!",
+        description: `"${title}" has been copied to your clipboard.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Copy",
+        description: "Please try again or copy manually.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const filteredPrompts = prompts.filter(prompt => {
     const matchesSearch = prompt.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -260,7 +278,11 @@ export function LibraryPage() {
                 </div>
 
                 <div className="flex space-x-2 pt-2">
-                  <Button size="sm" className="flex-1 btn-primary">
+                  <Button 
+                    size="sm" 
+                    className="flex-1 btn-primary"
+                    onClick={() => copyToClipboard(prompt.prompt, prompt.title)}
+                  >
                     <Copy className="mr-2 h-4 w-4" />
                     Use Prompt
                   </Button>
