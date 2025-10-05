@@ -14,6 +14,11 @@ export const metadata: Metadata = {
     template: '%s | AI Prompt Generator'
   },
   description: 'Generate high-quality AI prompts for Sora, Veo 3, Midjourney, DALL-E, Qwen.ai and other AI platforms. Professional prompt engineering tool with 70+ free generations, curated library, and AI-powered blog.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   keywords: [
     'AI prompt generator',
     'prompt engineering',

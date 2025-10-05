@@ -60,6 +60,7 @@ export function HeroSection() {
               <Button 
                 size="lg" 
                 className="glass-morphism border border-white/20 text-white hover:bg-white/20 font-semibold px-8 py-6 text-lg group shadow-2xl"
+                onClick={() => window.location.href = '/#generator'}
               >
                 Start Creating
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -68,6 +69,7 @@ export function HeroSection() {
                 variant="outline" 
                 size="lg" 
                 className="glass-morphism border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg"
+                onClick={() => window.location.href = '/library'}
               >
                 View Examples
               </Button>
