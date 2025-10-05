@@ -14,7 +14,7 @@ const features = [
   {
     icon: Target,
     title: 'Platform-Specific Optimization',
-    description: 'Tailored prompts for Sora, Veo 3, Midjourney, and DALL-E with platform-specific parameters and best practices.'
+    description: 'Tailored prompts for Sora, Veo 3, Midjourney, DALL-E, and Qwen.ai with platform-specific parameters and best practices.'
   },
   {
     icon: Brain,

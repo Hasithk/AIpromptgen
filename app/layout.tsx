@@ -10,15 +10,17 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   metadataBase: new URL('https://aipromptgen.com'), // Replace with your domain
   title: {
-    default: 'AI Prompt Generator | Professional AI Prompts for Sora, Midjourney, DALL-E',
+    default: 'AI Prompt Generator | Professional AI Prompts for Sora, Midjourney, DALL-E, Qwen.ai',
     template: '%s | AI Prompt Generator'
   },
-  description: 'Generate high-quality AI prompts for Sora, Veo 3, Midjourney, DALL-E and other AI platforms. Professional prompt engineering tool with 70+ free generations, curated library, and AI-powered blog.',
+  description: 'Generate high-quality AI prompts for Sora, Veo 3, Midjourney, DALL-E, Qwen.ai and other AI platforms. Professional prompt engineering tool with 70+ free generations, curated library, and AI-powered blog.',
   keywords: [
     'AI prompt generator',
     'prompt engineering',
     'Sora prompts',
-    'Midjourney prompts', 
+    'Midjourney prompts',
+    'Qwen.ai prompts',
+    'Alibaba AI image generation', 
     'DALL-E prompts',
     'AI art generator',
     'AI video prompts',

@@ -43,6 +43,11 @@ export async function POST(request: NextRequest) {
       prompt += ', high-quality video generation, realistic motion';
     } else if (platform === 'dall-e') {
       prompt += ', high-resolution, detailed artwork';
+    } else if (platform === 'qwen') {
+      prompt += ', ultra-realistic, high-quality Chinese AI art generation';
+      if (creativity > 80) {
+        prompt += ', intricate details, photographic quality';
+      }
     }
     if (creativity > 80) {
       prompt += ', highly detailed, ultra-creative composition';
@@ -54,7 +59,6 @@ export async function POST(request: NextRequest) {
 
     // Call DeepSeek API
     const apiKey = process.env.DEEPSEEK_API_KEY;
-    console.log('DEEPSEEK_API_KEY:', apiKey);
     if (!apiKey) {
       console.error('DeepSeek API key not set');
       return NextResponse.json({ success: false, error: 'DeepSeek API key not set' }, { status: 500 });

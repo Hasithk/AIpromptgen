@@ -22,7 +22,7 @@ export function HeroSection() {
             </h1>
             
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Create professional prompts for Sora, Veo 3, Midjourney, and more. 
+              Create professional prompts for Sora, Veo 3, Midjourney, Qwen.ai, and more. 
               Our advanced platform guides you through the entire process with 
               intelligent suggestions and real-time optimization.
             </p>

@@ -6,15 +6,13 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { SessionWrapper } from '@/components/session-wrapper-temp';
+import { SessionWrapper } from '@/components/session-wrapper';
 
 const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Generator', href: '/generator' },
-  { name: 'Blog', href: '/blog' },
-  { name: 'AI News', href: '/ai-news' },
+  { name: 'Generator', href: '/' },
   { name: 'Library', href: '/library' },
   { name: 'History', href: '/history' },
+  { name: 'Blog', href: '/blog' },
   { name: 'Pricing', href: '/pricing' },
 ];
 
@@ -56,6 +54,25 @@ export function Navigation() {
         <div className="hidden md:flex items-center space-x-4">
           <ThemeToggle />
           <SessionWrapper />
+              </DropdownMenu>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => signIn('google')}
+                className="space-x-2"
+              >
+                <User className="h-4 w-4" />
+                <span>Sign In</span>
+              </Button>
+              <Button size="sm" className="btn-primary space-x-2">
+                <CreditCard className="h-4 w-4" />
+                <span>Upgrade</span>
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -67,9 +84,9 @@ export function Navigation() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <Menu className="h-6 w-6" />
             )}
           </Button>
         </div>
@@ -77,24 +94,58 @@ export function Navigation() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-md border-b">
+        <div className="md:hidden border-t bg-background/95 backdrop-blur-md">
+          <div className="container-max section-padding py-4 space-y-4">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                className={`block py-2 text-base font-medium transition-colors duration-200 ${
                   pathname === item.href
-                    ? 'text-primary bg-primary/10'
-                    : 'text-muted-foreground hover:text-primary hover:bg-primary/5'
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-primary'
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
-            <div className="px-3 py-2">
-              <SessionWrapper />
+            <div className="pt-4 border-t space-y-3">
+              <CreditDisplay />
+              <div className="flex space-x-2">
+                {(typeof window === 'undefined' || status === 'loading') ? (
+                  <>
+                    <div className="flex-1 h-9 bg-muted rounded animate-pulse" />
+                    <div className="flex-1 h-9 bg-muted rounded animate-pulse" />
+                  </>
+                ) : session ? (
+                  <>
+                    <Button className="flex-1 btn-primary">
+                      Upgrade
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => signOut()}
+                    >
+                      Sign Out
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => signIn('google')}
+                    >
+                      Sign In
+                    </Button>
+                    <Button className="flex-1 btn-primary">
+                      Upgrade
+                    </Button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

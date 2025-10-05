@@ -14,6 +14,7 @@ export const PLATFORMS = [
   { value: 'veo3', label: 'Veo 3 (Google)', description: 'Advanced video AI' },
   { value: 'midjourney', label: 'Midjourney', description: 'Image generation' },
   { value: 'dall-e', label: 'DALL-E 3', description: 'Image creation' },
+  { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'AI image generation' },
 ];
 
 export const STYLES = [

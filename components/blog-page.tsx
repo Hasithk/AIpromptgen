@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Search, Calendar, User, ArrowRight, TrendingUp, RefreshCw, Plus } from 'lucide-react';
 import { getBlogPosts } from '@/lib/api';
 import type { BlogPost } from '@/types';
+import Link from 'next/link';
 
 export function BlogPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -188,10 +189,12 @@ export function BlogPage() {
                     <span>{featuredPost.readTime}</span>
                   </div>
                   
-                  <Button className="bg-white text-primary hover:bg-white/90 group">
-                    Read Article
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
+                  <Link href={`/blog/${featuredPost.id}`}>
+                    <Button className="bg-white text-primary hover:bg-white/90 group">
+                      Read Article
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </CardContent>
@@ -291,11 +294,11 @@ export function BlogPage() {
           // Blog Posts Grid
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {regularPosts.map((post, index) => (
-            <Card 
-              key={post.id}
-              className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
+            <Link href={`/blog/${post.id}`} key={post.id}>
+              <Card 
+                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in cursor-pointer h-full"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
               <CardHeader className="pb-4">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -337,12 +340,13 @@ export function BlogPage() {
                   </div>
                 </div>
 
-                <Button className="w-full btn-primary group">
+                <div className="w-full btn-primary group flex items-center justify-center py-2 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
                   Read More
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                </div>
               </CardContent>
-            </Card>
+              </Card>
+            </Link>
             ))}
           </div>
         )}

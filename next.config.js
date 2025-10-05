@@ -7,7 +7,7 @@ const nextConfig = {
     ignoreBuildErrors: true, // Temporary fix for deployment
   },
   images: {
-    domains: ['images.pexels.com', 'via.placeholder.com'],
+    domains: ['images.pexels.com', 'via.placeholder.com', 'images.unsplash.com'],
     unoptimized: false,
   },
   // Production optimizations

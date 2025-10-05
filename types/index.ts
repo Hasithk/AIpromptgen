@@ -12,7 +12,7 @@ export interface Prompt {
   id: string;
   title: string;
   prompt: string;
-  platform: 'sora' | 'veo3' | 'midjourney' | 'dall-e';
+  platform: 'sora' | 'veo3' | 'midjourney' | 'dall-e' | 'qwen';
   category: string;
   tags: string[];
   userId?: string;

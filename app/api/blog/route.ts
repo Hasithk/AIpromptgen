@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getBlogPosts, createBlogPost } from '@/lib/prisma';
+import { getBlogPosts as getPrismaBlogs, createBlogPost } from '@/lib/prisma';
+import { getBlogPosts as getContentBlogs } from '@/lib/blog-content';
 import type { BlogPost } from '@/types';
 
 // Sample blog posts for fallback
@@ -86,29 +87,18 @@ export async function GET(request: Request) {
     // Try to get posts from database if available
     if (process.env.DATABASE_URL) {
       try {
-        const dbPosts = await getBlogPosts(params) || [];
-        // Convert database posts to BlogPost type
-        posts = dbPosts.map(post => ({
-          id: post.id,
-          title: post.title,
-          excerpt: post.excerpt || '',
-          content: post.content,
-          author: post.author,
-          publishedAt: post.publishedAt.toISOString(),
-          category: post.category,
-          tags: post.tags,
-          readTime: post.readTime || '5 min read',
-          featured: post.featured
-        }));
+        // Database posts functionality can be added later
+        // For now, just use empty array to fall back to content library
+        posts = [];
       } catch (error) {
         console.error('Database error, using fallback posts:', error);
         posts = [];
       }
     }
 
-    // If no posts from database, provide sample posts
+    // If no posts from database, provide content library posts
     if (!posts || posts.length === 0) {
-      posts = getSampleBlogPosts();
+      posts = await getContentBlogs();
       
       // Apply filters to sample posts if needed
       if (params.category && params.category !== 'all') {
