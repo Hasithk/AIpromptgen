@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Providers } from './providers';
 import { ClientNavigation } from '@/components/client-navigation';
 import { Footer } from '@/components/footer';
+import { AnalyticsProvider } from '@/components/analytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -126,6 +127,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <AnalyticsProvider />
         <Providers>
           <div className="flex flex-col min-h-screen">
             <ClientNavigation />

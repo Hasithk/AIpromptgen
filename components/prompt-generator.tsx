@@ -16,7 +16,7 @@ import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/hooks/use-credits';
 import { updateUserCredits } from '@/lib/api';
 import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
-
+import { trackEvent } from '@/components/analytics';
 
 export function PromptGenerator() {
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
@@ -49,7 +49,7 @@ export function PromptGenerator() {
       alert('Insufficient credits!');
       return;
     }
-    await generate({
+    const genResult = await generate({
       subject,
       platform: selectedPlatform,
       styles: selectedStyles,
@@ -60,10 +60,15 @@ export function PromptGenerator() {
       includeNegative,
       type: promptType,
     });
-    // Reduce credits after successful generation
-    const res = await updateUserCredits(creditsToUse);
-    if (res.success && res.data) {
-      updateCredits(res.data.credits);
+
+    // Only reduce credits if generation was successful (no error)
+    if (!error) {
+      // Track the prompt generation
+      trackEvent.promptGenerated(selectedPlatform, promptType);
+      const res = await updateUserCredits(creditsToUse);
+      if (res.success && res.data) {
+        updateCredits(res.data.credits);
+      }
     }
   };
 

@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, Heart, Copy, ExternalLink, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { trackEvent } from '@/components/analytics';
 
 // Mock data for prompt library
 const prompts = [
@@ -96,9 +97,27 @@ export function LibraryPage() {
   const [selectedPlatform, setSelectedPlatform] = useState('All Platforms');
   const [sortBy, setSortBy] = useState('popular');
 
-  const copyToClipboard = async (text: string, title: string) => {
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    if (value.length >= 3) {
+      trackEvent.librarySearch(value);
+    }
+  };
+
+  const handlePlatformFilter = (platform: string) => {
+    setSelectedPlatform(platform);
+    if (platform !== 'All Platforms') {
+      trackEvent.platformFilter(platform);
+    }
+  };
+
+  const copyToClipboard = async (text: string, title: string, platform: string) => {
     try {
       await navigator.clipboard.writeText(text);
+      
+      // Track the copy event
+      trackEvent.promptCopied(title, platform);
+      
       toast({
         title: "Prompt Copied!",
         description: `"${title}" has been copied to your clipboard.`,
@@ -158,7 +177,7 @@ export function LibraryPage() {
                 <Input
                   placeholder="Search prompts..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -176,7 +195,7 @@ export function LibraryPage() {
                 </SelectContent>
               </Select>
 
-              <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
+              <Select value={selectedPlatform} onValueChange={handlePlatformFilter}>
                 <SelectTrigger>
                   <SelectValue placeholder="Platform" />
                 </SelectTrigger>
@@ -281,7 +300,7 @@ export function LibraryPage() {
                   <Button 
                     size="sm" 
                     className="flex-1 btn-primary"
-                    onClick={() => copyToClipboard(prompt.prompt, prompt.title)}
+                    onClick={() => copyToClipboard(prompt.prompt, prompt.title, prompt.platform)}
                   >
                     <Copy className="mr-2 h-4 w-4" />
                     Use Prompt
