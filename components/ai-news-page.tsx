@@ -111,11 +111,21 @@ export function AINewsPage() {
       if (selectedCategory !== 'All') params.append('category', selectedCategory);
       if (searchTerm) params.append('search', searchTerm);
       params.append('limit', '20');
+      params.append('t', Date.now().toString()); // Cache busting
       
-      const response = await fetch(`/api/ai-news?${params}`);
+      const response = await fetch(`/api/ai-news?${params}`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        },
+        cache: 'no-store' as any
+      });
+      
       const data = await response.json();
       
       if (data.success) {
+        console.log(`Fetched ${data.total} AI news items`, data);
         setNewsItems(data.news || []);
       } else {
         throw new Error(data.error || 'Failed to fetch AI news');
