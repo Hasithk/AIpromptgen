@@ -30,6 +30,8 @@ export function AINewsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9; // 3x3 grid
 
   // Mock AI news data for demonstration
   const mockNewsData: NewsItem[] = [
@@ -141,6 +143,7 @@ export function AINewsPage() {
   };
 
   useEffect(() => {
+    setCurrentPage(1); // Reset to first page when filters change
     fetchNews();
   }, [selectedCategory, searchTerm]);
 
@@ -305,72 +308,161 @@ export function AINewsPage() {
             </CardContent>
           </Card>
         ) : (
-          /* News Grid */
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {newsItems.map((item, index) => (
-              <Card 
-                key={item.id} 
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in cursor-pointer h-full"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {item.urlToImage && (
-                  <div className="aspect-video overflow-hidden rounded-t-lg">
-                    <img
-                      src={item.urlToImage}
-                      alt={item.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
+          <>
+            {/* News Grid with Pagination */}
+            {(() => {
+              const totalPages = Math.ceil(newsItems.length / itemsPerPage);
+              const startIdx = (currentPage - 1) * itemsPerPage;
+              const endIdx = startIdx + itemsPerPage;
+              const paginatedItems = newsItems.slice(startIdx, endIdx);
 
-                <CardHeader className="pb-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-xs">
-                          <div className="flex items-center gap-1">
-                            {getCategoryIcon(item.category)}
-                            {item.category}
+              return (
+                <>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    {paginatedItems.map((item, index) => (
+                      <Card 
+                        key={item.id} 
+                        className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in cursor-pointer h-full"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        {item.urlToImage && (
+                          <div className="aspect-video overflow-hidden rounded-t-lg">
+                            <img
+                              src={item.urlToImage}
+                              alt={item.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
                           </div>
-                        </Badge>
-                        <Badge className={`text-xs ${getRelevanceBadgeColor(item.aiRelevance)}`}>
-                          {item.aiRelevance} relevance
-                        </Badge>
+                        )}
+
+                        <CardHeader className="pb-4">
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Badge variant="secondary" className="text-xs">
+                                  <div className="flex items-center gap-1">
+                                    {getCategoryIcon(item.category)}
+                                    {item.category}
+                                  </div>
+                                </Badge>
+                                <Badge className={`text-xs ${getRelevanceBadgeColor(item.aiRelevance)}`}>
+                                  {item.aiRelevance} relevance
+                                </Badge>
+                              </div>
+                            </div>
+                            
+                            <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
+                              {item.title}
+                            </CardTitle>
+                            
+                            <CardDescription className="line-clamp-3">
+                              {item.description}
+                            </CardDescription>
+                          </div>
+                        </CardHeader>
+
+                        <CardContent className="space-y-4">
+                          <div className="flex items-center justify-between text-sm text-muted-foreground">
+                            <div className="flex items-center">
+                              <Globe className="h-4 w-4 mr-2" />
+                              {item.source.name}
+                            </div>
+                            <div className="flex items-center">
+                              <Calendar className="h-4 w-4 mr-2" />
+                              {formatDate(item.publishedAt)}
+                            </div>
+                          </div>
+
+                          <Button className="w-full btn-primary group" asChild>
+                            <Link href={item.url} target="_blank" rel="noopener noreferrer">
+                              Read Full Article
+                              <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+
+                  {/* Pagination Controls - Google Style */}
+                  {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-2 mt-12 pb-8">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setCurrentPage(Math.max(1, currentPage - 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === 1}
+                      >
+                        ← Previous
+                      </Button>
+
+                      <div className="flex gap-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                          // Show first 3, current page, and last 3
+                          const shouldShow = 
+                            page <= 3 || 
+                            page > totalPages - 3 || 
+                            Math.abs(page - currentPage) <= 1;
+
+                          if (!shouldShow && page === 4) {
+                            return (
+                              <span key="ellipsis-start" className="px-3 py-2 text-muted-foreground">
+                                ...
+                              </span>
+                            );
+                          }
+
+                          if (!shouldShow && page === totalPages - 3) {
+                            return (
+                              <span key="ellipsis-end" className="px-3 py-2 text-muted-foreground">
+                                ...
+                              </span>
+                            );
+                          }
+
+                          if (shouldShow) {
+                            return (
+                              <Button
+                                key={page}
+                                variant={page === currentPage ? 'default' : 'outline'}
+                                onClick={() => {
+                                  setCurrentPage(page);
+                                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                                }}
+                                className="min-w-10"
+                              >
+                                {page}
+                              </Button>
+                            );
+                          }
+
+                          return null;
+                        })}
                       </div>
-                    </div>
-                    
-                    <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
-                      {item.title}
-                    </CardTitle>
-                    
-                    <CardDescription className="line-clamp-3">
-                      {item.description}
-                    </CardDescription>
-                  </div>
-                </CardHeader>
 
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <div className="flex items-center">
-                      <Globe className="h-4 w-4 mr-2" />
-                      {item.source.name}
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setCurrentPage(Math.min(totalPages, currentPage + 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next →
+                      </Button>
                     </div>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {formatDate(item.publishedAt)}
-                    </div>
-                  </div>
+                  )}
 
-                  <Button className="w-full btn-primary group" asChild>
-                    <Link href={item.url} target="_blank" rel="noopener noreferrer">
-                      Read Full Article
-                      <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  {/* Pagination Info */}
+                  <div className="text-center text-sm text-muted-foreground pb-4">
+                    Showing {startIdx + 1} to {Math.min(endIdx, newsItems.length)} of {newsItems.length} articles (Page {currentPage} of {totalPages})
+                  </div>
+                </>
+              );
+            })()}
+          </>
         )}
       </div>
     </div>

@@ -127,8 +127,8 @@ export async function GET(req: Request) {
     // Sort by publication date (newest first)
     transformedNews.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-    // Apply limit
-    transformedNews = transformedNews.slice(0, limit);
+    // Apply limit (now supports up to 25 by default)
+    transformedNews = transformedNews.slice(0, Math.min(limit, 25));
 
     return NextResponse.json(
       {
