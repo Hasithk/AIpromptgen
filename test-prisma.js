@@ -1,5 +1,5 @@
 // Test Prisma connection
-const { getBlogAutomationStatus } = require('./lib/prisma');
+import { getBlogAutomationStatus } from './lib/prisma';
 
 async function test() {
   try {

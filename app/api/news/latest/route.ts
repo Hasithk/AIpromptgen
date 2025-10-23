@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 import { NewsItem } from '@/types';
 
-const NEWS_API_KEY = process.env.NEWS_API_KEY || '88ec2cc8ec274a1ba697cfdb6b353ab3';
+const NEWS_API_KEY = process.env.NEWS_API_KEY;
+if (!NEWS_API_KEY) {
+  throw new Error('NEWS_API_KEY environment variable is not set.');
+}
 const NEWS_API_BASE_URL = process.env.NEWS_API_BASE_URL || 'https://newsapi.org/v2';
 
 // AI-related keywords to filter news

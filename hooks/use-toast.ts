@@ -6,6 +6,7 @@ import * as React from 'react';
 import type { ToastActionElement, ToastProps } from '@/components/ui/toast';
 
 const TOAST_LIMIT = 1;
+// Toasts remain visible for ~16 minutes (1000000ms) to allow for manual dismissal or long-lived notifications.
 const TOAST_REMOVE_DELAY = 1000000;
 
 type ToasterToast = ToastProps & {

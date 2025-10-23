@@ -41,7 +41,7 @@ function main() {
 🎉 Blog auto-generation setup complete!
 
 Features enabled:
-✅ AI news fetching with API key: 88ec2cc8ec274a1ba697cfdb6b353ab3
+✅ AI news fetching with API key from environment variable (DEEPSEEK_API_KEY)
 ✅ DeepSeek AI-powered blog content generation
 ✅ Fully automated blog generation every 3 days
 ✅ SEO keyword extraction from trending AI news

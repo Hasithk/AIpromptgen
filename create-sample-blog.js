@@ -55,7 +55,7 @@ Ready to revolutionize your content creation process? Start generating prompts t
 *Stay tuned for more updates and features as we continue to expand our AI-powered platform.*`,
         author: "AI News Bot",
         category: "Welcome",
-        tags: "ai, prompts, generator, welcome, getting-started",
+        tags: ["ai", "prompts", "generator", "welcome", "getting-started"],
         featured: true,
         readTime: "3 min read"
       }

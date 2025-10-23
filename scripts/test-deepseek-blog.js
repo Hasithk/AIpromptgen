@@ -66,6 +66,9 @@ const mockNewsItems = [
   }
 ];
 
+// Track timing
+const startTime = Date.now();
+
 async function testDeepSeekBlogGeneration() {
   console.log('🧪 Testing DeepSeek API Blog Generation...\n');
 
@@ -179,9 +182,6 @@ Please generate a complete markdown blog post based on these news items.`;
     process.exit(1);
   }
 }
-
-// Track timing
-const startTime = Date.now();
 
 if (require.main === module) {
   testDeepSeekBlogGeneration();
