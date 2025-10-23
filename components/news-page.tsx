@@ -14,13 +14,24 @@ export function NewsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [lastFetch, setLastFetch] = useState<Date | null>(null);
 
   const fetchNews = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/news/latest');
+      // Force fresh fetch with cache busting
+      const timestamp = Date.now();
+      const response = await fetch(`/api/news/latest?t=${timestamp}`, {
+        method: 'GET',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: 'no-store'
+      });
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -28,24 +39,31 @@ export function NewsPage() {
       
       const data = await response.json();
       
+      console.log('Fetched news data:', data);
+      
       if (data.success && Array.isArray(data.data)) {
+        console.log(`Setting ${data.data.length} news items`);
         setNewsItems(data.data);
+        setLastFetch(new Date());
       } else {
         throw new Error(data.error || 'Failed to fetch news');
       }
     } catch (err) {
       console.error('News fetch error:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch news');
+      setNewsItems([]); // Clear old data on error
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    // Fetch news immediately on mount
     fetchNews();
     
-    // Auto-refresh news every 30 minutes
-    const interval = setInterval(fetchNews, 30 * 60 * 1000);
+    // Auto-refresh news every 5 minutes for more frequent updates
+    const interval = setInterval(fetchNews, 5 * 60 * 1000);
+    
     return () => clearInterval(interval);
   }, []);
 
@@ -277,7 +295,16 @@ export function NewsPage() {
 
         {/* Last Updated */}
         <div className="text-center mt-8 text-sm text-muted-foreground">
-          <p>News updates automatically every 30 minutes</p>
+          <p>News updates automatically every 5 minutes</p>
+          {lastFetch && (
+            <p className="text-xs mt-2">
+              Last updated: {lastFetch.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+              })}
+            </p>
+          )}
         </div>
       </div>
     </div>
