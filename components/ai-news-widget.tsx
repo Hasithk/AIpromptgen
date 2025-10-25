@@ -144,7 +144,7 @@ export function AINewsWidget() {
           variant="outline" 
           className="w-full mt-4 group"
           size="sm"
-          onClick={() => window.open('/news', '_blank')}
+          onClick={() => window.open('/ai-news', '_blank')}
         >
           View All News
           <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Calendar, User, ArrowRight, TrendingUp, RefreshCw, Plus } from 'lucide-react';
-import { getBlogPosts } from '@/lib/api';
+import { Search, Calendar, User, ArrowRight, TrendingUp, RefreshCw } from 'lucide-react';
 import type { BlogPost } from '@/types';
 import Link from 'next/link';
 
@@ -17,191 +17,111 @@ export function BlogPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  // Fetch blog posts
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 9;
+
   const fetchBlogPosts = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`/api/blog?${
-        new URLSearchParams({
-          ...(selectedCategory !== 'All' && { category: selectedCategory }),
-          ...(searchTerm && { search: searchTerm }),
-          limit: '20'
-        })
-      }`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const params = new URLSearchParams();
+      if (selectedCategory !== 'All') {
+        params.append('category', selectedCategory);
       }
+      if (searchTerm) {
+        params.append('search', searchTerm);
+      }
+      params.append('limit', itemsPerPage.toString());
+      params.append('page', currentPage.toString());
+      params.append('t', Date.now().toString());
+      
+      const response = await fetch(`/api/blog-articles?${params.toString()}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const data = await response.json();
-      
       if (data.success) {
         setBlogPosts(data.posts || []);
+        setTotalPages(data.totalPages || 1);
       } else {
         throw new Error(data.error || 'Failed to fetch blog posts');
       }
     } catch (err) {
       console.error('Blog fetch error:', err);
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch blog posts. Please try again later.';
-      setError(errorMessage);
-      
-      // Always provide content - either from error fallback or default fallback
-      setBlogPosts([
-        {
-          id: 'blog-1',
-          title: 'The Future of AI Prompt Engineering: Mastering the Art of AI Communication',
-          excerpt: 'Discover advanced prompt engineering techniques that will transform how you interact with AI models. Learn the secrets to crafting prompts that deliver exceptional results.',
-          content: 'Complete guide to mastering AI prompt engineering with practical examples and advanced techniques.',
-          author: 'AI News Team',
-          category: 'Prompt Engineering',
-          tags: ['AI', 'Prompt Engineering', 'Tutorial', 'Best Practices'],
-          featured: true,
-          publishedAt: new Date().toISOString(),
-          readTime: '12 min read'
-        },
-        {
-          id: 'blog-2',
-          title: 'AI Video Generation Revolution: Sora, Runway, and the Future of Content Creation',
-          excerpt: 'Explore how AI video generation tools like Sora and Runway are transforming content creation, marketing, and entertainment industries with unprecedented capabilities.',
-          content: 'Comprehensive analysis of the latest AI video generation tools and their impact on creative industries.',
-          author: 'AI Video Expert',
-          category: 'AI Technology',
-          tags: ['AI', 'Video Generation', 'Sora', 'Runway', 'Technology'],
-          featured: true,
-          publishedAt: new Date(Date.now() - 86400000).toISOString(),
-          readTime: '10 min read'
-        },
-        {
-          id: 'blog-3',
-          title: 'ChatGPT vs Claude vs DeepSeek: The Ultimate AI Model Comparison for 2025',
-          excerpt: 'Compare the top AI models of 2025 in this comprehensive analysis. Discover which AI assistant is best for your specific needs and use cases.',
-          content: 'Detailed comparison of leading AI models including performance metrics, pricing, and use case recommendations.',
-          author: 'AI Research Team',
-          category: 'AI Comparison',
-          tags: ['AI', 'ChatGPT', 'Claude', 'DeepSeek', 'Comparison'],
-          featured: false,
-          publishedAt: new Date(Date.now() - 172800000).toISOString(),
-          readTime: '15 min read'
-        },
-        {
-          id: 'blog-4',
-          title: 'Building Your First AI-Powered Application: A Developer\'s Guide',
-          excerpt: 'Step-by-step tutorial for developers looking to integrate AI capabilities into their applications using modern APIs and frameworks.',
-          content: 'Practical guide for developers to build AI-powered applications with code examples and best practices.',
-          author: 'Dev Team',
-          category: 'Development',
-          tags: ['AI', 'Development', 'API', 'Tutorial'],
-          featured: false,
-          publishedAt: new Date(Date.now() - 259200000).toISOString(),
-          readTime: '8 min read'
-        },
-        {
-          id: 'blog-5',
-          title: 'AI in Business: Transforming Industries with Intelligent Automation',
-          excerpt: 'Discover how artificial intelligence is revolutionizing business operations across industries, from customer service to predictive analytics.',
-          content: 'Business-focused analysis of AI implementation strategies and success stories across various industries.',
-          author: 'Business AI Team',
-          category: 'Business',
-          tags: ['AI', 'Business', 'Automation', 'Strategy'],
-          featured: false,
-          publishedAt: new Date(Date.now() - 345600000).toISOString(),
-          readTime: '9 min read'
-        }
-      ]);
-      
-      // Only show error message, not empty state
-      if (!errorMessage.includes('500') && !errorMessage.includes('database')) {
-        setError(errorMessage);
-      } else {
-        setError(null);
-      }
+      setError(err instanceof Error ? err.message : 'Failed to fetch blog posts');
+      setBlogPosts([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchBlogPosts();
+    setCurrentPage(1);
   }, [selectedCategory, searchTerm]);
 
-  // Filter posts based on search and category (done on server side now, but keeping for client-side refinement)
-  const categories = ['All', ...Array.from(new Set(blogPosts.map(post => post.category)))];
-  
+  useEffect(() => {
+    fetchBlogPosts();
+  }, [currentPage, selectedCategory, searchTerm]);
+
+  const categories = ['All'];
+  blogPosts.forEach((post: BlogPost) => {
+    if (!categories.includes(post.category)) {
+      categories.push(post.category);
+    }
+  });
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric'
     });
   };
 
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
+  const renderPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      const isFirst3 = i <= 3;
+      const isLast3 = i > totalPages - 3;
+      const isNearCurrent = Math.abs(i - currentPage) <= 1;
+      
+      if (isFirst3 || isLast3 || isNearCurrent) {
+        pages.push(
+          <Button
+            key={i}
+            variant={i === currentPage ? 'default' : 'outline'}
+            onClick={() => {
+              setCurrentPage(i);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="min-w-10"
+          >
+            {i}
+          </Button>
+        );
+      } else if ((i === 4 && !isFirst3) || (i === totalPages - 3 && !isLast3)) {
+        pages.push(
+          <span key={`ellipsis-${i}`} className="px-2 py-2 text-muted-foreground">
+            ...
+          </span>
+        );
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container-max section-padding py-12">
-        {/* Header */}
         <div className="text-center space-y-4 mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-            AI Blog
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-bold gradient-text">AI Blog</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Stay updated with the latest AI news, prompt engineering techniques, and industry insights.
           </p>
         </div>
 
-        {/* Featured Post */}
-        {featuredPost && (
-          <Card className="mb-12 border-0 shadow-2xl bg-hero-gradient text-white overflow-hidden">
-            <CardContent className="p-8 md:p-12">
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <Badge className="bg-white/20 text-white border-white/30">
-                    Featured
-                  </Badge>
-                  <Badge className="bg-white/20 text-white border-white/30">
-                    {featuredPost.category}
-                  </Badge>
-                </div>
-                
-                <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-                  {featuredPost.title}
-                </h2>
-                
-                <p className="text-lg text-white/90 leading-relaxed">
-                  {featuredPost.excerpt}
-                </p>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-white/80">
-                    <div className="flex items-center">
-                      <User className="h-4 w-4 mr-2" />
-                      {featuredPost.author}
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      {formatDate(featuredPost.publishedAt)}
-                    </div>
-                    <span>{featuredPost.readTime}</span>
-                  </div>
-                  
-                  <Link href={`/blog/${featuredPost.id}`}>
-                    <Button className="bg-white text-primary hover:bg-white/90 group">
-                      Read Article
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Filters and Controls */}
         <Card className="mb-8 border-0 shadow-lg">
           <CardContent className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -220,9 +140,9 @@ export function BlogPage() {
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>
-                      {category}
+                  {categories.map((cat) => (
+                    <SelectItem key={cat} value={cat}>
+                      {cat}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -241,7 +161,6 @@ export function BlogPage() {
           </CardContent>
         </Card>
 
-        {/* Error State */}
         {error && (
           <Card className="mb-6 border-destructive">
             <CardContent className="pt-6">
@@ -253,18 +172,6 @@ export function BlogPage() {
           </Card>
         )}
 
-        {/* Results */}
-        {!loading && !error && (
-          <div className="mb-6">
-            <p className="text-muted-foreground">
-              Showing {blogPosts.length} articles
-              {searchTerm && ` for "${searchTerm}"`}
-              {selectedCategory !== 'All' && ` in ${selectedCategory}`}
-            </p>
-          </div>
-        )}
-
-        {/* Loading State */}
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -284,95 +191,137 @@ export function BlogPage() {
               </Card>
             ))}
           </div>
-        ) : !error && blogPosts.length === 0 ? (
+        ) : blogPosts.length === 0 ? (
           <Card>
             <CardContent className="pt-6 text-center">
-              <p className="text-muted-foreground mb-4">No blog posts available yet. New posts are automatically generated from trending AI news every 3 days.</p>
+              <p className="text-muted-foreground mb-4">
+                No blog articles found.
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Call: /api/blog/generate-all?secret=CRON_SECRET
+              </p>
             </CardContent>
           </Card>
         ) : (
-          // Blog Posts Grid
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {regularPosts.map((post, index) => (
-            <Link href={`/blog/${post.id}`} key={post.id}>
-              <Card 
-                className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in cursor-pointer h-full"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-              <CardHeader className="pb-4">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="secondary" className="text-xs">
-                      {post.category}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {post.readTime}
-                    </span>
-                  </div>
-                  
-                  <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
-                    {post.title}
-                  </CardTitle>
-                  
-                  <CardDescription className="line-clamp-3">
-                    {post.excerpt}
-                  </CardDescription>
-                </div>
-              </CardHeader>
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {blogPosts.map((post: BlogPost) => (
+                <Link href={`/blog/${post.id}`} key={post.id}>
+                  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer h-full overflow-hidden flex flex-col">
+                    {/* Cover Image */}
+                    {post.coverImage && (
+                      <div className="relative w-full h-48 overflow-hidden bg-muted">
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          unoptimized={true}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (target && target.src !== 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&auto=format&w=1200&h=600&fit=crop') {
+                              target.src = 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?q=80&auto=format&w=1200&h=600&fit=crop';
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
 
-              <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-1">
-                  {post.tags.map(tag => (
-                    <Badge key={tag} variant="outline" className="text-xs">
-                      #{tag}
-                    </Badge>
-                  ))}
+                    <CardHeader className="pb-3 pt-4 flex-1 flex flex-col">
+                      <div className="space-y-3 flex-1">
+                        <div className="flex items-center justify-between">
+                          <Badge variant="secondary" className="text-xs">
+                            {post.category}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {post.readTime}
+                          </span>
+                        </div>
+                        
+                        <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2">
+                          {post.title}
+                        </CardTitle>
+                        
+                        <p className="text-sm text-muted-foreground line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                      </div>
+                    </CardHeader>
+
+                    <CardContent className="space-y-3">
+                      <div className="flex flex-wrap gap-1">
+                        {post.tags.slice(0, 3).map((tag: string) => (
+                          <Badge key={tag} variant="outline" className="text-xs">
+                            #{tag}
+                          </Badge>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center">
+                          <User className="h-3 w-3 mr-1" />
+                          {post.author}
+                        </div>
+                        <div className="flex items-center">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          {formatDate(post.publishedAt)}
+                        </div>
+                      </div>
+
+                      <div className="w-full flex items-center justify-center py-2 px-3 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm font-medium gap-1">
+                        Read More
+                        <ArrowRight className="h-3 w-3" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-12 pb-8 flex-wrap">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setCurrentPage(Math.max(1, currentPage - 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === 1}
+                >
+                  ← Previous
+                </Button>
+
+                <div className="flex gap-1 flex-wrap justify-center">
+                  {renderPageNumbers()}
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <User className="h-4 w-4 mr-2" />
-                    {post.author}
-                  </div>
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    {formatDate(post.publishedAt)}
-                  </div>
-                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setCurrentPage(Math.min(totalPages, currentPage + 1));
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  disabled={currentPage === totalPages}
+                >
+                  Next →
+                </Button>
+              </div>
+            )}
 
-                <div className="w-full btn-primary group flex items-center justify-center py-2 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-                  Read More
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </CardContent>
-              </Card>
-            </Link>
-            ))}
-          </div>
+            <div className="text-center text-sm text-muted-foreground pb-4">
+              Page {currentPage} of {totalPages}
+            </div>
+          </>
         )}
 
-        {!loading && !error && regularPosts.length === 0 && blogPosts.length > 0 && (
-          <div className="text-center py-12">
-            <p className="text-lg text-muted-foreground mb-4">
-              No articles found matching your criteria.
-            </p>
-            <Button onClick={() => {
-              setSearchTerm('');
-              setSelectedCategory('All');
-            }}>
-              Clear Filters
-            </Button>
-          </div>
-        )}
-
-        {/* Newsletter Signup */}
         <Card className="mt-16 border-0 bg-hero-gradient text-white">
           <CardContent className="p-8 text-center">
             <div className="space-y-6 max-w-2xl mx-auto">
               <div className="space-y-2">
                 <h3 className="text-2xl font-bold">Stay Updated</h3>
                 <p className="text-white/90">
-                  Get the latest AI news and prompt engineering tips delivered to your inbox weekly.
+                  Get the latest AI news and prompt engineering tips delivered weekly.
                 </p>
               </div>
               

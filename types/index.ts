@@ -32,6 +32,7 @@ export interface BlogPost {
   tags: string[];
   readTime: string;
   featured?: boolean;
+  coverImage?: string;
 }
 
 export interface NewsItem {

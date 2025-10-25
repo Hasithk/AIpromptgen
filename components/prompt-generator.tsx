@@ -16,7 +16,7 @@ import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/hooks/use-credits';
 import { updateUserCredits } from '@/lib/api';
 import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
-import { trackEvent } from '@/components/analytics';
+
 
 export function PromptGenerator() {
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
@@ -28,11 +28,26 @@ export function PromptGenerator() {
   const [duration, setDuration] = useState([30]);
   const [includeNegative, setIncludeNegative] = useState(true);
   const [manualPrompt, setManualPrompt] = useState('');
-  const [promptType, setPromptType] = useState<'image' | 'video'>('image');
+  const [promptType, setPromptType] = useState<'image' | 'video'>('video');
   const [advancedPlatform, setAdvancedPlatform] = useState(PLATFORMS[0].value);
 
   const { generate, isGenerating, generatedPrompt, error } = usePromptGenerator();
   const { credits, updateCredits } = useCredits();
+
+  // Filter platforms based on prompt type
+  const availablePlatforms = PLATFORMS.filter(p => p.type === promptType);
+
+  // Update selected platform when prompt type changes
+  useEffect(() => {
+    const currentPlatformType = PLATFORMS.find(p => p.value === selectedPlatform)?.type;
+    if (currentPlatformType !== promptType) {
+      // Set default platform for the new type
+      const defaultPlatform = availablePlatforms[0];
+      if (defaultPlatform) {
+        setSelectedPlatform(defaultPlatform.value);
+      }
+    }
+  }, [promptType, selectedPlatform, availablePlatforms]);
 
   const handleStyleToggle = (style: string) => {
     setSelectedStyles(prev =>
@@ -49,7 +64,7 @@ export function PromptGenerator() {
       alert('Insufficient credits!');
       return;
     }
-    const genResult = await generate({
+    await generate({
       subject,
       platform: selectedPlatform,
       styles: selectedStyles,
@@ -60,15 +75,10 @@ export function PromptGenerator() {
       includeNegative,
       type: promptType,
     });
-
-    // Only reduce credits if generation was successful (no error)
-    if (!error) {
-      // Track the prompt generation
-      trackEvent.promptGenerated(selectedPlatform, promptType);
-      const res = await updateUserCredits(creditsToUse);
-      if (res.success && res.data) {
-        updateCredits(res.data.credits);
-      }
+    // Reduce credits after successful generation
+    const res = await updateUserCredits(creditsToUse);
+    if (res.success && res.data) {
+      updateCredits(res.data.credits);
     }
   };
 
@@ -147,7 +157,7 @@ export function PromptGenerator() {
               <div className="space-y-3">
                 <Label className="text-base font-semibold">Platform</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {PLATFORMS.map((platform) => (
+                  {availablePlatforms.map((platform) => (
                     <Card 
                       key={platform.value} 
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -322,7 +332,7 @@ export function PromptGenerator() {
                     <SelectValue placeholder="Select platform" />
                   </SelectTrigger>
                   <SelectContent>
-                    {PLATFORMS.map((platform) => (
+                    {availablePlatforms.map((platform) => (
                       <SelectItem key={platform.value} value={platform.value}>
                         {platform.label}
                       </SelectItem>

@@ -31,7 +31,7 @@ export function AINewsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9; // 3x3 grid
+  const itemsPerPage = 10; // 10 per page for 25+ articles across multiple pages
 
   // Mock AI news data for demonstration
   const mockNewsData: NewsItem[] = [
@@ -110,12 +110,11 @@ export function AINewsPage() {
       setError(null);
       
       const params = new URLSearchParams();
-      if (selectedCategory !== 'All') params.append('category', selectedCategory);
       if (searchTerm) params.append('search', searchTerm);
-      params.append('limit', '20');
+      params.append('limit', '100'); // Get all 25+ articles
       params.append('t', Date.now().toString()); // Cache busting
       
-      const response = await fetch(`/api/ai-news?${params}`, {
+      const response = await fetch(`/api/news/latest?${params}`, {
         method: 'GET',
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -126,9 +125,21 @@ export function AINewsPage() {
       
       const data = await response.json();
       
-      if (data.success) {
-        console.log(`Fetched ${data.total} AI news items`, data);
-        setNewsItems(data.news || []);
+      if (data.success && data.data) {
+        console.log(`Fetched ${data.data.length} AI news items`, data);
+        // Transform the news items to match our format
+        const transformedNews = data.data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          url: item.url || '#',
+          urlToImage: item.urlToImage,
+          publishedAt: item.publishedAt,
+          source: item.source || { id: null, name: 'AI News' },
+          category: item.category || 'AI News & Updates',
+          aiRelevance: 'high' as const
+        }));
+        setNewsItems(transformedNews);
       } else {
         throw new Error(data.error || 'Failed to fetch AI news');
       }
@@ -136,7 +147,7 @@ export function AINewsPage() {
       console.error('News fetch error:', err);
       setError('Failed to fetch AI news. Please try again later.');
       // Fallback to some basic news items
-      setNewsItems(mockNewsData.slice(0, 6));
+      setNewsItems(mockNewsData.slice(0, 10));
     } finally {
       setLoading(false);
     }
@@ -269,8 +280,8 @@ export function AINewsPage() {
 
         {/* Loading State */}
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div className="grid md:grid-cols-2 gap-6">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
               <Card key={i} className="animate-pulse">
                 <CardContent className="pt-6">
                   <div className="space-y-3">
@@ -318,7 +329,7 @@ export function AINewsPage() {
 
               return (
                 <>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                  <div className="grid md:grid-cols-2 gap-6 mb-8">
                     {paginatedItems.map((item, index) => (
                       <Card 
                         key={item.id} 

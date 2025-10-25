@@ -10,11 +10,12 @@ export const SITE_CONFIG = {
 };
 
 export const PLATFORMS = [
-  { value: 'sora', label: 'Sora (OpenAI)', description: 'Video generation' },
-  { value: 'veo3', label: 'Veo 3 (Google)', description: 'Advanced video AI' },
-  { value: 'midjourney', label: 'Midjourney', description: 'Image generation' },
-  { value: 'dall-e', label: 'DALL-E 3', description: 'Image creation' },
-  { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'AI image generation' },
+  { value: 'sora', label: 'Sora (OpenAI)', description: 'Video generation', type: 'video' },
+  { value: 'veo3', label: 'Veo 3 (Google)', description: 'Advanced video AI', type: 'video' },
+  { value: 'nanobanana', label: '🍌 Nanobanana', description: 'Image generation', type: 'image' },
+  { value: 'midjourney', label: 'Midjourney', description: 'Image generation', type: 'image' },
+  { value: 'dall-e', label: 'DALL-E 3', description: 'Image creation', type: 'image' },
+  { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'AI image generation', type: 'image' },
 ];
 
 export const STYLES = [
