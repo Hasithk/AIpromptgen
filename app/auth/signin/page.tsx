@@ -55,11 +55,36 @@ export default function SignInPage() {
       });
 
       if (result?.error) {
-        toast({
-          title: 'Error',
-          description: 'Invalid email or password',
-          variant: 'destructive',
-        });
+        // Show specific error messages
+        if (result.error.includes('No account found') || result.error.includes('sign up')) {
+          toast({
+            title: 'Account Not Found',
+            description: 'No account found with this email. Please sign up first.',
+            variant: 'destructive',
+          });
+          // Optionally redirect to signup after 2 seconds
+          setTimeout(() => {
+            router.push('/auth/signup');
+          }, 2000);
+        } else if (result.error.includes('Google sign-in')) {
+          toast({
+            title: 'Use Google Sign-In',
+            description: 'This account was created with Google. Please use Google sign-in.',
+            variant: 'destructive',
+          });
+        } else if (result.error.includes('Incorrect password')) {
+          toast({
+            title: 'Incorrect Password',
+            description: 'The password you entered is incorrect.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Error',
+            description: result.error || 'Failed to sign in',
+            variant: 'destructive',
+          });
+        }
       } else {
         toast({
           title: 'Success',

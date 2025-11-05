@@ -18,15 +18,19 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('Invalid credentials');
+          throw new Error('Please enter email and password');
         }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.hashedPassword) {
-          throw new Error('Invalid credentials');
+        if (!user) {
+          throw new Error('No account found. Please sign up first.');
+        }
+
+        if (!user.hashedPassword) {
+          throw new Error('Please use Google sign-in for this account');
         }
 
         const isCorrectPassword = await bcrypt.compare(
@@ -35,7 +39,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isCorrectPassword) {
-          throw new Error('Invalid credentials');
+          throw new Error('Incorrect password');
         }
 
         // Check if credits need to be reset (daily reset)
