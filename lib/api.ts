@@ -101,24 +101,3 @@ export async function getBlogPosts(params?: {
   const query = searchParams.toString();
   return fetchAPI(`/blog${query ? `?${query}` : ''}`);
 }
-
-// Create blog post
-export async function createBlogPost(postData: {
-  title: string;
-  excerpt: string;
-  content: string;
-  category: string;
-  tags: string[];
-  author?: string;
-  featured?: boolean;
-}) {
-  return fetchAPI('/blog', {
-    method: 'POST',
-    body: JSON.stringify(postData),
-  });
-}
-
-// Get cron status (for monitoring purposes)
-export async function getCronStatus() {
-  return fetchAPI('/blog/cron');
-}
