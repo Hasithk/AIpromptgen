@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Wand2, Copy, Download, Heart, Sparkles } from 'lucide-react';
+import { Wand2, Copy, Download, Heart, Sparkles, LogIn } from 'lucide-react';
 import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/hooks/use-credits';
 import { updateUserCredits } from '@/lib/api';
@@ -19,6 +21,8 @@ import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
 
 
 export function PromptGenerator() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
   const [subject, setSubject] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -33,6 +37,8 @@ export function PromptGenerator() {
 
   const { generate, isGenerating, generatedPrompt, error } = usePromptGenerator();
   const { credits, updateCredits } = useCredits();
+
+  const isAuthenticated = status === 'authenticated';
 
   // Filter platforms based on prompt type
   const availablePlatforms = PLATFORMS.filter(p => p.type === promptType);
@@ -58,6 +64,12 @@ export function PromptGenerator() {
   };
 
   const generatePrompt = async () => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      router.push('/auth/signin');
+      return;
+    }
+
     // Determine credits to use
     const creditsToUse = selectedPlatform === 'sora' ? 5 : 3;
     if (credits < creditsToUse) {
@@ -83,6 +95,12 @@ export function PromptGenerator() {
   };
 
   const handleOptimizePrompt = async () => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      router.push('/auth/signin');
+      return;
+    }
+
     if (!manualPrompt) return;
     const creditsToUse = advancedPlatform === 'sora' ? 5 : 3;
     if (credits < creditsToUse) {
@@ -303,24 +321,35 @@ export function PromptGenerator() {
               </div>
 
               {/* Generate Button */}
-              <Button 
-                onClick={generatePrompt}
-                disabled={!subject || isGenerating}
-                className="w-full btn-primary py-6 text-lg font-semibold group"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    Generate Prompt
-                  </>
-                )}
-              </Button>
+              {!isAuthenticated ? (
+                <Button 
+                  onClick={() => router.push('/auth/signin')}
+                  className="w-full btn-primary py-6 text-lg font-semibold"
+                  size="lg"
+                >
+                  <LogIn className="mr-2 h-5 w-5" />
+                  Sign In to Generate
+                </Button>
+              ) : (
+                <Button 
+                  onClick={generatePrompt}
+                  disabled={!subject || isGenerating}
+                  className="w-full btn-primary py-6 text-lg font-semibold group"
+                  size="lg"
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                      Generate Prompt
+                    </>
+                  )}
+                </Button>
+              )}
             </TabsContent>
             
             <TabsContent value="advanced" className="space-y-6 mt-6">
@@ -370,10 +399,20 @@ export function PromptGenerator() {
                   value={manualPrompt}
                   onChange={e => setManualPrompt(e.target.value)}
                 />
-                <Button className="w-full btn-primary" onClick={handleOptimizePrompt} disabled={!manualPrompt || isGenerating}>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Optimize Prompt
-                </Button>
+                {!isAuthenticated ? (
+                  <Button 
+                    onClick={() => router.push('/auth/signin')}
+                    className="w-full btn-primary"
+                  >
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In to Optimize
+                  </Button>
+                ) : (
+                  <Button className="w-full btn-primary" onClick={handleOptimizePrompt} disabled={!manualPrompt || isGenerating}>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Optimize Prompt
+                  </Button>
+                )}
               </div>
             </TabsContent>
           </Tabs>
