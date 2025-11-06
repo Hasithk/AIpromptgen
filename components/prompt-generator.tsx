@@ -38,7 +38,9 @@ export function PromptGenerator() {
   const { generate, isGenerating, generatedPrompt, error } = usePromptGenerator();
   const { credits, updateCredits } = useCredits();
 
+  // Check authentication status - handle loading state
   const isAuthenticated = status === 'authenticated';
+  const isLoading = status === 'loading';
 
   // Filter platforms based on prompt type
   const availablePlatforms = PLATFORMS.filter(p => p.type === promptType);
@@ -321,7 +323,16 @@ export function PromptGenerator() {
               </div>
 
               {/* Generate Button */}
-              {!isAuthenticated ? (
+              {isLoading ? (
+                <Button 
+                  disabled
+                  className="w-full btn-primary py-6 text-lg font-semibold"
+                  size="lg"
+                >
+                  <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                  Loading...
+                </Button>
+              ) : !isAuthenticated ? (
                 <Button 
                   onClick={() => router.push('/auth/signin')}
                   className="w-full btn-primary py-6 text-lg font-semibold"
@@ -399,7 +410,15 @@ export function PromptGenerator() {
                   value={manualPrompt}
                   onChange={e => setManualPrompt(e.target.value)}
                 />
-                {!isAuthenticated ? (
+                {isLoading ? (
+                  <Button 
+                    disabled
+                    className="w-full btn-primary"
+                  >
+                    <div className="animate-spin h-4 w-4 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                    Loading...
+                  </Button>
+                ) : !isAuthenticated ? (
                   <Button 
                     onClick={() => router.push('/auth/signin')}
                     className="w-full btn-primary"
