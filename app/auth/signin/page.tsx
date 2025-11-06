@@ -19,23 +19,32 @@ export default function SignInPage() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log('SignInPage rendered, isLoading:', isLoading);
+
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
-      await signIn('google', { callbackUrl: '/' });
+      console.log('Google sign-in initiated');
+      const result = await signIn('google', { 
+        callbackUrl: '/',
+        redirect: true,
+      });
+      console.log('Google sign-in result:', result);
     } catch (error) {
+      console.error('Google sign-in error:', error);
       toast({
         title: 'Error',
         description: 'Failed to sign in with Google',
         variant: 'destructive',
       });
-    } finally {
       setIsLoading(false);
     }
   };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log('Email sign-in attempt:', { email, password: '***' });
     
     if (!email || !password) {
       toast({
@@ -48,11 +57,14 @@ export default function SignInPage() {
 
     try {
       setIsLoading(true);
+      console.log('Calling signIn with credentials...');
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       });
+
+      console.log('Sign-in result:', result);
 
       if (result?.error) {
         // Show specific error messages
@@ -125,9 +137,13 @@ export default function SignInPage() {
           <CardContent className="space-y-6">
             {/* Google Sign In */}
             <Button
+              type="button"
               variant="outline"
               className="w-full py-6 text-base"
-              onClick={handleGoogleSignIn}
+              onClick={() => {
+                console.log('Google button clicked!');
+                handleGoogleSignIn();
+              }}
               disabled={isLoading}
             >
               <Chrome className="mr-2 h-5 w-5" />
