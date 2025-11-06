@@ -5,6 +5,7 @@ import { Providers } from './providers';
 import { ClientNavigation } from '@/components/client-navigation';
 import { Footer } from '@/components/footer';
 import { AnalyticsProvider } from '@/components/analytics';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -136,6 +137,7 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
+          <Toaster />
         </Providers>
       </body>
     </html>
