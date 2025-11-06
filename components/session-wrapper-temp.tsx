@@ -1,33 +1,65 @@
 'use client';
 
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { CreditDisplay } from '@/components/credit-display';
+import { LogOut, User } from 'lucide-react';
 
 export function SessionWrapper() {
-  // Temporarily disable authentication to avoid NextAuth issues
-  // This will be re-enabled once the SessionProvider issue is resolved
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const isLoading = status === 'loading';
   
   const handleSignIn = () => {
-    // Placeholder for sign in functionality
-    console.log('Sign in clicked');
+    router.push('/auth/signin');
   };
 
-  const handleGetStarted = () => {
-    // Placeholder for get started functionality
-    console.log('Get started clicked');
+  const handleSignUp = () => {
+    router.push('/auth/signup');
   };
-  
-  return (
-    <div className="flex items-center gap-4">
-      <CreditDisplay />
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
       <div className="flex items-center gap-2">
-        <Button variant="ghost" onClick={handleSignIn}>
-          Sign In
-        </Button>
-        <Button onClick={handleGetStarted}>
-          Get Started
-        </Button>
+        <div className="h-9 w-20 bg-muted animate-pulse rounded-md" />
       </div>
+    );
+  }
+
+  // Authenticated state
+  if (session?.user) {
+    return (
+      <div className="flex items-center gap-4">
+        <CreditDisplay />
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" className="gap-2">
+            <User className="h-4 w-4" />
+            {session.user.name || session.user.email}
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleSignOut} className="gap-2">
+            <LogOut className="h-4 w-4" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Unauthenticated state
+  return (
+    <div className="flex items-center gap-2">
+      <Button variant="ghost" onClick={handleSignIn}>
+        Sign In
+      </Button>
+      <Button onClick={handleSignUp}>
+        Get Started
+      </Button>
     </div>
   );
 }
