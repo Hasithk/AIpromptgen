@@ -2,7 +2,6 @@ import { PromptGenerator } from '@/components/prompt-generator';
 import { HeroSection } from '@/components/hero-section';
 import { AINewsWidget } from '@/components/ai-news-widget';
 import { FeaturesSection } from '@/components/features-section';
-import { PricingSection } from '@/components/pricing-section';
 
 export default function Home() {
   return (
@@ -19,7 +18,6 @@ export default function Home() {
         </div>
       </div>
       <FeaturesSection />
-      <PricingSection />
     </div>
   );
 }
