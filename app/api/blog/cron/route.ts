@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
-import { NewsItem } from '@/types';
-import { 
-  checkIfShouldGenerateBlog, 
-  updateLastBlogGeneration, 
-  getBlogAutomationStatus,
-  createBlogPost 
-} from '@/lib/prisma';
+import {
+  shouldGenerateBlog,
+  saveBlogPost,
+  updateLastGeneration,
+  getAutomationStatus
+} from '@/lib/blog-file-storage';
 
 const CRON_SECRET = process.env.CRON_SECRET || 'your-cron-secret-key';
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -23,7 +22,7 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log('Starting automatic blog generation...');
+    console.log('[Blog Cron] Starting automatic blog generation...');
 
     // Check if we should generate (daily)
     const shouldGenerate = await checkIfShouldGenerateBlog();
