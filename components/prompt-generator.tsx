@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,16 +11,15 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Wand2, Copy, Download, Heart, Sparkles, LogIn } from 'lucide-react';
+import { Wand2, Copy, Download, Heart, Sparkles } from 'lucide-react';
 import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/hooks/use-credits';
 import { updateUserCredits } from '@/lib/api';
 import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
-
+import { trackEvent } from '@/components/analytics';
+import { useToast } from '@/hooks/use-toast';
 
 export function PromptGenerator() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
   const [subject, setSubject] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -32,30 +29,12 @@ export function PromptGenerator() {
   const [duration, setDuration] = useState([30]);
   const [includeNegative, setIncludeNegative] = useState(true);
   const [manualPrompt, setManualPrompt] = useState('');
-  const [promptType, setPromptType] = useState<'image' | 'video'>('video');
+  const [promptType, setPromptType] = useState<'image' | 'video'>('image');
   const [advancedPlatform, setAdvancedPlatform] = useState(PLATFORMS[0].value);
 
   const { generate, isGenerating, generatedPrompt, error } = usePromptGenerator();
   const { credits, updateCredits } = useCredits();
-
-  // Check authentication status - handle loading state
-  const isAuthenticated = status === 'authenticated';
-  const isLoading = status === 'loading';
-
-  // Filter platforms based on prompt type
-  const availablePlatforms = PLATFORMS.filter(p => p.type === promptType);
-
-  // Update selected platform when prompt type changes
-  useEffect(() => {
-    const currentPlatformType = PLATFORMS.find(p => p.value === selectedPlatform)?.type;
-    if (currentPlatformType !== promptType) {
-      // Set default platform for the new type
-      const defaultPlatform = availablePlatforms[0];
-      if (defaultPlatform) {
-        setSelectedPlatform(defaultPlatform.value);
-      }
-    }
-  }, [promptType, selectedPlatform, availablePlatforms]);
+  const { toast } = useToast();
 
   const handleStyleToggle = (style: string) => {
     setSelectedStyles(prev =>
@@ -66,19 +45,13 @@ export function PromptGenerator() {
   };
 
   const generatePrompt = async () => {
-    // Check if user is authenticated
-    if (!isAuthenticated) {
-      router.push('/auth/signin');
-      return;
-    }
-
     // Determine credits to use
     const creditsToUse = selectedPlatform === 'sora' ? 5 : 3;
     if (credits < creditsToUse) {
       alert('Insufficient credits!');
       return;
     }
-    await generate({
+    const genResult = await generate({
       subject,
       platform: selectedPlatform,
       styles: selectedStyles,
@@ -89,20 +62,19 @@ export function PromptGenerator() {
       includeNegative,
       type: promptType,
     });
-    // Reduce credits after successful generation
-    const res = await updateUserCredits(creditsToUse);
-    if (res.success && res.data) {
-      updateCredits(res.data.credits);
+
+    // Only reduce credits if generation was successful (no error)
+    if (!error) {
+      // Track the prompt generation
+      trackEvent.promptGenerated(selectedPlatform, promptType);
+      const res = await updateUserCredits(creditsToUse);
+      if (res.success && res.data) {
+        updateCredits(res.data.credits);
+      }
     }
   };
 
   const handleOptimizePrompt = async () => {
-    // Check if user is authenticated
-    if (!isAuthenticated) {
-      router.push('/auth/signin');
-      return;
-    }
-
     if (!manualPrompt) return;
     const creditsToUse = advancedPlatform === 'sora' ? 5 : 3;
     if (credits < creditsToUse) {
@@ -123,6 +95,24 @@ export function PromptGenerator() {
     const res = await updateUserCredits(creditsToUse);
     if (res.success && res.data) {
       updateCredits(res.data.credits);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    if (!generatedPrompt) return;
+    
+    try {
+      await navigator.clipboard.writeText(generatedPrompt);
+      toast({
+        title: "Prompt Copied!",
+        description: "Your AI prompt has been copied to clipboard. Paste it into your favorite AI platform.",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to Copy",
+        description: "Please try selecting and copying the text manually.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -177,7 +167,7 @@ export function PromptGenerator() {
               <div className="space-y-3">
                 <Label className="text-base font-semibold">Platform</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {availablePlatforms.map((platform) => (
+                  {PLATFORMS.map((platform) => (
                     <Card 
                       key={platform.value} 
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -323,44 +313,24 @@ export function PromptGenerator() {
               </div>
 
               {/* Generate Button */}
-              {isLoading ? (
-                <Button 
-                  disabled
-                  className="w-full btn-primary py-6 text-lg font-semibold"
-                  size="lg"
-                >
-                  <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
-                  Loading...
-                </Button>
-              ) : !isAuthenticated ? (
-                <Button 
-                  onClick={() => router.push('/auth/signin')}
-                  className="w-full btn-primary py-6 text-lg font-semibold"
-                  size="lg"
-                >
-                  <LogIn className="mr-2 h-5 w-5" />
-                  Sign In to Generate
-                </Button>
-              ) : (
-                <Button 
-                  onClick={generatePrompt}
-                  disabled={!subject || isGenerating}
-                  className="w-full btn-primary py-6 text-lg font-semibold group"
-                  size="lg"
-                >
-                  {isGenerating ? (
-                    <>
-                      <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
-                      Generating...
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                      Generate Prompt
-                    </>
-                  )}
-                </Button>
-              )}
+              <Button 
+                onClick={generatePrompt}
+                disabled={!subject || isGenerating}
+                className="w-full btn-primary py-6 text-lg font-semibold group"
+                size="lg"
+              >
+                {isGenerating ? (
+                  <>
+                    <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                    Generate Prompt
+                  </>
+                )}
+              </Button>
             </TabsContent>
             
             <TabsContent value="advanced" className="space-y-6 mt-6">
@@ -372,7 +342,7 @@ export function PromptGenerator() {
                     <SelectValue placeholder="Select platform" />
                   </SelectTrigger>
                   <SelectContent>
-                    {availablePlatforms.map((platform) => (
+                    {PLATFORMS.map((platform) => (
                       <SelectItem key={platform.value} value={platform.value}>
                         {platform.label}
                       </SelectItem>
@@ -410,28 +380,10 @@ export function PromptGenerator() {
                   value={manualPrompt}
                   onChange={e => setManualPrompt(e.target.value)}
                 />
-                {isLoading ? (
-                  <Button 
-                    disabled
-                    className="w-full btn-primary"
-                  >
-                    <div className="animate-spin h-4 w-4 mr-2 border-2 border-white/20 border-t-white rounded-full" />
-                    Loading...
-                  </Button>
-                ) : !isAuthenticated ? (
-                  <Button 
-                    onClick={() => router.push('/auth/signin')}
-                    className="w-full btn-primary"
-                  >
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Sign In to Optimize
-                  </Button>
-                ) : (
-                  <Button className="w-full btn-primary" onClick={handleOptimizePrompt} disabled={!manualPrompt || isGenerating}>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Optimize Prompt
-                  </Button>
-                )}
+                <Button className="w-full btn-primary" onClick={handleOptimizePrompt} disabled={!manualPrompt || isGenerating}>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Optimize Prompt
+                </Button>
               </div>
             </TabsContent>
           </Tabs>
@@ -450,7 +402,7 @@ export function PromptGenerator() {
                   <p className="text-base leading-relaxed">{generatedPrompt}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={copyToClipboard}>
                     <Copy className="mr-2 h-4 w-4" />
                     Copy
                   </Button>
