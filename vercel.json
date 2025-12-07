@@ -5,7 +5,7 @@
       "schedule": "0 0 * * *"
     },
     {
-      "path": "/api/library/cron",
+      "path": "/api/library/cron-enhanced",
       "schedule": "0 6 * * *"
     }
   ]
