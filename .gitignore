@@ -36,3 +36,5 @@ ENV_CONFIG_READY.txt
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
