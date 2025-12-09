@@ -5,7 +5,6 @@ import { Providers } from './providers';
 import { ClientNavigation } from '@/components/client-navigation';
 import { Footer } from '@/components/footer';
 import { AnalyticsProvider } from '@/components/analytics';
-import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -123,6 +122,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7361470858189605"
+          crossOrigin="anonymous"
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
@@ -137,7 +141,6 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
-          <Toaster />
         </Providers>
       </body>
     </html>
