@@ -94,21 +94,23 @@ export async function GET(request: Request) {
         readTime: p.readTime || '5 min read',
         category: p.category || 'AI News',
       }));
-      console.log(`Loaded ${posts.length} posts from file storage`);
+      console.log(`✅ Loaded ${posts.length} posts from file storage`);
     } catch (error) {
-      console.error('File blog read error, using static generated blogs:', error);
+      console.error('⚠️ File blog read error, using static generated blogs:', error);
       // Use static import as fallback for serverless environments
+      console.log(`📦 Static import has ${generatedBlogs.length} blogs`);
       posts = generatedBlogs.map((p) => ({
         ...p,
         tags: p.tags || [],
         readTime: p.readTime || '5 min read',
         category: p.category || 'AI News',
       }));
-      console.log(`Loaded ${posts.length} posts from static import`);
+      console.log(`✅ Loaded ${posts.length} posts from static import`);
     }
 
     // Only fall back to database/content library if we have no generated posts
     if (!posts || posts.length === 0) {
+      console.log('⚠️ No generated posts found, falling back to content library');
       // Try to get posts from database if available
       if (process.env.DATABASE_URL) {
         try {
@@ -124,8 +126,10 @@ export async function GET(request: Request) {
       // If no posts from database, provide content library posts
       if (!posts || posts.length === 0) {
         posts = await getContentBlogs();
-        console.log(`Loaded ${posts.length} sample posts from content library`);
+        console.log(`📚 Loaded ${posts.length} sample posts from content library (FALLBACK)`);
       }
+    } else {
+      console.log(`✅ Using ${posts.length} generated blog posts`);
     }
 
     // Apply filters after loading posts
