@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getBlogPosts as getPrismaBlogs, createBlogPost } from '@/lib/prisma';
 import { getBlogPosts as getContentBlogs } from '@/lib/blog-content';
 import { getAllBlogPosts } from '@/lib/blog-file-storage';
+import { generatedBlogs } from '@/lib/generated-blogs';
 import type { BlogPost } from '@/types';
 
 // Sample blog posts for fallback
@@ -94,8 +95,14 @@ export async function GET(request: Request) {
         category: p.category || 'AI News',
       }));
     } catch (error) {
-      console.error('File blog read error, will fallback:', error);
-      posts = [];
+      console.error('File blog read error, using static generated blogs:', error);
+      // Use static import as fallback for serverless environments
+      posts = generatedBlogs.map((p) => ({
+        ...p,
+        tags: p.tags || [],
+        readTime: p.readTime || '5 min read',
+        category: p.category || 'AI News',
+      }));
     }
 
     // Try to get posts from database if available
