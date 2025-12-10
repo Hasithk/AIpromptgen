@@ -1,7 +1,7 @@
 // Auto-generated blog posts index for production deployment
 // This file is generated to ensure blog posts are accessible in serverless environments
 
-import type { BlogPost } from '@/lib/blog-file-storage';
+import type { BlogPost } from '@/types';
 
 export const generatedBlogs: BlogPost[] = [
   {
@@ -11,12 +11,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Weekly Update - November 25, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-25T00:00:00.0000000",
-    "createdAt": "2025-11-25T00:00:00.0000000",
-    "updatedAt": "2025-11-25T00:00:00.0000000"
+    "publishedAt": "2025-11-25T00:00:00.0000000"
   },
   {
     "id": "blog-2025-11-26",
@@ -25,12 +23,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Multimodal Breakthroughs - November 26, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-26T00:00:00.0000000",
-    "createdAt": "2025-11-26T00:00:00.0000000",
-    "updatedAt": "2025-11-26T00:00:00.0000000"
+    "publishedAt": "2025-11-26T00:00:00.0000000"
   },
   {
     "id": "blog-2025-11-27",
@@ -39,12 +35,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Prompt Engineering Tips - November 27, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-27T00:00:00.0000000",
-    "createdAt": "2025-11-27T00:00:00.0000000",
-    "updatedAt": "2025-11-27T00:00:00.0000000"
+    "publishedAt": "2025-11-27T00:00:00.0000000"
   },
   {
     "id": "blog-2025-11-28",
@@ -53,12 +47,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Product Strategy - November 28, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-28T00:00:00.0000000",
-    "createdAt": "2025-11-28T00:00:00.0000000",
-    "updatedAt": "2025-11-28T00:00:00.0000000"
+    "publishedAt": "2025-11-28T00:00:00.0000000"
   },
   {
     "id": "blog-2025-11-29",
@@ -67,12 +59,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# GenAI in Business - November 29, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-29T00:00:00.0000000",
-    "createdAt": "2025-11-29T00:00:00.0000000",
-    "updatedAt": "2025-11-29T00:00:00.0000000"
+    "publishedAt": "2025-11-29T00:00:00.0000000"
   },
   {
     "id": "blog-2025-11-30",
@@ -81,12 +71,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Safety and Trust - November 30, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-11-30T00:00:00.0000000",
-    "createdAt": "2025-11-30T00:00:00.0000000",
-    "updatedAt": "2025-11-30T00:00:00.0000000"
+    "publishedAt": "2025-11-30T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-01",
@@ -95,12 +83,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Open Source AI Momentum - December 1, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-01T00:00:00.0000000",
-    "createdAt": "2025-12-01T00:00:00.0000000",
-    "updatedAt": "2025-12-01T00:00:00.0000000"
+    "publishedAt": "2025-12-01T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-02",
@@ -109,12 +95,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Infrastructure - December 2, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-02T00:00:00.0000000",
-    "createdAt": "2025-12-02T00:00:00.0000000",
-    "updatedAt": "2025-12-02T00:00:00.0000000"
+    "publishedAt": "2025-12-02T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-03",
@@ -123,12 +107,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Weekly Update - December 3, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-03T00:00:00.0000000",
-    "createdAt": "2025-12-03T00:00:00.0000000",
-    "updatedAt": "2025-12-03T00:00:00.0000000"
+    "publishedAt": "2025-12-03T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-04",
@@ -137,12 +119,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Multimodal Breakthroughs - December 4, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-04T00:00:00.0000000",
-    "createdAt": "2025-12-04T00:00:00.0000000",
-    "updatedAt": "2025-12-04T00:00:00.0000000"
+    "publishedAt": "2025-12-04T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-05",
@@ -151,12 +131,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Prompt Engineering Tips - December 5, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-05T00:00:00.0000000",
-    "createdAt": "2025-12-05T00:00:00.0000000",
-    "updatedAt": "2025-12-05T00:00:00.0000000"
+    "publishedAt": "2025-12-05T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-06",
@@ -165,12 +143,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Product Strategy - December 6, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-06T00:00:00.0000000",
-    "createdAt": "2025-12-06T00:00:00.0000000",
-    "updatedAt": "2025-12-06T00:00:00.0000000"
+    "publishedAt": "2025-12-06T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-07",
@@ -179,12 +155,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# GenAI in Business - December 7, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-07T00:00:00.0000000",
-    "createdAt": "2025-12-07T00:00:00.0000000",
-    "updatedAt": "2025-12-07T00:00:00.0000000"
+    "publishedAt": "2025-12-07T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-08",
@@ -193,12 +167,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Safety and Trust - December 8, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-08T00:00:00.0000000",
-    "createdAt": "2025-12-08T00:00:00.0000000",
-    "updatedAt": "2025-12-08T00:00:00.0000000"
+    "publishedAt": "2025-12-08T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-09",
@@ -207,12 +179,10 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# Open Source AI Momentum - December 9, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
+    "tags": ["AI","News","Daily"],
     "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-09T00:00:00.0000000",
-    "createdAt": "2025-12-09T00:00:00.0000000",
-    "updatedAt": "2025-12-09T00:00:00.0000000"
+    "publishedAt": "2025-12-09T00:00:00.0000000"
   },
   {
     "id": "blog-2025-12-10",
@@ -221,11 +191,9 @@ export const generatedBlogs: BlogPost[] = [
     "content": "# AI Infrastructure - December 10, 2025\n\nAI continues to move fast. This daily update captures the most important shifts and what they mean for builders.\n\n## Highlights\n- Key releases and announcements\n- What changed for teams\n- Practical tips to apply today\n\n## Takeaways\n- Ship faster with structured prompts\n- Measure quality and iterate\n- Keep humans in the loop\n\n---\n*Auto-published daily update.*",
     "author": "AI News Bot",
     "category": "AI Technology",
-    "tags": ["AI", "News", "Daily"],
-    "featured": true,
+    "tags": ["AI","News","Daily"],
+    "featured": false,
     "readTime": "6 min read",
-    "publishedAt": "2025-12-10T00:00:00.0000000",
-    "createdAt": "2025-12-10T00:00:00.0000000",
-    "updatedAt": "2025-12-10T00:00:00.0000000"
+    "publishedAt": "2025-12-10T00:00:00.0000000"
   }
 ];
