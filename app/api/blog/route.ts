@@ -2,18 +2,12 @@ import { NextResponse } from 'next/server';
 import { getBlogPosts as getPrismaBlogs, createBlogPost } from '@/lib/prisma';
 import { getBlogPosts as getContentBlogs } from '@/lib/blog-content';
 import { getAllBlogPosts } from '@/lib/blog-file-storage';
+import { generatedBlogs } from '@/lib/generated-blogs';
 import type { BlogPost } from '@/types';
 
-// Import generated blogs with safety check
-let generatedBlogs: BlogPost[] = [];
-try {
-  const imported = require('@/lib/generated-blogs');
-  generatedBlogs = imported.generatedBlogs || [];
-  console.log(`🔧 Import check: generatedBlogs has ${generatedBlogs.length} items`);
-} catch (error) {
-  console.error('❌ Failed to import generated-blogs:', error);
-  generatedBlogs = [];
-}
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 // Sample blog posts for fallback
 function getSampleBlogPosts(): BlogPost[] {
