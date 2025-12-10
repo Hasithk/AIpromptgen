@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getBlogPosts as getPrismaBlogs, createBlogPost } from '@/lib/prisma';
 import { getBlogPosts as getContentBlogs } from '@/lib/blog-content';
+import { getAllBlogPosts } from '@/lib/blog-file-storage';
 import type { BlogPost } from '@/types';
 
 // Sample blog posts for fallback
@@ -84,8 +85,21 @@ export async function GET(request: Request) {
 
     let posts: BlogPost[] = [];
 
+    // 1) Try file-based generated blogs first (automation output)
+    try {
+      posts = (await getAllBlogPosts()).map((p) => ({
+        ...p,
+        tags: p.tags || [],
+        readTime: p.readTime || '5 min read',
+        category: p.category || 'AI News',
+      }));
+    } catch (error) {
+      console.error('File blog read error, will fallback:', error);
+      posts = [];
+    }
+
     // Try to get posts from database if available
-    if (process.env.DATABASE_URL) {
+    if ((!posts || posts.length === 0) && process.env.DATABASE_URL) {
       try {
         // Database posts functionality can be added later
         // For now, just use empty array to fall back to content library
