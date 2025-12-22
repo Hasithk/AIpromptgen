@@ -1,33 +1,55 @@
 'use client';
 
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { CreditDisplay } from '@/components/credit-display';
+import { LogOut, User } from 'lucide-react';
 
 export function SessionWrapper() {
-  // Temporarily disable authentication to avoid NextAuth issues
-  // This will be re-enabled once the SessionProvider issue is resolved
+  const { data: session, status } = useSession();
   
   const handleSignIn = () => {
-    // Placeholder for sign in functionality
-    console.log('Sign in clicked');
+    signIn('google', { callbackUrl: '/' });
   };
 
-  const handleGetStarted = () => {
-    // Placeholder for get started functionality
-    console.log('Get started clicked');
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' });
   };
   
-  return (
-    <div className="flex items-center gap-4">
-      <CreditDisplay />
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" onClick={handleSignIn}>
-          Sign In
-        </Button>
-        <Button onClick={handleGetStarted}>
-          Get Started
-        </Button>
+  if (status === 'loading') {
+    return (
+      <div className="flex items-center gap-4">
+        <div className="h-10 w-20 bg-muted animate-pulse rounded" />
       </div>
+    );
+  }
+
+  if (session?.user) {
+    return (
+      <div className="flex items-center gap-4">
+        <CreditDisplay />
+        <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-muted rounded-full">
+            <User className="h-4 w-4" />
+            <span className="text-sm font-medium">{session.user.name || session.user.email}</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={handleSignOut}>
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex items-center gap-2">
+      <Button variant="ghost" onClick={handleSignIn}>
+        Sign In
+      </Button>
+      <Button onClick={handleSignIn}>
+        Get Started
+      </Button>
     </div>
   );
 }

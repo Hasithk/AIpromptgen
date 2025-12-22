@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession, signIn } from 'next-auth/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Wand2, Copy, Download, Heart, Sparkles } from 'lucide-react';
+import { Wand2, Copy, Download, Heart, Sparkles, LogIn } from 'lucide-react';
 import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/hooks/use-credits';
 import { updateUserCredits } from '@/lib/api';
@@ -20,6 +21,7 @@ import { trackEvent } from '@/components/analytics';
 import { useToast } from '@/hooks/use-toast';
 
 export function PromptGenerator() {
+  const { data: session, status } = useSession();
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
   const [subject, setSubject] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
@@ -157,6 +159,19 @@ export function PromptGenerator() {
         </CardHeader>
         
         <CardContent className="space-y-8">
+          {/* Error Display */}
+          {error && (
+            <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <p className="text-sm text-destructive font-medium">
+                {error.includes('Authentication') 
+                  ? 'Please sign in to generate prompts.' 
+                  : error.includes('credits')
+                  ? error
+                  : 'Failed to generate prompt. Please try again.'}
+              </p>
+            </div>
+          )}
+
           <Tabs defaultValue="builder" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="builder">Guided Builder</TabsTrigger>
@@ -332,24 +347,35 @@ export function PromptGenerator() {
               </div>
 
               {/* Generate Button */}
-              <Button 
-                onClick={generatePrompt}
-                disabled={!subject || isGenerating}
-                className="w-full btn-primary py-6 text-lg font-semibold group"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                    Generate Prompt
-                  </>
-                )}
-              </Button>
+              {!session ? (
+                <Button 
+                  onClick={() => signIn('google', { callbackUrl: '/' })}
+                  className="w-full btn-primary py-6 text-lg font-semibold group"
+                  size="lg"
+                >
+                  <LogIn className="mr-2 h-5 w-5" />
+                  Sign In to Generate Prompt
+                </Button>
+              ) : (
+                <Button 
+                  onClick={generatePrompt}
+                  disabled={!subject || isGenerating}
+                  className="w-full btn-primary py-6 text-lg font-semibold group"
+                  size="lg"
+                >
+                  {isGenerating ? (
+                    <>
+                      <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                      Generate Prompt
+                    </>
+                  )}
+                </Button>
+              )}
             </TabsContent>
             
             <TabsContent value="advanced" className="space-y-6 mt-6">
@@ -399,10 +425,24 @@ export function PromptGenerator() {
                   value={manualPrompt}
                   onChange={e => setManualPrompt(e.target.value)}
                 />
-                <Button className="w-full btn-primary" onClick={handleOptimizePrompt} disabled={!manualPrompt || isGenerating}>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  Optimize Prompt
-                </Button>
+                {!session ? (
+                  <Button 
+                    className="w-full btn-primary" 
+                    onClick={() => signIn('google', { callbackUrl: '/' })}
+                  >
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In to Optimize Prompt
+                  </Button>
+                ) : (
+                  <Button 
+                    className="w-full btn-primary" 
+                    onClick={handleOptimizePrompt} 
+                    disabled={!manualPrompt || isGenerating}
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Optimize Prompt
+                  </Button>
+                )}
               </div>
             </TabsContent>
           </Tabs>
