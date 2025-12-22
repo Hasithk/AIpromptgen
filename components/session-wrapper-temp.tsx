@@ -16,15 +16,17 @@ export function SessionWrapper() {
     signOut({ callbackUrl: '/' });
   };
   
+  // Show loading state during initial load
   if (status === 'loading') {
     return (
       <div className="flex items-center gap-4">
-        <div className="h-10 w-20 bg-muted animate-pulse rounded" />
+        <div className="h-10 w-32 bg-muted animate-pulse rounded" />
       </div>
     );
   }
 
-  if (session?.user) {
+  // Show authenticated user UI
+  if (status === 'authenticated' && session?.user) {
     return (
       <div className="flex items-center gap-4">
         <CreditDisplay />
@@ -42,6 +44,7 @@ export function SessionWrapper() {
     );
   }
   
+  // Show sign-in buttons for unauthenticated users
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost" onClick={handleSignIn}>

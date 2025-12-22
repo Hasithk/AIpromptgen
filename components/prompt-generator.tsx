@@ -347,7 +347,16 @@ export function PromptGenerator() {
               </div>
 
               {/* Generate Button */}
-              {!session ? (
+              {status === 'loading' ? (
+                <Button 
+                  disabled
+                  className="w-full btn-primary py-6 text-lg font-semibold"
+                  size="lg"
+                >
+                  <div className="animate-spin h-5 w-5 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                  Loading...
+                </Button>
+              ) : !session ? (
                 <Button 
                   onClick={() => signIn('google', { callbackUrl: '/' })}
                   className="w-full btn-primary py-6 text-lg font-semibold group"
@@ -425,7 +434,15 @@ export function PromptGenerator() {
                   value={manualPrompt}
                   onChange={e => setManualPrompt(e.target.value)}
                 />
-                {!session ? (
+                {status === 'loading' ? (
+                  <Button 
+                    className="w-full btn-primary"
+                    disabled
+                  >
+                    <div className="animate-spin h-4 w-4 mr-2 border-2 border-white/20 border-t-white rounded-full" />
+                    Loading...
+                  </Button>
+                ) : !session ? (
                   <Button 
                     className="w-full btn-primary" 
                     onClick={() => signIn('google', { callbackUrl: '/' })}
