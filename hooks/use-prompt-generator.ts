@@ -29,11 +29,13 @@ export function usePromptGenerator() {
       
       if (response.success) {
         setGeneratedPrompt(response.data.prompt);
+        return response; // Return the response so we can access creditsUsed
       } else {
         throw new Error(response.error || 'Failed to generate prompt');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      throw err; // Re-throw to handle in component
     } finally {
       setIsGenerating(false);
     }

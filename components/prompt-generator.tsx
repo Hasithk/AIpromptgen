@@ -45,56 +45,75 @@ export function PromptGenerator() {
   };
 
   const generatePrompt = async () => {
-    // Determine credits to use
-    const creditsToUse = selectedPlatform === 'sora' ? 5 : 3;
+    // Determine credits to use (doubled cost)
+    const creditsToUse = selectedPlatform === 'sora' ? 10 : 6;
     if (credits < creditsToUse) {
-      alert('Insufficient credits!');
+      toast({
+        title: "Insufficient Credits",
+        description: `You need ${creditsToUse} credits but only have ${credits}. Please upgrade your plan.`,
+        variant: "destructive"
+      });
       return;
     }
-    const genResult = await generate({
-      subject,
-      platform: selectedPlatform,
-      styles: selectedStyles,
-      mood: selectedMood,
-      lighting: selectedLighting,
-      creativity: creativity[0],
-      duration: duration[0],
-      includeNegative,
-      type: promptType,
-    });
+    
+    try {
+      const genResult = await generate({
+        subject,
+        platform: selectedPlatform,
+        styles: selectedStyles,
+        mood: selectedMood,
+        lighting: selectedLighting,
+        creativity: creativity[0],
+        duration: duration[0],
+        includeNegative,
+        type: promptType,
+      });
 
-    // Only reduce credits if generation was successful (no error)
-    if (!error) {
-      // Track the prompt generation
-      trackEvent.promptGenerated(selectedPlatform, promptType);
-      const res = await updateUserCredits(creditsToUse);
-      if (res.success && res.data) {
-        updateCredits(res.data.credits);
+      // Credits are deducted on the server-side after successful generation
+      // Update local credits display from API response
+      if (genResult?.data?.creditsUsed) {
+        // Refresh credits from server
+        updateCredits(credits - genResult.data.creditsUsed);
+        // Track the prompt generation
+        trackEvent.promptGenerated(selectedPlatform, promptType);
       }
+    } catch (err) {
+      // Error is already set in the hook
+      console.error('Prompt generation failed:', err);
     }
   };
 
   const handleOptimizePrompt = async () => {
     if (!manualPrompt) return;
-    const creditsToUse = advancedPlatform === 'sora' ? 5 : 3;
+    const creditsToUse = advancedPlatform === 'sora' ? 10 : 6;
     if (credits < creditsToUse) {
-      alert('Insufficient credits!');
+      toast({
+        title: "Insufficient Credits",
+        description: `You need ${creditsToUse} credits but only have ${credits}. Please upgrade your plan.`,
+        variant: "destructive"
+      });
       return;
     }
-    await generate({
-      subject: manualPrompt,
-      platform: advancedPlatform,
-      styles: [],
-      mood: '',
-      lighting: '',
-      creativity: 75,
-      duration: 30,
-      includeNegative: false,
-      type: promptType,
-    });
-    const res = await updateUserCredits(creditsToUse);
-    if (res.success && res.data) {
-      updateCredits(res.data.credits);
+    
+    try {
+      const genResult = await generate({
+        subject: manualPrompt,
+        platform: advancedPlatform,
+        styles: [],
+        mood: '',
+        lighting: '',
+        creativity: 75,
+        duration: 30,
+        includeNegative: false,
+        type: promptType,
+      });
+      
+      // Credits are deducted on the server-side
+      if (genResult?.data?.creditsUsed) {
+        updateCredits(credits - genResult.data.creditsUsed);
+      }
+    } catch (err) {
+      console.error('Prompt optimization failed:', err);
     }
   };
 

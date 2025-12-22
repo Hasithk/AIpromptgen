@@ -1,10 +1,21 @@
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { prisma } from '@/lib/prisma';
 // Use process.env for server-side environment variables
 
 
 export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const session = await getServerSession();
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required. Please sign in.' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const {
       subject,
@@ -20,6 +31,32 @@ export async function POST(request: NextRequest) {
     if (!subject || !platform) {
       return NextResponse.json(
         { success: false, error: 'Subject and platform are required' },
+        { status: 400 }
+      );
+    }
+
+    // Calculate credits required (doubled cost)
+    const creditsRequired = platform === 'sora' ? 10 : 6;
+
+    // Check user credits before making API call
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { id: true, credits: true, email: true, name: true }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    if (user.credits < creditsRequired) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: `Insufficient credits. You need ${creditsRequired} credits but only have ${user.credits}.` 
+        },
         { status: 400 }
       );
     }
@@ -72,7 +109,8 @@ export async function POST(request: NextRequest) {
           { role: 'system', content: 'You are an expert AI prompt engineer.' },
           { role: 'user', content: `Generate a prompt for platform: ${platform}.\nPrompt: ${prompt}${negativePrompt ? `\nNegative prompt: ${negativePrompt}` : ''}` }
         ],
-        temperature: 0.7
+        temperature: 0.7,
+        max_tokens: 500
       };
 
       const response = await fetch(deepSeekUrl, {
@@ -93,13 +131,19 @@ export async function POST(request: NextRequest) {
       const result = await response.json();
       const aiPrompt = result.choices?.[0]?.message?.content || '';
 
+      // Deduct credits after successful generation
+      await prisma.user.update({
+        where: { email: session.user.email },
+        data: { credits: { decrement: creditsRequired } }
+      });
+
       return NextResponse.json({
         success: true,
         data: {
           prompt: aiPrompt,
           negativePrompt,
           platform,
-          creditsUsed: platform === 'sora' ? 5 : 3,
+          creditsUsed: creditsRequired,
         }
       });
     } catch (err) {
