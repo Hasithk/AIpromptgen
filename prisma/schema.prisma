@@ -15,9 +15,7 @@ model User {
   email     String   @unique
   name      String?
   image     String?
-  hashedPassword String?
   credits   Int      @default(70)
-  lastCreditReset DateTime? @default(now())
   plan      String   @default("free")
   subscriptionId   String?
   subscriptionStatus String?
@@ -85,12 +83,4 @@ model BlogPost {
   @@index([featured])
 }
 
-model BlogAutomation {
-  id                String    @id @default("blog_automation")
-  lastGeneration    DateTime?
-  nextGeneration    DateTime?
-  isEnabled         Boolean   @default(true)
-  generationInterval Int      @default(3) // days
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-}
+

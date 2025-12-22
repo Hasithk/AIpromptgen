@@ -27,17 +27,13 @@ export function usePromptGenerator() {
       
       const response = await generatePrompt(params);
       
-      if (response.success && response.data?.prompt) {
+      if (response.success) {
         setGeneratedPrompt(response.data.prompt);
       } else {
-        const errorMsg = response.error || response.message || 'Failed to generate prompt';
-        console.error('Prompt generation failed:', response);
-        throw new Error(errorMsg);
+        throw new Error(response.error || 'Failed to generate prompt');
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred while generating the prompt';
-      console.error('Generate error:', err);
-      setError(errorMessage);
+      setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setIsGenerating(false);
     }

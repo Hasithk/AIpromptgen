@@ -41,11 +41,6 @@ export async function POST(request: NextRequest) {
       }
     } else if (platform === 'veo3') {
       prompt += ', high-quality video generation, realistic motion';
-    } else if (platform === 'nanobanana') {
-      prompt += ', high-quality image generation, detailed artwork, professional composition';
-      if (creativity > 80) {
-        prompt += ', ultra-detailed, masterpiece quality';
-      }
     } else if (platform === 'dall-e') {
       prompt += ', high-resolution, detailed artwork';
     } else if (platform === 'qwen') {
@@ -64,12 +59,9 @@ export async function POST(request: NextRequest) {
 
     // Call DeepSeek API
     const apiKey = process.env.DEEPSEEK_API_KEY;
-    if (!apiKey || apiKey === 'sk-your-deepseek-api-key-here') {
-      console.error('DEEPSEEK_API_KEY not configured. Please set it in .env.local and restart the server.');
-      return NextResponse.json({
-        success: false,
-        error: 'DeepSeek API key not configured. Please add DEEPSEEK_API_KEY to your .env.local file and restart the server.',
-      }, { status: 500 });
+    if (!apiKey) {
+      console.error('DeepSeek API key not set');
+      return NextResponse.json({ success: false, error: 'DeepSeek API key not set' }, { status: 500 });
     }
 
     try {
@@ -77,17 +69,10 @@ export async function POST(request: NextRequest) {
       const deepSeekPayload = {
         model: 'deepseek-chat',
         messages: [
-          { 
-            role: 'system', 
-            content: 'You are an expert AI prompt engineer. Generate detailed, professional prompts for AI image and video generation platforms. Return only the optimized prompt text without any explanations or additional formatting.'
-          },
-          { 
-            role: 'user', 
-            content: `Optimize this ${platform} prompt: "${prompt}"${negativePrompt ? `\nAvoid: ${negativePrompt}` : ''}\n\nReturn only the enhanced prompt.`
-          }
+          { role: 'system', content: 'You are an expert AI prompt engineer.' },
+          { role: 'user', content: `Generate a prompt for platform: ${platform}.\nPrompt: ${prompt}${negativePrompt ? `\nNegative prompt: ${negativePrompt}` : ''}` }
         ],
-        temperature: 0.7,
-        max_tokens: 500
+        temperature: 0.7
       };
 
       const response = await fetch(deepSeekUrl, {
@@ -101,23 +86,12 @@ export async function POST(request: NextRequest) {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('DeepSeek API error:', response.status, errorText);
-        return NextResponse.json({
-          success: false,
-          error: `DeepSeek API error (${response.status}): ${errorText.substring(0, 200)}`,
-        }, { status: 500 });
+        console.error('DeepSeek API error:', errorText);
+        return NextResponse.json({ success: false, error: 'DeepSeek API error', details: errorText }, { status: 500 });
       }
 
       const result = await response.json();
-      const aiPrompt = result.choices?.[0]?.message?.content?.trim();
-      
-      if (!aiPrompt) {
-        console.error('DeepSeek API returned empty response:', result);
-        return NextResponse.json({
-          success: false,
-          error: 'DeepSeek API returned empty response',
-        }, { status: 500 });
-      }
+      const aiPrompt = result.choices?.[0]?.message?.content || '';
 
       return NextResponse.json({
         success: true,
@@ -130,10 +104,7 @@ export async function POST(request: NextRequest) {
       });
     } catch (err) {
       console.error('DeepSeek API fetch failed:', err);
-      return NextResponse.json({
-        success: false,
-        error: `Failed to connect to DeepSeek API: ${err instanceof Error ? err.message : 'Unknown error'}`,
-      }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'DeepSeek API fetch failed', details: String(err) }, { status: 500 });
     }
   } catch (error) {
     console.error('Prompt generation error:', error);

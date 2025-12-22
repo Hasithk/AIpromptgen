@@ -1,115 +1,37 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 
-export const authOptions: NextAuthOptions = {
+// Validate required environment variables
+const requiredEnvVars = {
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL
+};
+
+// Log missing environment variables
+const missingVars = Object.entries(requiredEnvVars)
+  .filter(([key, value]) => !value)
+  .map(([key]) => key);
+
+if (missingVars.length > 0) {
+  console.error('Missing required environment variables:', missingVars);
+}
+
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Please enter email and password');
-        }
-
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-        });
-
-        if (!user) {
-          throw new Error('No account found. Please sign up first.');
-        }
-
-        if (!user.hashedPassword) {
-          throw new Error('Please use Google sign-in for this account');
-        }
-
-        const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
-
-        if (!isCorrectPassword) {
-          throw new Error('Incorrect password');
-        }
-
-        // Check if credits need to be reset (daily reset)
-        const now = new Date();
-        const lastReset = user.lastCreditReset ? new Date(user.lastCreditReset) : null;
-        const shouldReset = !lastReset || 
-          now.getTime() - lastReset.getTime() > 24 * 60 * 60 * 1000;
-
-        if (shouldReset) {
-          await prisma.user.update({
-            where: { id: user.id },
-            data: {
-              credits: 70,
-              lastCreditReset: now,
-            },
-          });
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-        };
-      },
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
-    async signIn({ user, account }) {
-      if (account?.provider === 'google') {
-        try {
-          const existingUser = await prisma.user.findUnique({
-            where: { email: user.email! },
-          });
-
-          if (!existingUser) {
-            // Create new user with 70 initial credits
-            await prisma.user.create({
-              data: {
-                email: user.email!,
-                name: user.name,
-                image: user.image,
-                credits: 70,
-                lastCreditReset: new Date(),
-              },
-            });
-          } else {
-            // Check if credits need to be reset
-            const now = new Date();
-            const lastReset = existingUser.lastCreditReset ? new Date(existingUser.lastCreditReset) : null;
-            const shouldReset = !lastReset || 
-              now.getTime() - lastReset.getTime() > 24 * 60 * 60 * 1000;
-
-            if (shouldReset) {
-              await prisma.user.update({
-                where: { id: existingUser.id },
-                data: {
-                  credits: 70,
-                  lastCreditReset: now,
-                },
-              });
-            }
-          }
-        } catch (error) {
-          console.error('Error during sign in:', error);
-          return false;
-        }
-      }
-      return true;
-    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -117,21 +39,43 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
+      if (session.user && token.id) {
+        (session.user as any).id = token.id;
       }
       return session;
     },
-  },
-  pages: {
-    signIn: '/auth/signin',
-    signOut: '/',
-    error: '/auth/signin',
-  },
-  session: {
-    strategy: 'jwt',
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+    async signIn({ user, account, profile }) {
+      try {
+        if (account?.provider === 'google' && user.email) {
+          // Only try to create/update user if database is available
+          if (process.env.DATABASE_URL) {
+            try {
+              await prisma.user.upsert({
+                where: { email: user.email },
+                create: {
+                  email: user.email,
+                  name: user.name || '',
+                  credits: 70, // Free tier credits
+                  plan: 'free'
+                },
+                update: {
+                  name: user.name || ''
+                }
+              });
+            } catch (dbError) {
+              console.error('Database error during sign in:', dbError);
+              // Continue with sign in even if database fails
+            }
+          }
+        }
+        return true;
+      } catch (error) {
+        console.error('Sign in error:', error);
+        // Allow sign in to proceed even if there are errors
+        return true;
+      }
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);
