@@ -1,18 +1,41 @@
 import { NextResponse } from 'next/server';
-
-let mockCredits = 70;
-let mockPlan = 'free';
-let mockResetDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+import { getServerSession } from 'next-auth';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // In a real app, this would fetch from database based on authenticated user
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // Fetch user credits from database
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { credits: true, plan: true, createdAt: true }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Calculate reset date (30 days from account creation for free tier)
+    const resetDate = new Date(user.createdAt);
+    resetDate.setDate(resetDate.getDate() + 30);
+
     return NextResponse.json({
       success: true,
       data: {
-        credits: mockCredits,
-        plan: mockPlan,
-        resetDate: mockResetDate,
+        credits: user.credits,
+        plan: user.plan,
+        resetDate: resetDate.toISOString(),
       }
     });
   } catch (error) {
@@ -26,16 +49,55 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession();
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { amount } = await request.json();
     if (typeof amount !== 'number' || amount < 0) {
-      return NextResponse.json({ success: false, error: 'Invalid amount' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: 'Invalid amount' },
+        { status: 400 }
+      );
     }
-    // Reduce credits (mock)
-    if (mockCredits - amount < 0) {
-      return NextResponse.json({ success: false, error: 'Insufficient credits' }, { status: 400 });
+
+    // Get current credits
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+      select: { credits: true }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
     }
-    mockCredits -= amount;
-    return NextResponse.json({ success: true, data: { credits: mockCredits } });
+
+    // Check if user has enough credits
+    if (user.credits - amount < 0) {
+      return NextResponse.json(
+        { success: false, error: 'Insufficient credits' },
+        { status: 400 }
+      );
+    }
+
+    // Update credits in database
+    const updatedUser = await prisma.user.update({
+      where: { email: session.user.email },
+      data: { credits: { decrement: amount } },
+      select: { credits: true }
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: { credits: updatedUser.credits }
+    });
   } catch (error) {
     console.error('Credits update error:', error);
     return NextResponse.json(

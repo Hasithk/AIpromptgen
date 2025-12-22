@@ -32,15 +32,31 @@ const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // When user signs in, add their database ID to the token
       if (user) {
         token.id = user.id;
+      }
+      // If we have an account (new sign-in), fetch user from database
+      if (account && token.email) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: token.email },
+            select: { id: true }
+          });
+          if (dbUser) {
+            token.id = dbUser.id;
+          }
+        } catch (error) {
+          console.error('Error fetching user ID:', error);
+        }
       }
       return token;
     },
     async session({ session, token }) {
+      // Add user ID to session
       if (session.user && token.id) {
-        (session.user as any).id = token.id;
+        session.user.id = token.id as string;
       }
       return session;
     },
@@ -50,7 +66,7 @@ const authOptions: NextAuthOptions = {
           // Only try to create/update user if database is available
           if (process.env.DATABASE_URL) {
             try {
-              await prisma.user.upsert({
+              const dbUser = await prisma.user.upsert({
                 where: { email: user.email },
                 create: {
                   email: user.email,
@@ -62,6 +78,8 @@ const authOptions: NextAuthOptions = {
                   name: user.name || ''
                 }
               });
+              // Set the user ID so it's available in jwt callback
+              user.id = dbUser.id;
             } catch (dbError) {
               console.error('Database error during sign in:', dbError);
               // Continue with sign in even if database fails

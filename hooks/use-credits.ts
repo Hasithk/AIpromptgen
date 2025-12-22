@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getUserCredits } from '@/lib/api';
 
 export function useCredits() {
@@ -8,34 +8,38 @@ export function useCredits() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const fetchCredits = useCallback(async () => {
     // Don't fetch during SSR
     if (typeof window === 'undefined') {
       setLoading(false);
       return;
     }
 
-    async function fetchCredits() {
-      try {
-        setLoading(true);
-        const response = await getUserCredits();
-        if (response.success) {
-          setCredits(response.data.credits);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch credits');
-        // Keep default credits on error
-        setCredits(70);
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      const response = await getUserCredits();
+      if (response.success && response.data) {
+        setCredits(response.data.credits);
       }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch credits');
+      // Keep default credits on error
+      setCredits(70);
+    } finally {
+      setLoading(false);
     }
-
-    fetchCredits();
   }, []);
+
+  useEffect(() => {
+    fetchCredits();
+  }, [fetchCredits]);
 
   const updateCredits = (newCredits: number) => {
     setCredits(newCredits);
+  };
+
+  const refreshCredits = () => {
+    fetchCredits();
   };
 
   return {
@@ -43,5 +47,6 @@ export function useCredits() {
     loading,
     error,
     updateCredits,
+    refreshCredits,
   };
 }

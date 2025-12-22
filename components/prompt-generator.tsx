@@ -35,7 +35,7 @@ export function PromptGenerator() {
   const [advancedPlatform, setAdvancedPlatform] = useState(PLATFORMS[0].value);
 
   const { generate, isGenerating, generatedPrompt, error } = usePromptGenerator();
-  const { credits, updateCredits } = useCredits();
+  const { credits, updateCredits, refreshCredits } = useCredits();
   const { toast } = useToast();
 
   const handleStyleToggle = (style: string) => {
@@ -72,12 +72,17 @@ export function PromptGenerator() {
       });
 
       // Credits are deducted on the server-side after successful generation
-      // Update local credits display from API response
+      // Refresh credits from server to get the updated value
       if (genResult?.data?.creditsUsed) {
-        // Refresh credits from server
-        updateCredits(credits - genResult.data.creditsUsed);
+        // Refresh credits from server to get exact current balance
+        await refreshCredits();
         // Track the prompt generation
         trackEvent.promptGenerated(selectedPlatform, promptType);
+        
+        toast({
+          title: "Prompt Generated!",
+          description: `Successfully generated prompt. ${genResult.data.creditsUsed} credits used.`,
+        });
       }
     } catch (err) {
       // Error is already set in the hook
@@ -112,7 +117,12 @@ export function PromptGenerator() {
       
       // Credits are deducted on the server-side
       if (genResult?.data?.creditsUsed) {
-        updateCredits(credits - genResult.data.creditsUsed);
+        await refreshCredits();
+        
+        toast({
+          title: "Prompt Optimized!",
+          description: `Successfully optimized prompt. ${genResult.data.creditsUsed} credits used.`,
+        });
       }
     } catch (err) {
       console.error('Prompt optimization failed:', err);
