@@ -1,14 +1,13 @@
 'use client';
 
-import { useCredits } from '@/hooks/use-credits';
+import { useCredits } from '@/contexts/credit-context';
 import { Coins } from 'lucide-react';
 
 export function CreditDisplay() {
-  // Temporarily show default credits without authentication
   const { credits, loading } = useCredits();
   
-  // Don't show during SSR
-  if (typeof window === 'undefined' || loading) {
+  // Show loading state
+  if (loading) {
     return (
       <div className="flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full border">
         <Coins className="h-4 w-4 text-primary animate-pulse" />
@@ -19,12 +18,15 @@ export function CreditDisplay() {
     );
   }
   
-    // Show credits (default to 70 if no credits loaded)
+  // Show credits with color coding
+  const creditColor = credits === 0 ? 'text-destructive' : credits < 20 ? 'text-orange-500' : 'text-primary';
+  const bgColor = credits === 0 ? 'bg-destructive/10' : credits < 20 ? 'bg-orange-500/10' : 'bg-primary/10';
+  
   return (
-    <div className="flex items-center space-x-2 px-3 py-1.5 bg-primary/10 rounded-full border">
-      <Coins className="h-4 w-4 text-primary" />
-      <span className="text-sm font-medium text-primary">
-        {credits || 70} credits
+    <div className={`flex items-center space-x-2 px-3 py-1.5 ${bgColor} rounded-full border`}>
+      <Coins className={`h-4 w-4 ${creditColor}`} />
+      <span className={`text-sm font-medium ${creditColor}`}>
+        {credits} credits
       </span>
     </div>
   );

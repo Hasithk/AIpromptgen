@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSession, signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,15 +13,16 @@ import { Badge } from '@/components/ui/badge';
 import { Slider } from '@/components/ui/slider';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Wand2, Copy, Download, Heart, Sparkles, LogIn } from 'lucide-react';
+import { Wand2, Copy, Download, Heart, Sparkles, LogIn, Zap } from 'lucide-react';
 import { usePromptGenerator } from '@/hooks/use-prompt-generator';
-import { useCredits } from '@/hooks/use-credits';
+import { useCredits } from '@/contexts/credit-context';
 import { updateUserCredits } from '@/lib/api';
 import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
 import { trackEvent } from '@/components/analytics';
 import { useToast } from '@/hooks/use-toast';
 
 export function PromptGenerator() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [selectedPlatform, setSelectedPlatform] = useState('sora');
   const [subject, setSubject] = useState('');
@@ -375,6 +377,15 @@ export function PromptGenerator() {
                   <LogIn className="mr-2 h-5 w-5" />
                   Sign In to Generate Prompt
                 </Button>
+              ) : credits === 0 ? (
+                <Button 
+                  onClick={() => router.push('/pricing')}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 py-6 text-lg font-semibold group"
+                  size="lg"
+                >
+                  <Zap className="mr-2 h-5 w-5 group-hover:animate-pulse" />
+                  Get Pro Package to Generate
+                </Button>
               ) : (
                 <Button 
                   onClick={generatePrompt}
@@ -459,6 +470,14 @@ export function PromptGenerator() {
                   >
                     <LogIn className="mr-2 h-4 w-4" />
                     Sign In to Optimize Prompt
+                  </Button>
+                ) : credits === 0 ? (
+                  <Button 
+                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                    onClick={() => router.push('/pricing')}
+                  >
+                    <Zap className="mr-2 h-4 w-4" />
+                    Get Pro Package to Optimize
                   </Button>
                 ) : (
                   <Button 
