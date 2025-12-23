@@ -10,7 +10,8 @@ export const SITE_CONFIG = {
 };
 
 export const PLATFORMS = [
-  { value: 'sora', label: 'Sora (OpenAI)', description: 'Video generation', type: 'video' },
+  { value: 'sora-video', label: 'Sora (OpenAI)', description: 'Video generation', type: 'video' },
+  { value: 'sora-image', label: 'Sora (OpenAI)', description: 'Image generation', type: 'image' },
   { value: 'veo3', label: 'Veo 3.1 (Google)', description: 'Advanced video AI', type: 'video' },
   { value: 'nanobanana', label: 'NanoBanana (Google)', description: 'AI image generation', type: 'image' },
   { value: 'midjourney', label: 'Midjourney', description: 'Image generation', type: 'image' },
