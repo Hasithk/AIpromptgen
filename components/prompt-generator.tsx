@@ -24,7 +24,7 @@ import { useToast } from '@/hooks/use-toast';
 export function PromptGenerator() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [selectedPlatform, setSelectedPlatform] = useState('qwen');
+  const [selectedPlatform, setSelectedPlatform] = useState('veo3');
   const [subject, setSubject] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedMood, setSelectedMood] = useState('');
@@ -34,16 +34,16 @@ export function PromptGenerator() {
   const [includeNegative, setIncludeNegative] = useState(true);
   const [manualPrompt, setManualPrompt] = useState('');
   const [promptType, setPromptType] = useState<'image' | 'video'>('image');
-  const [advancedPlatform, setAdvancedPlatform] = useState('qwen');
+  const [advancedPlatform, setAdvancedPlatform] = useState('veo3');
 
   // Auto-switch platform based on prompt type
   useEffect(() => {
     if (promptType === 'image') {
-      setSelectedPlatform('qwen');
-      setAdvancedPlatform('qwen');
-    } else if (promptType === 'video') {
       setSelectedPlatform('veo3');
       setAdvancedPlatform('veo3');
+    } else if (promptType === 'video') {
+      setSelectedPlatform('sora');
+      setAdvancedPlatform('sora');
     }
   }, [promptType]);
 
