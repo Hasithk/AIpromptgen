@@ -24,7 +24,7 @@ import { useToast } from '@/hooks/use-toast';
 export function PromptGenerator() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const [selectedPlatform, setSelectedPlatform] = useState('veo3');
+  const [selectedPlatform, setSelectedPlatform] = useState('nanobanana');
   const [subject, setSubject] = useState('');
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedMood, setSelectedMood] = useState('');
@@ -34,16 +34,19 @@ export function PromptGenerator() {
   const [includeNegative, setIncludeNegative] = useState(true);
   const [manualPrompt, setManualPrompt] = useState('');
   const [promptType, setPromptType] = useState<'image' | 'video'>('image');
-  const [advancedPlatform, setAdvancedPlatform] = useState('veo3');
+  const [advancedPlatform, setAdvancedPlatform] = useState('nanobanana');
+
+  // Filter platforms based on prompt type
+  const availablePlatforms = PLATFORMS.filter(p => p.type === promptType);
 
   // Auto-switch platform based on prompt type
   useEffect(() => {
     if (promptType === 'image') {
+      setSelectedPlatform('nanobanana');
+      setAdvancedPlatform('nanobanana');
+    } else if (promptType === 'video') {
       setSelectedPlatform('veo3');
       setAdvancedPlatform('veo3');
-    } else if (promptType === 'video') {
-      setSelectedPlatform('sora');
-      setAdvancedPlatform('sora');
     }
   }, [promptType]);
 
@@ -224,7 +227,7 @@ export function PromptGenerator() {
               <div className="space-y-3">
                 <Label className="text-base font-semibold">Platform</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {PLATFORMS.map((platform) => (
+                  {availablePlatforms.map((platform) => (
                     <Card 
                       key={platform.value} 
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -428,7 +431,7 @@ export function PromptGenerator() {
                     <SelectValue placeholder="Select platform" />
                   </SelectTrigger>
                   <SelectContent>
-                    {PLATFORMS.map((platform) => (
+                    {availablePlatforms.map((platform) => (
                       <SelectItem key={platform.value} value={platform.value}>
                         {platform.label}
                       </SelectItem>
