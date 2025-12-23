@@ -7,6 +7,7 @@ import { getBlogPostById, getBlogPosts } from '@/lib/prisma';
 import { BackButton, ActionButtons } from '@/components/blog-action-buttons';
 import { ShareSection } from '@/components/share-section';
 import { formatBlogContent } from '@/lib/format-content';
+import { blogPosts as staticBlogPosts } from '@/data/blog-posts';
 
 interface BlogPostPageProps {
   params: {
@@ -15,20 +16,42 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({
+  try {
+    const posts = await getBlogPosts();
+    if (posts && posts.length > 0) {
+      return posts.map((post) => ({
+        id: post.id,
+      }));
+    }
+  } catch (error) {
+    console.log('Using static blog posts for static params');
+  }
+  
+  // Fallback to static posts
+  return staticBlogPosts.map((post) => ({
     id: post.id,
   }));
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
-  const post = await getBlogPostById(params.id);
+  let post;
+  
+  try {
+    post = await getBlogPostById(params.id);
+  } catch (error) {
+    // Try static posts
+    post = staticBlogPosts.find(p => p.id === params.id);
+  }
   
   if (!post) {
     return {
       title: 'Article Not Found | AI Prompt Generator'
     };
   }
+
+  const publishedAt = typeof post.publishedAt === 'string' 
+    ? post.publishedAt 
+    : post.publishedAt.toISOString();
 
   return {
     title: `${post.title} | AI Prompt Generator Blog`,
@@ -38,7 +61,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       title: post.title,
       description: post.excerpt || '',
       type: 'article',
-      publishedTime: post.publishedAt.toISOString(),
+      publishedTime: publishedAt,
       authors: [post.author],
       tags: post.tags,
     },
@@ -51,7 +74,14 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = await getBlogPostById(params.id);
+  let post;
+  
+  try {
+    post = await getBlogPostById(params.id);
+  } catch (error) {
+    // Try static posts
+    post = staticBlogPosts.find(p => p.id === params.id);
+  }
 
   if (!post) {
     notFound();
