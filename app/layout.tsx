@@ -16,9 +16,19 @@ export const metadata: Metadata = {
   },
   description: 'Generate high-quality AI prompts for Sora, Veo 3, Midjourney, DALL-E, Qwen.ai and other AI platforms. Professional prompt engineering tool with 70+ free generations, curated library, and AI-powered blog.',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: [
+      { url: '/Aipromptgen.png', sizes: 'any' },
+      { url: '/Aipromptgen.png', sizes: '32x32', type: 'image/png' },
+      { url: '/Aipromptgen.png', sizes: '16x16', type: 'image/png' },
+    ],
+    shortcut: '/Aipromptgen.png',
+    apple: '/Aipromptgen.png',
+    other: [
+      {
+        rel: 'icon',
+        url: '/Aipromptgen.png',
+      },
+    ],
   },
   keywords: [
     'AI prompt generator',
@@ -49,7 +59,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: '/og-image.png',
+        url: '/Aipromptgen.png',
         width: 1200,
         height: 630,
         alt: 'AI Prompt Generator - Professional AI Content Creation'
@@ -60,7 +70,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AI Prompt Generator - Create Professional AI Prompts',
     description: 'Generate high-quality prompts for Sora, Midjourney, DALL-E. 70 free generations + premium features.',
-    images: ['/twitter-card.png'],
+    images: ['/Aipromptgen.png'],
     creator: '@aipromptgen'
   },
   robots: {

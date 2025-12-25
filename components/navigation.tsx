@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { SessionWrapper } from '@/components/session-wrapper-temp';
@@ -27,8 +28,14 @@ export function Navigation() {
       <nav className="container-max section-padding flex items-center justify-between py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2 group">
-          <div className="p-2 bg-hero-gradient rounded-lg group-hover:shadow-lg transition-all duration-200">
-            <Zap className="h-6 w-6 text-white" />
+          <div className="relative h-10 w-10 group-hover:shadow-lg transition-all duration-200">
+            <Image
+              src="/Aipromptgen.png"
+              alt="AI Prompt Gen Logo"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
           <span className="text-xl font-bold gradient-text">
             AI Prompt Gen

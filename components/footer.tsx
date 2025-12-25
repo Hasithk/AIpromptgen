@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Zap, Twitter, Github, Mail } from 'lucide-react';
+import Image from 'next/image';
+import { Twitter, Github, Mail } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,8 +12,13 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="p-2 bg-hero-gradient rounded-lg">
-                <Zap className="h-5 w-5 text-white" />
+              <div className="relative h-10 w-10">
+                <Image
+                  src="/Aipromptgen.png"
+                  alt="AI Prompt Gen Logo"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <span className="text-lg font-bold gradient-text">
                 AI Prompt Gen
