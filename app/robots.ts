@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://aipromptgen.com'
+  const baseUrl = 'https://www.aipromptgen.app'
   
   return {
     rules: [

@@ -9,7 +9,7 @@ import { AnalyticsProvider } from '@/components/analytics';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://aipromptgen.com'), // Replace with your domain
+  metadataBase: new URL('https://www.aipromptgen.app'),
   title: {
     default: 'AI Prompt Generator | Professional AI Prompts for Sora, Midjourney, DALL-E, Qwen.ai',
     template: '%s | AI Prompt Generator'
