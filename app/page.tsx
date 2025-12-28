@@ -20,6 +20,9 @@ export default function Home() {
       </div>
       <FeaturesSection />
       <PricingSection />
+      <div className="container-max section-padding py-8">
+        <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
+      </div>
     </div>
   );
 }

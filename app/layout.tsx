@@ -138,6 +138,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <script
+          async
+          data-cfasync="false"
+          src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
