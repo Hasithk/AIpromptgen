@@ -62,26 +62,32 @@ export async function POST(request: NextRequest) {
     }
 
     // Rate limiting for free tier users (10 generations per day)
+    // Only enforce if PromptHistory table exists (after migration)
     if (user.credits <= 50) { // Free tier users
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      const todayGenerations = await prisma.$queryRaw<[{ count: bigint }]>`
-        SELECT COUNT(*) as count FROM "PromptHistory"
-        WHERE "userId" = ${user.id}
-        AND "createdAt" >= ${today}
-      `;
-      
-      const generationCount = Number(todayGenerations[0]?.count || 0);
-      
-      if (generationCount >= 10) {
-        return NextResponse.json(
-          { 
-            success: false, 
-            error: 'Daily limit reached. Free tier users can generate up to 10 prompts per day. Please upgrade to Pro for unlimited access.' 
-          },
-          { status: 429 }
-        );
+      try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const todayGenerations = await prisma.$queryRaw<[{ count: bigint }]>`
+          SELECT COUNT(*) as count FROM "PromptHistory"
+          WHERE "userId" = ${user.id}
+          AND "createdAt" >= ${today}
+        `;
+        
+        const generationCount = Number(todayGenerations[0]?.count || 0);
+        
+        if (generationCount >= 10) {
+          return NextResponse.json(
+            { 
+              success: false, 
+              error: 'Daily limit reached. Free tier users can generate up to 10 prompts per day. Please upgrade to Pro for unlimited access.' 
+            },
+            { status: 429 }
+          );
+        }
+      } catch (rateLimitError) {
+        // Table doesn't exist yet - skip rate limiting until migration is run
+        console.warn('Rate limiting skipped - PromptHistory table not found:', rateLimitError);
       }
     }
 
@@ -155,14 +161,19 @@ export async function POST(request: NextRequest) {
       const result = await response.json();
       const aiPrompt = result.choices?.[0]?.message?.content || '';
 
-      // Log prompt generation for analytics
-      await prisma.promptHistory.create({
-        data: {
-          userId: user.id,
-          platform,
-          creditsUsed: creditsRequired
-        }
-      });
+      // Log prompt generation for analytics (optional - won't crash if table doesn't exist)
+      try {
+        await prisma.promptHistory.create({
+          data: {
+            userId: user.id,
+            platform,
+            creditsUsed: creditsRequired
+          }
+        });
+      } catch (historyError) {
+        // Table might not exist yet - migration pending
+        console.warn('Could not log to PromptHistory:', historyError);
+      }
 
       // Deduct credits after successful generation
       await prisma.user.update({
