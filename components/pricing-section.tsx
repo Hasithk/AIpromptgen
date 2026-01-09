@@ -11,7 +11,7 @@ const plans = [
     period: 'forever',
     icon: Zap,
     features: [
-      '70 credits per month',
+      '50 credits per month',
       'Basic prompt generation',
       'Access to all platforms',
       'Community support',

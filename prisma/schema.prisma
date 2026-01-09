@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   name      String?
   image     String?
-  credits   Int      @default(70)
+  credits   Int      @default(50)
   plan      String   @default("free")
   subscriptionId   String?
   subscriptionStatus String?
@@ -27,6 +27,20 @@ model User {
   // Relations
   subscriptions Subscription[]
   payments      Payment[]
+  promptHistory PromptHistory[]
+}
+
+model PromptHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  platform  String
+  creditsUsed Int
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model Subscription {

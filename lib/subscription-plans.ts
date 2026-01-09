@@ -27,7 +27,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     currency: 'USD',
     interval: 'month',
     features: [
-      '70 generations per month',
+      '50 generations per month',
       'Basic categories & styles',
       'Standard support',
       'Basic export formats'
@@ -35,7 +35,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     buttonText: 'Current Plan',
     buttonVariant: 'outline',
     limits: {
-      generations: 70,
+      generations: 50,
       savedPrompts: 10
     }
   },

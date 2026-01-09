@@ -61,6 +61,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Rate limiting for free tier users (10 generations per day)
+    if (user.credits <= 50) { // Free tier users
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const todayGenerations = await prisma.$queryRaw<[{ count: bigint }]>`
+        SELECT COUNT(*) as count FROM "PromptHistory"
+        WHERE "userId" = ${user.id}
+        AND "createdAt" >= ${today}
+      `;
+      
+      const generationCount = Number(todayGenerations[0]?.count || 0);
+      
+      if (generationCount >= 10) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'Daily limit reached. Free tier users can generate up to 10 prompts per day. Please upgrade to Pro for unlimited access.' 
+          },
+          { status: 429 }
+        );
+      }
+    }
+
     // Build the prompt as before
     const styleText = styles?.length > 0 ? `, ${styles.join(', ')} style` : '';
     const moodText = mood ? `, ${mood.toLowerCase()} mood` : '';
@@ -110,7 +134,7 @@ export async function POST(request: NextRequest) {
           { role: 'user', content: `Generate a prompt for platform: ${platform}.\nPrompt: ${prompt}${negativePrompt ? `\nNegative prompt: ${negativePrompt}` : ''}` }
         ],
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 400
       };
 
       const response = await fetch(deepSeekUrl, {
@@ -130,6 +154,15 @@ export async function POST(request: NextRequest) {
 
       const result = await response.json();
       const aiPrompt = result.choices?.[0]?.message?.content || '';
+
+      // Log prompt generation for analytics
+      await prisma.promptHistory.create({
+        data: {
+          userId: user.id,
+          platform,
+          creditsUsed: creditsRequired
+        }
+      });
 
       // Deduct credits after successful generation
       await prisma.user.update({

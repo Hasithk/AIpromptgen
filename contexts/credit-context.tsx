@@ -14,7 +14,7 @@ interface CreditContextType {
 const CreditContext = createContext<CreditContextType | undefined>(undefined);
 
 export function CreditProvider({ children }: { children: ReactNode }) {
-  const [credits, setCredits] = useState<number>(70);
+  const [credits, setCredits] = useState<number>(50);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +34,7 @@ export function CreditProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch credits');
       // Keep default credits on error
-      setCredits(70);
+      setCredits(50);
     } finally {
       setLoading(false);
     }

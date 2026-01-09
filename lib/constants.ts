@@ -41,7 +41,7 @@ export const PRICING_PLANS = [
     price: '$0',
     period: 'forever',
     features: [
-      '70 credits per month',
+      '50 credits per month',
       'Basic prompt generation',
       'Access to all platforms',
       'Community support',

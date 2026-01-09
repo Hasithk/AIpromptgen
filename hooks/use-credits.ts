@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getUserCredits } from '@/lib/api';
 
 export function useCredits() {
-  const [credits, setCredits] = useState<number>(70);
+  const [credits, setCredits] = useState<number>(50);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +24,7 @@ export function useCredits() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch credits');
       // Keep default credits on error
-      setCredits(70);
+      setCredits(50);
     } finally {
       setLoading(false);
     }
