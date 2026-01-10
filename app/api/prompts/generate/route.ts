@@ -175,10 +175,13 @@ export async function POST(request: NextRequest) {
         console.warn('Could not log to PromptHistory:', historyError);
       }
 
-      // Deduct credits after successful generation
+      // Deduct credits and track monthly usage after successful generation
       await prisma.user.update({
         where: { email: session.user.email },
-        data: { credits: { decrement: creditsRequired } }
+        data: { 
+          credits: { decrement: creditsRequired },
+          monthlyCreditsUsed: { increment: creditsRequired }
+        }
       });
 
       return NextResponse.json({

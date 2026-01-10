@@ -66,20 +66,74 @@ const authOptions: NextAuthOptions = {
           // Only try to create/update user if database is available
           if (process.env.DATABASE_URL) {
             try {
-              const dbUser = await prisma.user.upsert({
+              // Check if user exists first
+              const existingUser = await prisma.user.findUnique({
                 where: { email: user.email },
-                create: {
-                  email: user.email,
-                  name: user.name || '',
-                  credits: 70, // Free tier credits
-                  plan: 'free'
-                },
-                update: {
-                  name: user.name || ''
+                select: { 
+                  id: true, 
+                  plan: true, 
+                  lastCreditResetDate: true,
+                  credits: true 
                 }
               });
-              // Set the user ID so it's available in jwt callback
-              user.id = dbUser.id;
+
+              if (existingUser) {
+                // User exists - check if credits need monthly reset
+                const now = new Date();
+                const lastReset = existingUser.lastCreditResetDate ? new Date(existingUser.lastCreditResetDate) : null;
+                
+                // Check if we're in a new month
+                const needsReset = !lastReset || 
+                  (lastReset.getMonth() !== now.getMonth() || 
+                   lastReset.getFullYear() !== now.getFullYear());
+
+                if (needsReset) {
+                  // Reset credits based on plan
+                  const monthlyCredits: { [key: string]: number } = {
+                    free: 50,
+                    pro: 500,
+                    elite: 9999
+                  };
+                  
+                  const creditsToSet = monthlyCredits[existingUser.plan] || 50;
+
+                  const dbUser = await prisma.user.update({
+                    where: { email: user.email },
+                    data: {
+                      name: user.name || '',
+                      credits: creditsToSet,
+                      monthlyCreditsUsed: 0,
+                      lastCreditResetDate: now
+                    }
+                  });
+                  
+                  user.id = dbUser.id;
+                  console.log(`✓ Credits reset for ${user.email}: ${creditsToSet} credits (${existingUser.plan} plan)`);
+                } else {
+                  // Just update name
+                  const dbUser = await prisma.user.update({
+                    where: { email: user.email },
+                    data: {
+                      name: user.name || ''
+                    }
+                  });
+                  user.id = dbUser.id;
+                }
+              } else {
+                // New user - create with initial credits
+                const dbUser = await prisma.user.create({
+                  data: {
+                    email: user.email,
+                    name: user.name || '',
+                    credits: 50,
+                    monthlyCreditsUsed: 0,
+                    lastCreditResetDate: now,
+                    plan: 'free'
+                  }
+                });
+                user.id = dbUser.id;
+                console.log(`✓ New user created: ${user.email} with 50 credits`);
+              }
             } catch (dbError) {
               console.error('Database error during sign in:', dbError);
               // Continue with sign in even if database fails
@@ -98,4 +152,4 @@ const authOptions: NextAuthOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, authOptions };
