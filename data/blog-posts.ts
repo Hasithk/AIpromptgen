@@ -174,6 +174,7 @@ Start generating stunning AI content today with our free 70 monthly credits!
     category: 'AI Tools',
     tags: ['AI Prompt Generator', 'ChatGPT', 'Free Tools', 'Image Generation', 'Video AI', 'SEO'],
     featured: true,
+    author: 'AI News Team',
     publishedAt: '2026-01-12T08:00:00Z',
     readTime: '8 min read'
   },
@@ -229,13 +230,14 @@ Free tier: Sign up today!
     category: 'AI News',
     tags: ['OpenAI', 'API', 'Prompt Optimization', 'GPT-5', 'Breaking News'],
     featured: true,
+    author: 'AI News Team',
     publishedAt: '2026-01-11T10:00:00Z',
     readTime: '4 min read'
   },
   {
     id: 'jan-10-2026',
     title: 'Google Gemini 2.0 Ultra Dominates Video AI - Beats Sora in Benchmark Tests',
-    excerpt: 'Google's Gemini 2.0 Ultra emerges as the leading video generation AI, outperforming OpenAI's Sora across multiple quality metrics.',
+    excerpt: "Google's Gemini 2.0 Ultra emerges as the leading video generation AI, outperforming OpenAI's Sora across multiple quality metrics.",
     content: `# Google Gemini 2.0 Ultra Dominates Video AI Landscape
 
 **January 10, 2026** - Google has released benchmark comparisons showing Gemini 2.0 Ultra outperforming competing video AI models, including OpenAI's Sora.
@@ -299,6 +301,7 @@ The AI video generation market is now a true competition:
     category: 'AI News',
     tags: ['Google Gemini', 'Video AI', 'Sora', 'AI Comparison', 'Breaking News'],
     featured: true,
+    author: 'AI News Team',
     publishedAt: '2026-01-10T09:00:00Z',
     readTime: '5 min read'
   },
