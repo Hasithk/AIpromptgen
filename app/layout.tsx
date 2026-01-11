@@ -17,19 +17,17 @@ export const metadata: Metadata = {
   description: 'Generate high-quality AI prompts for Sora, Veo 3, Midjourney, DALL-E, Qwen.ai and other AI platforms. Professional prompt engineering tool with 70+ free generations, curated library, and AI-powered blog.',
   icons: {
     icon: [
-      { url: '/Aipromptgen.png', sizes: 'any' },
-      { url: '/Aipromptgen.png', sizes: '32x32', type: 'image/png' },
-      { url: '/Aipromptgen.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/Aipromptgen.png', sizes: '192x192', type: 'image/png' },
+      { url: '/Aipromptgen.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
-    shortcut: '/Aipromptgen.png',
-    apple: '/Aipromptgen.png',
-    other: [
-      {
-        rel: 'icon',
-        url: '/Aipromptgen.png',
-      },
+    shortcut: ['/favicon.ico'],
+    apple: [
+      { url: '/Aipromptgen.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+  manifest: '/manifest.json',
   keywords: [
     'AI prompt generator',
     'prompt engineering',
@@ -53,13 +51,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Prompt Generator - Create Professional AI Prompts Instantly',
     description: 'Generate stunning AI prompts for Sora, Midjourney, DALL-E and more. 70 free generations, premium plans, and AI-powered blog content.',
-    url: 'https://aipromptgen.com',
+    url: 'https://www.aipromptgen.app',
     siteName: 'AI Prompt Generator',
     type: 'website',
     locale: 'en_US',
     images: [
       {
-        url: '/Aipromptgen.png',
+        url: 'https://www.aipromptgen.app/Aipromptgen.png',
         width: 1200,
         height: 630,
         alt: 'AI Prompt Generator - Professional AI Content Creation'
@@ -70,7 +68,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'AI Prompt Generator - Create Professional AI Prompts',
     description: 'Generate high-quality prompts for Sora, Midjourney, DALL-E. 70 free generations + premium features.',
-    images: ['/Aipromptgen.png'],
+    images: ['https://www.aipromptgen.app/Aipromptgen.png'],
     creator: '@aipromptgen'
   },
   robots: {
@@ -87,7 +85,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://aipromptgen.com'
+    canonical: 'https://www.aipromptgen.app'
   },
   verification: {
     google: 'your-google-verification-code', // Add your Google Search Console verification
@@ -131,6 +129,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/Aipromptgen.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#3b82f6" />
         <meta name="google-adsense-account" content="ca-pub-7361470858189605" />
         <script
           async

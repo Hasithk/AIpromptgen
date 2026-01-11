@@ -1,0 +1,23 @@
+{
+  "name": "AI Prompt Generator",
+  "short_name": "AI Prompts",
+  "description": "Professional AI Prompt Generator for Sora, Midjourney, DALL-E, and more",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/Aipromptgen.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/Aipromptgen.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
