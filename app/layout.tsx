@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
 import { Providers } from './providers';
 import { ClientNavigation } from '@/components/client-navigation';
 import { Footer } from '@/components/footer';
@@ -168,7 +169,9 @@ export default function RootLayout({
         <AnalyticsProvider />
         <Providers>
           <div className="flex flex-col min-h-screen">
-            <ClientNavigation />
+            <Suspense fallback={<div className="h-16 bg-background border-b" />}>
+              <ClientNavigation />
+            </Suspense>
             <main className="flex-grow">
               {children}
             </main>
