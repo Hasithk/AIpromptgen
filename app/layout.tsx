@@ -166,7 +166,9 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <AnalyticsProvider />
+        <Suspense fallback={null}>
+          <AnalyticsProvider />
+        </Suspense>
         <Providers>
           <div className="flex flex-col min-h-screen">
             <Suspense fallback={<div className="h-16 bg-background border-b" />}>
