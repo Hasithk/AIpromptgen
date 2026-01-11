@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // POST - Reset monthly credits for all users or specific user
 export async function POST(req: Request) {

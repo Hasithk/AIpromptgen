@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 // This endpoint should be called by a cron job on the 1st of every month
 // You can use Vercel Cron, GitHub Actions, or any external cron service
