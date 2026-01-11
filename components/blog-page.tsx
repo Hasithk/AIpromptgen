@@ -28,7 +28,7 @@ export function BlogPage() {
         new URLSearchParams({
           ...(selectedCategory !== 'All' && { category: selectedCategory }),
           ...(searchTerm && { search: searchTerm }),
-          limit: '20'
+          limit: '100'
         })
       }`);
       
