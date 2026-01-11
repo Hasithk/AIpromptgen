@@ -38,22 +38,22 @@ export function HeroSection() {
               <div className="inline-flex items-center space-x-2 glass-morphism rounded-full px-6 py-3 text-sm font-medium border border-white/20 shadow-lg">
                 <Sparkles className="h-4 w-4 text-blue-400" />
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  AI Prompt Engineering Made Simple
+                  Best Free AI Prompt Generator 2026
                 </span>
               </div>
               
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-                Generate Perfect
+                The Best AI Prompt
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  AI Prompts
+                  Generator Free
                 </span>
               </h1>
               
               <p className="text-lg md:text-xl text-slate-300 leading-relaxed">
-                Create professional prompts for Sora, Veo 3, Midjourney, Qwen.ai, and more. 
-                Our advanced platform guides you through the entire process with 
-                intelligent suggestions and real-time optimization.
+                Create professional prompts for <strong>ChatGPT, Midjourney, DALL-E, Sora, and all AI platforms</strong>. 
+                Free AI prompt generator with 70 monthly credits. Perfect for image generation, 
+                video creation, and text prompts. <strong>No credit card required</strong> - start creating stunning AI content now!
               </p>
             </div>
 
@@ -62,11 +62,11 @@ export function HeroSection() {
                 size="lg" 
                 className="glass-morphism border border-white/20 text-white hover:bg-white/20 font-semibold px-8 py-6 text-lg group shadow-2xl"
                 onClick={() => {
-                  trackEvent.ctaClick('Start Creating', 'Hero Section');
+                  trackEvent.ctaClick('Generate Free AI Prompts', 'Hero Section');
                   window.location.href = '/#generator';
                 }}
               >
-                Start Creating
+                Generate Free AI Prompts
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button 
@@ -74,7 +74,7 @@ export function HeroSection() {
                 size="lg" 
                 className="glass-morphism border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg"
                 onClick={() => {
-                  trackEvent.ctaClick('View Examples', 'Hero Section');
+                  trackEvent.ctaClick('View Free Prompt Examples', 'Hero Section');
                   window.location.href = '/library';
                 }}
               >

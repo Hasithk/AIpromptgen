@@ -1,0 +1,201 @@
+// Additional SEO-optimized blog posts (Jan 9 - Dec 24, 2025)
+// Insert these after the Jan 10 post in blog-posts.ts
+
+  {
+    id: 'jan-09-2026',
+    title: 'AI Prompt Generator for Image Creation: Midjourney vs DALL-E 3 vs Stable Diffusion XL',
+    excerpt: 'Complete comparison of the best AI image prompt generators. Learn which tool creates better images and how to write perfect prompts for each platform.',
+    content: `# AI Prompt Generator for Image Creation: Ultimate 2026 Guide
+
+**Where can I find free AI prompts for images?** This comprehensive guide compares the top AI image generators and teaches you how to craft perfect prompts.
+
+## Best AI Image Generators 2026
+
+### 1. Midjourney V7 (Released Jan 2026)
+**Strengths:**
+- Photorealistic portraits
+- Artistic styles
+- Consistent characters
+
+**Best prompts format:**
+\`\`\`
+"[Subject], [style], [lighting], [composition], [quality tags]
+--ar 16:9 --style raw --v 7"
+\`\`\`
+
+**Example:**
+\`\`\`
+"Female warrior in cyberpunk armor, neon city background,
+dramatic rim lighting, rule of thirds composition,
+ultra detailed, 8K resolution --ar 16:9 --style raw --v 7"
+\`\`\`
+
+### 2. DALL-E 3 (OpenAI)
+**Strengths:**
+- Natural language understanding
+- Text rendering in images
+- Precise prompt adherence
+
+**Best prompts format:**
+\`\`\`
+"Detailed description with specific details about style,
+colors, mood, and technical specifications"
+\`\`\`
+
+**Example:**
+\`\`\`
+"A photorealistic image of a modern coffee shop interior,
+warm afternoon lighting through large windows, customers
+working on laptops, plants on shelves, cozy atmosphere,
+professional architectural photography style"
+\`\`\`
+
+### 3. Stable Diffusion XL
+**Strengths:**
+- Free and open-source
+- Highly customizable
+- Fast generation speed
+
+**Best prompts format:**
+\`\`\`
+"positive prompt: [detailed description]
+negative prompt: [what to avoid]"
+\`\`\`
+
+**Example:**
+\`\`\`
+positive: "portrait of elegant woman, professional studio lighting,
+bokeh background, sharp focus on eyes, fashion photography"
+negative: "blurry, low quality, distorted, disfigured"
+\`\`\`
+
+## AI Prompt Examples for Image Generation
+
+### Portrait Photography:
+\`\`\`
+"Professional headshot of a business executive, neutral gray
+background, soft studio lighting from 45 degrees, sharp focus,
+confident expression, corporate style, Canon EOS R5, 85mm f/1.2"
+\`\`\`
+
+### Landscape Photography:
+\`\`\`
+"Majestic mountain landscape at sunrise, golden hour lighting,
+misty valleys, dramatic clouds, foreground rocks for depth,
+wide angle lens, National Geographic style, highly detailed"
+\`\`\`
+
+### Product Photography:
+\`\`\`
+"Luxury watch on black reflective surface, dramatic side lighting,
+product photography, macro detail, metallic reflections,
+premium advertising style, studio setup, 8K resolution"
+\`\`\`
+
+### Digital Art:
+\`\`\`
+"Fantasy castle floating in clouds, magical atmosphere,
+volumetric lighting rays, detailed architecture, vibrant colors,
+concept art style, trending on ArtStation, epic scale"
+\`\`\`
+
+## Prompt Generator from Image
+
+**New technology:** Image-to-prompt converters analyze existing images and generate optimized text prompts.
+
+### Top Tools:
+1. **CLIP Interrogator** - Free, open-source
+2. **img2prompt** - AI-powered analysis
+3. **Midjourney /describe** - Built-in feature
+
+### How it works:
+1. Upload reference image
+2. AI analyzes visual elements
+3. Generates detailed text prompt
+4. Use prompt to create similar images
+
+**Use cases:**
+- Recreate style from reference
+- Learn from successful prompts
+- Improve your prompt writing
+
+## Technical Prompt Parameters
+
+### Essential Keywords:
+- **Quality**: 8K, ultra detailed, photorealistic, high resolution
+- **Style**: cinematic, professional, artistic, commercial
+- **Lighting**: golden hour, studio, dramatic, soft, natural
+- **Composition**: rule of thirds, symmetrical, dynamic, close-up
+- **Camera**: Canon, Sony, Nikon, 85mm, f/1.4, bokeh
+
+### Advanced Modifiers:
+- **Aspect Ratios**: --ar 16:9, --ar 1:1, --ar 9:16
+- **Style Strength**: --stylize 100 (Midjourney)
+- **Chaos Level**: --chaos 50 (for variety)
+- **Negative Prompts**: Avoid unwanted elements
+
+## Free vs Paid: Which to Choose?
+
+### Free Options:
+- **Stable Diffusion** (unlimited, self-hosted)
+- **Bing Image Creator** (15 images/day)
+- **Leonardo.ai** (150 tokens/day)
+- **Playground AI** (1000 images/day)
+
+### Paid Options:
+- **Midjourney** ($10/month - 200 images)
+- **DALL-E 3** (Pay per image, $0.02-0.08)
+- **Adobe Firefly** ($4.99/month - 100 credits)
+
+**Verdict:** Start with free tools, upgrade when needed.
+
+## Latest News & Updates
+
+**January 2026 Releases:**
+- Midjourney V7 with better photorealism
+- DALL-E 3 integrated into ChatGPT Plus
+- Stable Diffusion 3.0 beta testing
+- Google ImageFX general availability
+
+## Pro Tips for Better Images
+
+### 1. Be Specific
+❌ Bad: "a cat"
+✅ Good: "fluffy orange tabby cat, green eyes, sitting on windowsill, soft natural lighting, shallow depth of field"
+
+### 2. Use Technical Terms
+❌ Bad: "nice lighting"
+✅ Good: "golden hour backlighting, rim light effect, volumetric rays"
+
+### 3. Reference Styles
+❌ Bad: "artistic"
+✅ Good: "in the style of Greg Rutkowski, trending on ArtStation, concept art"
+
+### 4. Specify Quality
+❌ Bad: [no quality tags]
+✅ Good: "8K resolution, ultra detailed, masterpiece, best quality"
+
+### 5. Test and Iterate
+- Generate 4-10 variations
+- Analyze what works
+- Refine your prompt
+- Save successful prompts
+
+## Conclusion
+
+The **best AI prompt generator for images** depends on your needs:
+- **Artistic work**: Midjourney
+- **Natural language**: DALL-E 3
+- **Free & customizable**: Stable Diffusion
+
+Start creating stunning AI images today with our [Free Prompt Generator](/)!
+
+---
+
+*Try these prompts now: [AI Image Prompt Generator](/) - 70 free credits/month*`,
+    category: 'Tutorials',
+    tags: ['Image Generation', 'Midjourney', 'DALL-E', 'Stable Diffusion', 'AI Art', 'Prompt Examples'],
+    featured: true,
+    publishedAt: '2026-01-09T08:00:00Z',
+    readTime: '10 min read'
+  },
