@@ -282,6 +282,8 @@ export function PromptGenerator() {
                       size="sm"
                       onClick={() => handleStyleToggle(style)}
                       className={selectedStyles.includes(style) ? "bg-primary" : ""}
+                      aria-label={`${selectedStyles.includes(style) ? 'Remove' : 'Add'} ${style} style`}
+                      aria-pressed={selectedStyles.includes(style)}
                     >
                       {style}
                     </Button>
@@ -292,9 +294,9 @@ export function PromptGenerator() {
               {/* Mood & Lighting */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold">Mood</Label>
+                  <Label htmlFor="mood-select" className="text-base font-semibold">Mood</Label>
                   <Select value={selectedMood} onValueChange={setSelectedMood}>
-                    <SelectTrigger>
+                    <SelectTrigger id="mood-select" aria-label="Select mood for your prompt">
                       <SelectValue placeholder="Select mood" />
                     </SelectTrigger>
                     <SelectContent>
@@ -308,9 +310,9 @@ export function PromptGenerator() {
                 </div>
 
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold">Lighting</Label>
+                  <Label htmlFor="lighting-select" className="text-base font-semibold">Lighting</Label>
                   <Select value={selectedLighting} onValueChange={setSelectedLighting}>
-                    <SelectTrigger>
+                    <SelectTrigger id="lighting-select" aria-label="Select lighting conditions">
                       <SelectValue placeholder="Select lighting" />
                     </SelectTrigger>
                     <SelectContent>
@@ -327,24 +329,30 @@ export function PromptGenerator() {
               {/* Creativity & Duration Sliders */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-3">
-                  <Label className="text-base font-semibold">
+                  <Label htmlFor="creativity-slider" className="text-base font-semibold">
                     Creativity Level: {creativity[0]}%
                   </Label>
                   <Slider
+                    id="creativity-slider"
                     value={creativity}
                     onValueChange={setCreativity}
                     max={100}
                     step={5}
                     className="w-full"
+                    aria-label={`Creativity level: ${creativity[0]} percent`}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={creativity[0]}
                   />
                 </div>
 
                 {selectedPlatform === 'sora' && (
                   <div className="space-y-3">
-                    <Label className="text-base font-semibold">
+                    <Label htmlFor="duration-slider" className="text-base font-semibold">
                       Duration: {duration[0]}s
                     </Label>
                     <Slider
+                      id="duration-slider"
                       value={duration}
                       onValueChange={setDuration}
                       max={60}
@@ -360,14 +368,17 @@ export function PromptGenerator() {
               <div className="space-y-4 p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label className="text-base font-medium">Include Negative Prompts</Label>
+                    <Label htmlFor="negative-switch" className="text-base font-medium">Include Negative Prompts</Label>
                     <p className="text-sm text-muted-foreground">
                       Add suggestions for what to avoid
                     </p>
                   </div>
                   <Switch
+                    id="negative-switch"
                     checked={includeNegative}
                     onCheckedChange={setIncludeNegative}
+                    aria-label="Toggle negative prompts"
+                    aria-checked={includeNegative}
                   />
                 </div>
               </div>
@@ -425,9 +436,9 @@ export function PromptGenerator() {
             <TabsContent value="advanced" className="space-y-6 mt-6">
               {/* Platform Selection for Advanced */}
               <div className="space-y-3">
-                <Label className="text-base font-semibold">Platform</Label>
+                <Label htmlFor="advanced-platform" className="text-base font-semibold">Platform</Label>
                 <Select value={advancedPlatform} onValueChange={setAdvancedPlatform}>
-                  <SelectTrigger>
+                  <SelectTrigger id="advanced-platform" aria-label="Select AI platform for advanced mode">
                     <SelectValue placeholder="Select platform" />
                   </SelectTrigger>
                   <SelectContent>

@@ -74,7 +74,7 @@ export function AINewsWidget() {
               Latest updates from the AI world
             </CardDescription>
           </div>
-          <Badge variant="secondary" className="bg-secondary/10 text-secondary">
+          <Badge variant="secondary" className="bg-green-600 text-white font-semibold">
             Live
           </Badge>
         </div>

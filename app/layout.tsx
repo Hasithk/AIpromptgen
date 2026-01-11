@@ -6,7 +6,12 @@ import { ClientNavigation } from '@/components/client-navigation';
 import { Footer } from '@/components/footer';
 import { AnalyticsProvider } from '@/components/analytics';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial']
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.aipromptgen.app'),

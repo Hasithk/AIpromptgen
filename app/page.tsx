@@ -1,9 +1,24 @@
+import dynamic from 'next/dynamic';
 import { PromptGenerator } from '@/components/prompt-generator';
 import { HeroSection } from '@/components/hero-section';
-import { AINewsWidget } from '@/components/ai-news-widget';
-import { FeaturesSection } from '@/components/features-section';
-import { PricingSection } from '@/components/pricing-section';
-import { FAQSection } from '@/components/faq-section';
+
+// Lazy load heavy components
+const AINewsWidget = dynamic(() => import('@/components/ai-news-widget').then(mod => ({ default: mod.AINewsWidget })), {
+  loading: () => <div className="animate-pulse bg-muted rounded-lg h-96" />,
+  ssr: false
+});
+
+const FeaturesSection = dynamic(() => import('@/components/features-section').then(mod => ({ default: mod.FeaturesSection })), {
+  loading: () => <div className="animate-pulse bg-muted rounded-lg h-48" />
+});
+
+const PricingSection = dynamic(() => import('@/components/pricing-section').then(mod => ({ default: mod.PricingSection })), {
+  loading: () => <div className="animate-pulse bg-muted rounded-lg h-96" />
+});
+
+const FAQSection = dynamic(() => import('@/components/faq-section').then(mod => ({ default: mod.FAQSection })), {
+  loading: () => <div className="animate-pulse bg-muted rounded-lg h-64" />
+});
 
 export default function Home() {
   return (

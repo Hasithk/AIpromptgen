@@ -28,21 +28,21 @@ export function Footer() {
               The most advanced AI prompt generation platform for creators, designers, and professionals.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Twitter className="h-5 w-5" />
+              <Link href="https://twitter.com/aipromptgen" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Follow us on Twitter">
+                <Twitter className="h-5 w-5" aria-hidden="true" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Github className="h-5 w-5" />
+              <Link href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="View our GitHub repository">
+                <Github className="h-5 w-5" aria-hidden="true" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="h-5 w-5" />
+              <Link href="mailto:lookinternationallk@gmail.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Send us an email">
+                <Mail className="h-5 w-5" aria-hidden="true" />
               </Link>
             </div>
           </div>
 
           {/* Product */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Product</h3>
+            <h4 className="font-semibold text-base">Product</h4>
             <div className="space-y-2 text-sm">
               <Link href="/" className="block text-muted-foreground hover:text-primary transition-colors">
                 Generator
@@ -61,7 +61,7 @@ export function Footer() {
 
           {/* Resources */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Resources</h3>
+            <h4 className="font-semibold text-base">Resources</h4>
             <div className="space-y-2 text-sm">
               <Link href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">
                 Blog
@@ -80,7 +80,7 @@ export function Footer() {
 
           {/* Company */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Company</h3>
+            <h4 className="font-semibold text-base">Company</h4>
             <div className="space-y-2 text-sm">
               <Link href="/about" className="block text-muted-foreground hover:text-primary transition-colors">
                 About

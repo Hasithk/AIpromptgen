@@ -9,15 +9,44 @@ const nextConfig = {
   images: {
     domains: ['images.pexels.com', 'via.placeholder.com', 'images.unsplash.com'],
     unoptimized: false,
+    formats: ['image/avif', 'image/webp'],
   },
   // Production optimizations
   output: 'standalone',
   poweredByHeader: false,
   compress: true,
+  
+  // Performance optimizations
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+  },
 
   // Domain configuration
   async headers() {
     return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, must-revalidate',
+          },
+        ],
+      },
       {
         source: '/(.*)',
         headers: [
