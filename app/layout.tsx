@@ -106,7 +106,7 @@ export default function RootLayout({
     "@type": "SoftwareApplication",
     "name": "AI Prompt Generator",
     "description": "Professional AI prompt generator for Sora, Midjourney, DALL-E and other AI platforms",
-    "url": "https://aipromptgen.com",
+    "url": "https://www.aipromptgen.app",
     "applicationCategory": "DesignApplication",
     "operatingSystem": "Web Browser",
     "offers": {
