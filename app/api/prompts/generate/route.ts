@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.DEEPSEEK_API_KEY;
     if (!apiKey) {
       console.error('DeepSeek API key not set');
-      return NextResponse.json({ success: false, error: 'DeepSeek API key not set' }, { status: 500 });
+      return NextResponse.json({ success: false, error: 'DeepSeek API key not configured. Please contact administrator.' }, { status: 500 });
     }
 
     try {

@@ -49,7 +49,7 @@ GOOGLE_CLIENT_SECRET="your-google-client-secret"
 DATABASE_URL="postgresql://user:pass@host:port/db"
 
 # API Keys (already configured)
-DEEPSEEK_API_KEY="sk-50be0064c10545699830f8b4b017f93f"
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
 NEWSAPI_KEY="88ec2cc8ec274a1ba697cfdb6b353ab3"
 ```
 

@@ -38,3 +38,13 @@ ENV_CONFIG_READY.txt
 next-env.d.ts
 
 .vercel
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.production
+.env.development
+.env*.local
+
+# Keep example files
+!.env.example
+!.env.production.example

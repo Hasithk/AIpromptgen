@@ -32,8 +32,8 @@ chmod +x deploy.sh
 #### Step 3: Configure Environment Variables
 In Vercel dashboard, add:
 - `DATABASE_URL` - Your PostgreSQL connection string
-- `DEEPSEEK_API_KEY` - Already have: `sk-50be0064c10545699830f8b4b017f93f`
-- `NEWS_API_KEY` - Already configured: `88ec2cc8ec274a1ba697cfdb6b353ab3`
+- `DEEPSEEK_API_KEY` - Get from https://platform.deepseek.com/api_keys
+- `NEWS_API_KEY` - Get from https://newsapi.org
 - `CRON_SECRET` - Generate a random string
 - `NEXTAUTH_URL` - Your Vercel app URL
 - `NEXTAUTH_SECRET` - Generate a 32-character string
@@ -52,8 +52,8 @@ In Vercel dashboard, add:
 | Variable | Status | Description |
 |----------|--------|-------------|
 | `DATABASE_URL` | ⚠️ **Need to set** | PostgreSQL connection string |
-| `DEEPSEEK_API_KEY` | ✅ **Already set** | `sk-50be0064c10545699830f8b4b017f93f` |
-| `NEWS_API_KEY` | ✅ **Already set** | `88ec2cc8ec274a1ba697cfdb6b353ab3` |
+| `DEEPSEEK_API_KEY` | ⚠️ **Need to set** | Get from DeepSeek platform |
+| `NEWS_API_KEY` | ⚠️ **Need to set** | Get from NewsAPI.org |
 | `CRON_SECRET` | ⚠️ **Need to set** | Random string for security |
 | `NEXTAUTH_URL` | ⚠️ **Need to set** | Your app domain |
 | `NEXTAUTH_SECRET` | ⚠️ **Need to set** | 32-character random string |

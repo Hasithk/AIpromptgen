@@ -103,7 +103,7 @@ Update your production environment:
 ```env
 # Production Environment
 NEXTAUTH_URL=https://yourdomain.com
-DEEPSEEK_API_KEY=sk-50be0064c10545699830f8b4b017f93f
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
 NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
 NEWS_API_BASE_URL=https://newsapi.org/v2
 DATABASE_URL="postgresql://user:pass@host:5432/dbname"
