@@ -15,7 +15,6 @@ export default function robots(): MetadataRoute.Robots {
           '/_next/',
           '/private/',
           '/history',
-          '/docs',
           '*.php',
           '*.cgi',
           '/search/',
