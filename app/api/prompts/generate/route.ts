@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
+import { buildSystemPrompt, buildUserPrompt, getPlatformConfig } from '@/lib/platform-configs';
 // Use process.env for server-side environment variables
 
 
@@ -36,7 +37,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate credits required (doubled cost)
-    const creditsRequired = platform === 'sora' ? 10 : 6;
+    // Sora platforms use more credits due to complexity
+    const creditsRequired = platform.startsWith('sora') ? 10 : 6;
 
     // Check user credits before making API call
     const user = await prisma.user.findUnique({
@@ -91,40 +93,22 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Build the prompt as before
-    const styleText = styles?.length > 0 ? `, ${styles.join(', ')} style` : '';
-    const moodText = mood ? `, ${mood.toLowerCase()} mood` : '';
-    const lightingText = lighting ? `, ${lighting.toLowerCase()} lighting` : '';
-    let prompt = `${subject}${styleText}${moodText}${lightingText}`;
-    if (platform === 'sora') {
-      prompt += `, professional cinematography, smooth motion`;
-      if (duration) {
-        prompt += `, ${duration}s duration`;
-      }
-    } else if (platform === 'midjourney') {
-      prompt += ` --ar 16:9 --v 6`;
-      if (creativity > 80) {
-        prompt += ' --style raw';
-      }
-    } else if (platform === 'veo3') {
-      prompt += ', high-quality video generation, realistic motion';
-    } else if (platform === 'dall-e') {
-      prompt += ', high-resolution, detailed artwork';
-    } else if (platform === 'qwen') {
-      prompt += ', ultra-realistic, high-quality Chinese AI art generation';
-      if (creativity > 80) {
-        prompt += ', intricate details, photographic quality';
-      }
-    }
-    if (creativity > 80) {
-      prompt += ', highly detailed, ultra-creative composition';
-    }
-    let negativePrompt = '';
-    if (includeNegative) {
-      negativePrompt = 'blurry, low quality, distorted, watermark, text, signature';
-    }
+    // Get platform-specific configuration
+    const platformConfig = getPlatformConfig(platform);
 
-    // Call DeepSeek API
+    // Build platform-optimized prompts using AI
+    const systemPrompt = buildSystemPrompt(platform);
+    const userPrompt = buildUserPrompt(
+      platform,
+      subject,
+      styles,
+      mood,
+      lighting,
+      creativity,
+      duration
+    );
+
+    // Call DeepSeek API with platform-specific prompts
     const apiKey = process.env.DEEPSEEK_API_KEY;
     if (!apiKey) {
       console.error('DeepSeek API key not set');
@@ -136,11 +120,11 @@ export async function POST(request: NextRequest) {
       const deepSeekPayload = {
         model: 'deepseek-chat',
         messages: [
-          { role: 'system', content: 'You are an expert AI prompt engineer.' },
-          { role: 'user', content: `Generate a prompt for platform: ${platform}.\nPrompt: ${prompt}${negativePrompt ? `\nNegative prompt: ${negativePrompt}` : ''}` }
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
         ],
-        temperature: 0.7,
-        max_tokens: 400
+        temperature: creativity > 80 ? 0.9 : creativity > 50 ? 0.7 : 0.5,
+        max_tokens: platformConfig.promptStyle === 'simple' ? 200 : platformConfig.promptStyle === 'detailed' ? 400 : 300
       };
 
       const response = await fetch(deepSeekUrl, {
@@ -160,6 +144,12 @@ export async function POST(request: NextRequest) {
 
       const result = await response.json();
       const aiPrompt = result.choices?.[0]?.message?.content || '';
+
+      // Generate negative prompt if requested (for platforms that support it)
+      let negativePrompt = '';
+      if (includeNegative && ['midjourney', 'dall-e', 'nanobanana'].includes(platform)) {
+        negativePrompt = 'blurry, low quality, distorted, watermark, text, signature, deformed, ugly, bad anatomy';
+      }
 
       // Log prompt generation for analytics (optional - won't crash if table doesn't exist)
       try {

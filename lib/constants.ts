@@ -10,13 +10,13 @@ export const SITE_CONFIG = {
 };
 
 export const PLATFORMS = [
-  { value: 'sora-video', label: 'Sora (OpenAI)', description: 'Video generation', type: 'video' },
-  { value: 'sora-image', label: 'Sora (OpenAI)', description: 'Image generation', type: 'image' },
-  { value: 'veo3', label: 'Veo 3.1 (Google)', description: 'Advanced video AI', type: 'video' },
-  { value: 'nanobanana', label: 'NanoBanana (Google)', description: 'AI image generation', type: 'image' },
-  { value: 'midjourney', label: 'Midjourney', description: 'Image generation', type: 'image' },
-  { value: 'dall-e', label: 'DALL-E 3', description: 'Image creation', type: 'image' },
-  { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'AI image generation', type: 'image' },
+  { value: 'sora-video', label: 'Sora (OpenAI)', description: 'Cinematic video with detailed motion', type: 'video' },
+  { value: 'veo3', label: 'Veo 3.1 (Google)', description: 'Realistic motion & physics', type: 'video' },
+  { value: 'nanobanana', label: 'NanoBanana (Google)', description: 'Simple, effective images', type: 'image' },
+  { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'Natural language images', type: 'image' },
+  { value: 'dall-e', label: 'DALL-E 3', description: 'Detailed artistic images', type: 'image' },
+  { value: 'midjourney', label: 'Midjourney', description: 'Professional artistic images', type: 'image' },
+  { value: 'sora-image', label: 'Sora (OpenAI)', description: 'Photorealistic images', type: 'image' },
 ];
 
 export const STYLES = [

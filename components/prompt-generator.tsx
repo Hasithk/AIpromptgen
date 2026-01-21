@@ -64,7 +64,7 @@ export function PromptGenerator() {
 
   const generatePrompt = async () => {
     // Determine credits to use (doubled cost)
-    const creditsToUse = selectedPlatform === 'sora' ? 10 : 6;
+    const creditsToUse = selectedPlatform.startsWith('sora') ? 10 : 6;
     if (credits < creditsToUse) {
       toast({
         title: "Insufficient Credits",
@@ -108,7 +108,7 @@ export function PromptGenerator() {
 
   const handleOptimizePrompt = async () => {
     if (!manualPrompt) return;
-    const creditsToUse = advancedPlatform === 'sora' ? 10 : 6;
+    const creditsToUse = advancedPlatform.startsWith('sora') ? 10 : 6;
     if (credits < creditsToUse) {
       toast({
         title: "Insufficient Credits",
@@ -161,6 +161,11 @@ export function PromptGenerator() {
         variant: "destructive",
       });
     }
+  };
+
+  const generateAnother = () => {
+    // Reload the page to generate new ads and allow another prompt generation
+    window.location.reload();
   };
 
   return (
@@ -346,7 +351,7 @@ export function PromptGenerator() {
                   />
                 </div>
 
-                {selectedPlatform === 'sora' && (
+                {(selectedPlatform === 'sora-video' || selectedPlatform === 'veo3') && (
                   <div className="space-y-3">
                     <Label htmlFor="duration-slider" className="text-base font-semibold">
                       Duration: {duration[0]}s
@@ -544,6 +549,21 @@ export function PromptGenerator() {
                     <Heart className="mr-2 h-4 w-4" />
                     Save
                   </Button>
+                </div>
+                
+                {/* Generate Another Prompt Button */}
+                <div className="pt-4 border-t">
+                  <Button 
+                    onClick={generateAnother}
+                    className="w-full btn-primary"
+                    size="lg"
+                  >
+                    <Wand2 className="mr-2 h-5 w-5" />
+                    Generate Another Prompt
+                  </Button>
+                  <p className="text-xs text-muted-foreground text-center mt-2">
+                    Click to generate a new prompt and refresh the page
+                  </p>
                 </div>
               </CardContent>
             </Card>
