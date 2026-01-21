@@ -93,6 +93,16 @@ export function BlogPage() {
           </p>
         </div>
 
+        {/* Adstera Native Banner Ad */}
+        <div className="mb-8">
+          <script 
+            async
+            data-cfasync="false" 
+            src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+          />
+          <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
+        </div>
+
         {/* Featured Post */}
         {featuredPost && (
           <Card className="mb-12 border-0 shadow-2xl bg-hero-gradient text-white overflow-hidden">
@@ -303,6 +313,16 @@ export function BlogPage() {
             </Button>
           </div>
         )}
+
+        {/* Adstera Ad - Mid Content */}
+        <div className="my-12 text-center">
+          <script 
+            async
+            data-cfasync="false" 
+            src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+          />
+          <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
+        </div>
 
         {/* Newsletter Signup */}
         <Card className="mt-16 border-0 bg-hero-gradient text-white">
