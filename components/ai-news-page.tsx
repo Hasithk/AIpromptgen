@@ -178,6 +178,16 @@ export function AINewsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       <div className="container-max section-padding py-12">
+        {/* Adstera Native Banner Ad - Top */}
+        <div className="mb-8">
+          <script 
+            async
+            data-cfasync="false" 
+            src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+          />
+          <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
+        </div>
+
         {/* Header */}
         <div className="text-center space-y-4 mb-12">
           <h1 className="text-4xl md:text-5xl font-bold gradient-text">
@@ -295,8 +305,18 @@ export function AINewsPage() {
             </CardContent>
           </Card>
         ) : (
-          /* News Grid */
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <>
+            {/* Adstera Ad - Before News Grid */}
+            <div className="mb-8">
+              <script 
+                async
+                data-cfasync="false" 
+                src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+              />
+              <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {newsItems.map((item, index) => (
               <Card 
                 key={item.id} 
@@ -361,6 +381,7 @@ export function AINewsPage() {
               </Card>
             ))}
           </div>
+          </>
         )}
       </div>
     </div>
