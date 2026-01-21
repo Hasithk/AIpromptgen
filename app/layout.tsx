@@ -183,6 +183,14 @@ export default function RootLayout({
             <Footer />
           </div>
         </Providers>
+        
+        {/* Adstera Native Banner */}
+        <script 
+          async
+          data-cfasync="false" 
+          src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+        />
+        <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
       </body>
     </html>
   );
