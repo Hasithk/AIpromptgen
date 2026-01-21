@@ -160,6 +160,9 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7361470858189605"
           crossOrigin="anonymous"
         />
+        <script 
+          src="https://pl28526069.effectivegatecpm.com/1c/f5/8d/1cf58d3395fabf144c267a7f2b0d43a4.js"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
