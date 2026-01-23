@@ -111,7 +111,8 @@ export const metadata: Metadata = {
     google: 'your-google-verification-code', // Add your Google Search Console verification
     yandex: 'your-yandex-verification-code',
     other: {
-      bing: 'your-bing-verification-code'
+      bing: 'your-bing-verification-code',
+      'p:domain_verify': '5a696274a126305d9b66dbc608c58f8f'
     }
   }
 };
