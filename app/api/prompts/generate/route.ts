@@ -42,16 +42,25 @@ export async function POST(request: NextRequest) {
     const creditsRequired = platform.startsWith('sora') ? 10 : 6;
 
     // Check user credits before making API call
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: { id: true, credits: true, email: true, name: true }
     });
 
+    // Auto-create user if they don't exist (for users who signed in before migration)
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: 'User not found' },
-        { status: 404 }
-      );
+      user = await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || '',
+          credits: 50,
+          monthlyCreditsUsed: 0,
+          lastCreditResetDate: new Date(),
+          plan: 'free'
+        },
+        select: { id: true, credits: true, email: true, name: true }
+      });
+      console.log(`✓ Auto-created user during generation: ${user.email}`);
     }
 
     if (user.credits < creditsRequired) {

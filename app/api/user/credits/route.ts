@@ -15,16 +15,25 @@ export async function GET() {
     }
 
     // Fetch user credits from database
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: { credits: true, plan: true, createdAt: true }
     });
 
+    // Auto-create user if they don't exist (for users who signed in before migration)
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: 'User not found' },
-        { status: 404 }
-      );
+      user = await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || '',
+          credits: 50,
+          monthlyCreditsUsed: 0,
+          lastCreditResetDate: new Date(),
+          plan: 'free'
+        },
+        select: { credits: true, plan: true, createdAt: true }
+      });
+      console.log(`✓ Auto-created user during credits check: ${session.user.email}`);
     }
 
     // Calculate reset date (30 days from account creation for free tier)
@@ -68,16 +77,25 @@ export async function POST(request: Request) {
     }
 
     // Get current credits
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { email: session.user.email },
       select: { credits: true }
     });
 
+    // Auto-create user if they don't exist
     if (!user) {
-      return NextResponse.json(
-        { success: false, error: 'User not found' },
-        { status: 404 }
-      );
+      user = await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || '',
+          credits: 50,
+          monthlyCreditsUsed: 0,
+          lastCreditResetDate: new Date(),
+          plan: 'free'
+        },
+        select: { credits: true }
+      });
+      console.log(`✓ Auto-created user during credits POST: ${session.user.email}`);
     }
 
     // Check if user has enough credits
