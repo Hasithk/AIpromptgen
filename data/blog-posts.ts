@@ -61,7 +61,7 @@ Examples:
     publishedAt: '2026-02-10',
     readTime: '5 min read',
     featured: true,
-    tags: 'Multimodal AI,GPT-5,Vision AI,Prompt Engineering,Creative AI,AI Marketing'
+    tags: ['Multimodal AI', 'GPT-5', 'Vision AI', 'Prompt Engineering', 'Creative AI', 'AI Marketing']
   },
   {
     id: 'feb-09-2026-ai-agents',
@@ -126,7 +126,7 @@ Reporting: [Progress updates frequency]
     publishedAt: '2026-02-09',
     readTime: '6 min read',
     featured: true,
-    tags: 'AI Agents,Gemini 2.0,Workflow Automation,Multi-Step AI,Autonomous AI,Google AI'
+    tags: ['AI Agents', 'Gemini 2.0', 'Workflow Automation', 'Multi-Step AI', 'Autonomous AI', 'Google AI']
   },
   {
     id: 'feb-08-2026-real-time-ai',
@@ -193,7 +193,7 @@ AI: [Empathetic acknowledgment + solution]
     publishedAt: '2026-02-08',
     readTime: '5 min read',
     featured: false,
-    tags: 'Voice AI,Claude 4,Conversational AI,Real-Time AI,Customer Service AI,Anthropic'
+    tags: ['Voice AI', 'Claude 4', 'Conversational AI', 'Real-Time AI', 'Customer Service AI', 'Anthropic']
   },
   {
     id: 'feb-07-2026-code-generation',
@@ -269,7 +269,7 @@ Testing plan: [How to verify it works]
     publishedAt: '2026-02-07',
     readTime: '6 min read',
     featured: false,
-    tags: 'Code Generation,Devin AI,AI Development,Software Engineering,Autonomous Coding,Programming AI'
+    tags: ['Code Generation', 'Devin AI', 'AI Development', 'Software Engineering', 'Autonomous Coding', 'Programming AI']
   },
   {
     id: 'feb-06-2026-image-generation',
@@ -344,7 +344,7 @@ Parameters: --ar 16:9 --v 7 --quality 2
     publishedAt: '2026-02-06',
     readTime: '7 min read',
     featured: false,
-    tags: 'Midjourney V7,AI Art,Image Generation,Photography AI,Commercial AI,Photorealistic AI'
+    tags: ['Midjourney V7', 'AI Art', 'Image Generation', 'Photography AI', 'Commercial AI', 'Photorealistic AI']
   },
   {
     id: 'feb-05-2026-video-ai',
@@ -430,7 +430,7 @@ Technical specs:
     publishedAt: '2026-02-05',
     readTime: '8 min read',
     featured: true,
-    tags: 'Sora 2.0,Video AI,AI Video Generation,Cinematic AI,OpenAI,4K Video,Video Production'
+    tags: ['Sora 2.0', 'Video AI', 'AI Video Generation', 'Cinematic AI', 'OpenAI', '4K Video', 'Video Production']
   },
   {
     id: 'feb-04-2026-ai-safety',
