@@ -62,7 +62,7 @@ const promptHistory = [
   }
 ];
 
-const platforms = ['All Platforms', 'Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai'];
+const platforms = ['All Platforms', 'Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai', 'NanoBanana', 'Stable Diffusion'];
 const categories = ['All Categories', 'Cinematography', 'Character', 'Abstract', 'Product', 'Nature'];
 
 export function HistoryPage() {

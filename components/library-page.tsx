@@ -405,7 +405,7 @@ const prompts = [
 ];
 
 const categories = ['All', 'Cinematography', 'Character', 'Abstract', 'Product', 'Nature', 'Architecture', 'Fantasy', 'Sci-Fi', 'Fashion'];
-const platforms = ['All Platforms', 'Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai'];
+const platforms = ['All Platforms', 'Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai', 'NanoBanana', 'Stable Diffusion'];
 
 export function LibraryPage() {
   const { toast } = useToast();

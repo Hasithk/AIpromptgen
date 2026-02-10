@@ -79,7 +79,7 @@ async function generateDailyPrompts() {
   }
 
   try {
-    const platforms = ['Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai'];
+    const platforms = ['Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai', 'Stable Diffusion'];
     const categories = ['Cinematography', 'Character', 'Abstract', 'Product', 'Nature', 'Architecture', 'Animation', 'Fantasy'];
     
     // Generate 2-3 prompts daily

@@ -1,0 +1,21 @@
+name: Monthly Credit Reset
+
+on:
+  schedule:
+    # Runs on 1st of every month at 00:00 UTC
+    - cron: '0 0 1 * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  reset-credits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Reset Endpoint
+        run: |
+          curl -X GET https://your-production-domain.com/api/cron/reset-credits \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -v
+        
+      - name: Log Result
+        if: always()
+        run: echo "Credit reset completed"

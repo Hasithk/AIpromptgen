@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Calculate credits required (doubled cost)
+    // Calculate credits required
     // Sora platforms use more credits due to complexity
-    const creditsRequired = platform.startsWith('sora') ? 10 : 6;
+    const creditsRequired = platform.startsWith('sora') ? 10 : 2;
 
     // Check user credits before making API call
     let user = await prisma.user.findUnique({
@@ -157,8 +157,8 @@ export async function POST(request: NextRequest) {
 
       // Generate negative prompt if requested (for platforms that support it)
       let negativePrompt = '';
-      if (includeNegative && ['midjourney', 'dall-e', 'nanobanana'].includes(platform)) {
-        negativePrompt = 'blurry, low quality, distorted, watermark, text, signature, deformed, ugly, bad anatomy';
+      if (includeNegative && ['midjourney', 'dall-e', 'nanobanana', 'stable-diffusion', 'qwen'].includes(platform)) {
+        negativePrompt = 'blurry, low quality, distorted, watermark, text, signature, deformed, ugly, bad anatomy, poorly drawn, amateur';
       }
 
       // Log prompt generation for analytics (optional - won't crash if table doesn't exist)

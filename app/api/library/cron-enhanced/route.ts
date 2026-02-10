@@ -73,7 +73,7 @@ function getNextUpdateTime(): string {
 }
 
 async function generateWorldClassPrompts() {
-  const platforms = ['Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai'];
+  const platforms = ['Sora', 'Midjourney', 'Veo 3', 'DALL-E', 'Qwen.ai', 'Stable Diffusion'];
   const categories = [
     'Cinematography', 'Character Design', 'Fantasy', 'Sci-Fi', 
     'Architecture', 'Nature', 'Abstract', 'Product', 'Fashion', 'Animation'

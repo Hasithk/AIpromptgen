@@ -16,6 +16,7 @@ export const PLATFORMS = [
   { value: 'qwen', label: 'Qwen.ai (Alibaba)', description: 'Natural language images', type: 'image' },
   { value: 'dall-e', label: 'DALL-E 3', description: 'Detailed artistic images', type: 'image' },
   { value: 'midjourney', label: 'Midjourney', description: 'Professional artistic images', type: 'image' },
+  { value: 'stable-diffusion', label: 'Stable Diffusion Web', description: 'High-quality image & video generation', type: 'image' },
   { value: 'sora-image', label: 'Sora (OpenAI)', description: 'Photorealistic images', type: 'image' },
 ];
 

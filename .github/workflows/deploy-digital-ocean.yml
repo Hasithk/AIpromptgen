@@ -1,0 +1,93 @@
+name: Deploy to Digital Ocean
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual deployment
+
+jobs:
+  deploy:
+    name: Deploy to Digital Ocean
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Deploy to Digital Ocean Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          port: ${{ secrets.DO_PORT || 22 }}
+          script: |
+            echo "🚀 Starting deployment..."
+            
+            # Navigate to project directory
+            cd ${{ secrets.DO_PROJECT_PATH || '/var/www/ai-prompts-gen' }}
+            
+            # Show current branch and commit
+            echo "📍 Current location: $(pwd)"
+            echo "📋 Current branch: $(git branch --show-current)"
+            
+            # Stash any local changes
+            echo "💾 Stashing local changes..."
+            git stash
+            
+            # Pull latest changes
+            echo "⬇️ Pulling latest code from GitHub..."
+            git fetch origin
+            git pull origin main
+            
+            # Show latest commit
+            echo "✅ Latest commit:"
+            git log --oneline -1
+            
+            # Install dependencies
+            echo "📦 Installing dependencies..."
+            npm install --production
+            
+            # Create data directory if it doesn't exist
+            echo "📁 Setting up data directory..."
+            mkdir -p data
+            chmod 755 data
+            
+            # Build the application
+            echo "🔨 Building application..."
+            npm run build
+            
+            # Restart the application
+            echo "🔄 Restarting application..."
+            if command -v pm2 &> /dev/null; then
+              pm2 restart all || pm2 start npm --name "ai-prompts-gen" -- start
+              pm2 save
+              echo "✅ Application restarted with PM2"
+            else
+              echo "⚠️ PM2 not found. Please restart your application manually."
+            fi
+            
+            # Show status
+            echo ""
+            echo "✅ Deployment completed successfully!"
+            echo "🕐 Deployment time: $(date)"
+            
+            # Show running processes
+            if command -v pm2 &> /dev/null; then
+              echo ""
+              echo "📊 PM2 Status:"
+              pm2 status
+            fi
+            
+      - name: Deployment Status
+        if: success()
+        run: |
+          echo "✅ Successfully deployed to Digital Ocean!"
+          echo "🌐 Your app should now be running with the latest changes."
+          
+      - name: Deployment Failed
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Please check the logs above for errors."
