@@ -58,10 +58,11 @@ Examples:
 **Generate perfect multimodal prompts at AIPromptGen.app** - now supporting GPT-5 Vision patterns!`,
     category: 'AI Innovation',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-10',
+    date: '2026-02-10',
     readTime: '5 min read',
     featured: true,
-    tags: ['Multimodal AI', 'GPT-5', 'Vision AI', 'Prompt Engineering', 'Creative AI', 'AI Marketing']
+    tags: ['Multimodal AI', 'GPT-5', 'Vision AI', 'Prompt Engineering', 'Creative AI', 'AI Marketing'],
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-09-2026-ai-agents',
@@ -123,10 +124,11 @@ Reporting: [Progress updates frequency]
 **Create powerful AI agent prompts at AIPromptGen.app** - optimized for Gemini 2.0 Flash!`,
     category: 'AI Automation',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-09',
+    date: '2026-02-09',
     readTime: '6 min read',
     featured: true,
-    tags: ['AI Agents', 'Gemini 2.0', 'Workflow Automation', 'Multi-Step AI', 'Autonomous AI', 'Google AI']
+    tags: ['AI Agents', 'Gemini 2.0', 'Workflow Automation', 'Multi-Step AI', 'Autonomous AI', 'Google AI'],
+    image: 'https://images.unsplash.com/photo-1655720406770-12ea329b5b61?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-08-2026-real-time-ai',
@@ -190,10 +192,11 @@ AI: [Empathetic acknowledgment + solution]
 **Build natural voice AI prompts at AIPromptGen.app** - Claude 4 Sonnet ready!`,
     category: 'Voice AI',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-08',
+    date: '2026-02-08',
     readTime: '5 min read',
     featured: false,
-    tags: ['Voice AI', 'Claude 4', 'Conversational AI', 'Real-Time AI', 'Customer Service AI', 'Anthropic']
+    tags: ['Voice AI', 'Claude 4', 'Conversational AI', 'Real-Time AI', 'Customer Service AI', 'Anthropic'],
+    image: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-07-2026-code-generation',
@@ -266,10 +269,11 @@ Testing plan: [How to verify it works]
 **Generate professional code prompts at AIPromptGen.app** - Devin AI optimized!`,
     category: 'Code AI',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-07',
+    date: '2026-02-07',
     readTime: '6 min read',
     featured: false,
-    tags: ['Code Generation', 'Devin AI', 'AI Development', 'Software Engineering', 'Autonomous Coding', 'Programming AI']
+    tags: ['Code Generation', 'Devin AI', 'AI Development', 'Software Engineering', 'Autonomous Coding', 'Programming AI'],
+    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-06-2026-image-generation',
@@ -341,10 +345,11 @@ Parameters: --ar 16:9 --v 7 --quality 2
 **Create stunning visual prompts at AIPromptGen.app** - Midjourney V7 ready!`,
     category: 'Image AI',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-06',
+    date: '2026-02-06',
     readTime: '7 min read',
     featured: false,
-    tags: ['Midjourney V7', 'AI Art', 'Image Generation', 'Photography AI', 'Commercial AI', 'Photorealistic AI']
+    tags: ['Midjourney V7', 'AI Art', 'Image Generation', 'Photography AI', 'Commercial AI', 'Photorealistic AI'],
+    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-05-2026-video-ai',
@@ -427,10 +432,11 @@ Technical specs:
 **Master video AI prompts at AIPromptGen.app** - Optimized for Sora 2.0!`,
     category: 'Video AI',
     author: 'AI Prompt Gen Team',
-    publishedAt: '2026-02-05',
+    date: '2026-02-05',
     readTime: '8 min read',
     featured: true,
-    tags: ['Sora 2.0', 'Video AI', 'AI Video Generation', 'Cinematic AI', 'OpenAI', '4K Video', 'Video Production']
+    tags: ['Sora 2.0', 'Video AI', 'AI Video Generation', 'Cinematic AI', 'OpenAI', '4K Video', 'Video Production'],
+    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1200&h=630&fit=crop'
   },
   {
     id: 'feb-04-2026-ai-safety',
