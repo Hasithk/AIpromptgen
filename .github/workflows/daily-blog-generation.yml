@@ -1,0 +1,43 @@
+name: Daily Blog Generation
+
+on:
+  schedule:
+    # Runs daily at 8:00 AM UTC
+    - cron: '0 8 * * *'
+  workflow_dispatch:  # Allow manual trigger
+    inputs:
+      count:
+        description: 'Number of blog posts to generate (1-5)'
+        required: false
+        default: '2'
+
+jobs:
+  generate-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Daily Blog Posts
+        run: |
+          COUNT=${{ github.event.inputs.count || '2' }}
+          echo "🚀 Generating ${COUNT} daily blog post(s)..."
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET \
+            "https://aipromptgen.app/api/cron/generate-blog?count=${COUNT}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+          
+          echo "HTTP Status: ${HTTP_CODE}"
+          echo "Response: ${BODY}"
+          
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ Blog generation failed with status ${HTTP_CODE}"
+            exit 1
+          fi
+          
+          echo "✅ Blog generation completed successfully"
+
+      - name: Log Result
+        if: always()
+        run: |
+          echo "📝 Daily blog generation workflow finished at $(date -u)"

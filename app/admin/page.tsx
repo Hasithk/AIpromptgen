@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings } from 'lucide-react';
+import BlogGeneratorPanel from '@/components/blog-generator-panel';
 
 export default function AdminPage() {
   return (
@@ -27,6 +28,11 @@ export default function AdminPage() {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Blog Generator Section */}
+        <div className="mb-8">
+          <BlogGeneratorPanel />
         </div>
 
         <Card className="mt-8">
