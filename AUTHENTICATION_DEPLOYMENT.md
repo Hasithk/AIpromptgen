@@ -32,11 +32,11 @@ DATABASE_URL="postgresql://user:password@host:port/database?schema=public"
 
 # NextAuth Configuration
 NEXTAUTH_URL="https://aipromptgen.app"
-NEXTAUTH_SECRET="eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE="
+NEXTAUTH_SECRET="your-nextauth-secret-here"
 
 # Google OAuth
-GOOGLE_CLIENT_ID="99526985674-i8f00g18huf19af01pber0ivv782csfo.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET="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"
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="GOCSPX-your-google-client-secret-here"
 ```
 
 ---

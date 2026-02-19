@@ -23,7 +23,7 @@ REM Add environment variables reminder
 echo.
 echo 📝 Don't forget to set these environment variables in Vercel dashboard:
 echo    - DATABASE_URL (PostgreSQL connection string)
-echo    - DEEPSEEK_API_KEY (already have: sk-50be...)
+echo    - DEEPSEEK_API_KEY (set in dashboard)
 echo    - NEWS_API_KEY (already configured)
 echo    - CRON_SECRET (secure random string)
 echo    - NEXTAUTH_URL (your app URL)

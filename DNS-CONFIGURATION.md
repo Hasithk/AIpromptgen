@@ -104,7 +104,7 @@ Update your production environment:
 # Production Environment
 NEXTAUTH_URL=https://yourdomain.com
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 NEWS_API_BASE_URL=https://newsapi.org/v2
 DATABASE_URL="postgresql://user:pass@host:5432/dbname"
 CRON_SECRET=your-secure-production-cron-key

@@ -76,7 +76,7 @@ Set these in your `.env.local` file:
 ```env
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
 CRON_SECRET=your-secure-cron-secret-key
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 ```
 
 ### API Endpoint

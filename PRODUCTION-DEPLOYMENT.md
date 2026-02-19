@@ -114,7 +114,7 @@ NEXTAUTH_SECRET=your_secure_secret_here
 GOOGLE_CLIENT_ID=your_google_client_id  
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 DATABASE_URL="your_production_database_url"
 CRON_SECRET=your_secure_cron_secret
 ```

@@ -38,7 +38,7 @@ In Vercel dashboard → Settings → Environment Variables, add:
 ```
 DATABASE_URL=your_postgresql_connection_string
 DEEPSEEK_API_KEY=sk-your-deepseek-api-key
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 NEWS_API_BASE_URL=https://newsapi.org/v2
 NEXTAUTH_URL=https://your-app-name.vercel.app
 NEXTAUTH_SECRET=generate-a-random-32-character-string
@@ -101,7 +101,7 @@ curl -X POST https://your-app.vercel.app/api/blog/cron \
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | PostgreSQL connection string |
 | `DEEPSEEK_API_KEY` | Yes | AI content generation |
-| `NEWS_API_KEY` | Yes | Already configured (88ec2cc8ec274a1ba697cfdb6b353ab3) |
+| `NEWS_API_KEY` | Yes | News API key (get from newsapi.org) |
 | `CRON_SECRET` | Yes | Security for cron endpoint |
 | `NEXTAUTH_URL` | Yes | Your app URL |
 | `NEXTAUTH_SECRET` | Yes | Random string for session security |

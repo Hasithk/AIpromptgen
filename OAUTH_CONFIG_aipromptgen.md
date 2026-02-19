@@ -28,7 +28,7 @@ Add these to your Digital Ocean environment variables:
 GOOGLE_CLIENT_ID=<your-client-id-from-google>.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-<your-client-secret-from-google>
 NEXTAUTH_URL=https://aipromptgen.app
-NEXTAUTH_SECRET=eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=
+NEXTAUTH_SECRET=your-nextauth-secret-here
 ```
 
 **✅ NEXTAUTH_SECRET already generated above** (keep it secret!)
@@ -136,7 +136,7 @@ NEXTAUTH_SECRET=eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=
 | `GOOGLE_CLIENT_ID` | `paste-your-client-id-here` |
 | `GOOGLE_CLIENT_SECRET` | `paste-your-client-secret-here` |
 | `NEXTAUTH_URL` | `https://aipromptgen.app` |
-| `NEXTAUTH_SECRET` | `eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=` |
+| `NEXTAUTH_SECRET` | `your-nextauth-secret-here` |
 
 6. Click "Save"
 7. App will automatically redeploy (wait 2-3 minutes)
@@ -157,7 +157,7 @@ nano .env.production
 GOOGLE_CLIENT_ID=123456789-abcdef.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-abc123xyz
 NEXTAUTH_URL=https://aipromptgen.app
-NEXTAUTH_SECRET=eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=
+NEXTAUTH_SECRET=your-nextauth-secret-here
 
 # Save: Ctrl+X, then Y, then Enter
 
@@ -270,7 +270,7 @@ pm2 restart all --update-env
 **Problem:** NEXTAUTH_SECRET missing or changed
 
 **Solution:**
-- Ensure NEXTAUTH_SECRET is set to: `eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=`
+- Ensure NEXTAUTH_SECRET is set (check your Digital Ocean env vars)
 - Never change this value once set
 - Restart app after adding
 
@@ -298,7 +298,7 @@ pm2 restart all --update-env
 GOOGLE_CLIENT_ID=<from-google-console>.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-<from-google-console>
 NEXTAUTH_URL=https://aipromptgen.app
-NEXTAUTH_SECRET=eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=
+NEXTAUTH_SECRET=your-nextauth-secret-here
 ```
 
 ---

@@ -32,7 +32,7 @@ GOOGLE_CLIENT_SECRET="your-google-oauth-client-secret"
 
 # Pre-configured API Keys (Working)
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
-NEWSAPI_KEY="88ec2cc8ec274a1ba697cfdb6b353ab3"
+NEWSAPI_KEY="your-news-api-key-here"
 
 # Cron Security (Generate random string)
 CRON_SECRET="your-secure-random-string-for-blog-automation"

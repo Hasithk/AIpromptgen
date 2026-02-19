@@ -19,9 +19,9 @@ Add these 5 variables:
 ```
 DATABASE_URL=postgresql://your-connection-string
 NEXTAUTH_URL=https://aipromptgen.app
-NEXTAUTH_SECRET=eyTZfsSK7pyoWU8YX2m/s3TPNA61sEb0XWIiVbvsGTE=
-GOOGLE_CLIENT_ID=99526985674-i8f00g18huf19af01pber0ivv782csfo.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
+NEXTAUTH_SECRET=your-nextauth-secret-here
+GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-your-google-client-secret-here
 ```
 
 ### 2. Deploy via SSH (If using Droplet)

@@ -155,7 +155,7 @@ Invoke-WebRequest -Uri "http://localhost:3000/api/cron/generate-blog?secret=your
 Make sure your `.env.local` contains:
 ```bash
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 NEWS_API_BASE_URL=https://newsapi.org/v2
 CRON_SECRET=your-secure-cron-secret-key
 NEXTAUTH_URL=http://localhost:3000

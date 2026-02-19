@@ -50,10 +50,10 @@ nano .env.local
 DATABASE_URL="postgresql://username:password@localhost:5432/aipromptgen?sslmode=require"
 
 # DeepSeek API Key (NEW - SECURE)
-DEEPSEEK_API_KEY=sk-60f46f83c32747519104e99f2cd4193a
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
 # News API
-NEWS_API_KEY=88ec2cc8ec274a1ba697cfdb6b353ab3
+NEWS_API_KEY=your-news-api-key-here
 NEWS_API_BASE_URL=https://newsapi.org/v2
 
 # NextAuth Configuration
