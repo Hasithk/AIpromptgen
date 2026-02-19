@@ -81,12 +81,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   // Dynamic blog post pages
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
-    url: `${baseUrl}/blog/${post.id}`,
-    lastModified: new Date(post.date),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }))
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => {
+    const dateStr = (post as any).date || post.publishedAt || '2026-02-19';
+    const parsed = new Date(dateStr);
+    const lastMod = isNaN(parsed.getTime()) ? new Date('2026-02-19') : parsed;
+    return {
+      url: `${baseUrl}/blog/${post.id}`,
+      lastModified: lastMod,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    };
+  })
 
   return [...staticPages, ...blogPages]
 }
