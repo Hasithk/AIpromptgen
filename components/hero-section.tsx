@@ -38,12 +38,12 @@ export function HeroSection() {
               <div className="inline-flex items-center space-x-2 glass-morphism rounded-full px-6 py-3 text-sm font-medium border border-white/20 shadow-lg">
                 <Sparkles className="h-4 w-4 text-blue-400" />
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  Best Free AI Prompt Generator 2026
+                  #1 Free AI Prompt Generator 2026
                 </span>
               </div>
               
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
-                The Best AI Prompt
+                AI Prompt
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                   Generator Free
@@ -51,9 +51,10 @@ export function HeroSection() {
               </h1>
               
               <p className="text-lg md:text-xl text-slate-300 leading-relaxed">
-                Create professional prompts for <strong>ChatGPT, Midjourney, DALL-E, Sora, and all AI platforms</strong>. 
-                Free AI prompt generator with 70 monthly credits. Perfect for image generation, 
-                video creation, and text prompts. <strong>No credit card required</strong> - start creating stunning AI content now!
+                The <strong>best AI prompt generator</strong> for 2026. Create perfect <strong>AI prompts</strong> for 
+                <strong> ChatGPT, Midjourney, DALL-E, Sora, Claude, and Gemini</strong>. 
+                Our free AI prompt tool generates optimized prompts for image, video, text, and code — with 70 free monthly credits. 
+                <strong>No credit card required</strong> — start creating stunning AI content now!
               </p>
             </div>
 

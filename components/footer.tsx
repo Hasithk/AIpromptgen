@@ -25,7 +25,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs">
-              The most advanced AI prompt generation platform for creators, designers, and professionals.
+              The #1 free AI prompt generator. Create perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora, and all AI platforms.
             </p>
             <div className="flex space-x-4">
               <Link href="https://twitter.com/aipromptgen" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Follow us on Twitter">
@@ -42,37 +42,37 @@ export function Footer() {
 
           {/* Product */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-base">Product</h4>
+            <h4 className="font-semibold text-base">AI Prompt Tools</h4>
             <div className="space-y-2 text-sm">
               <Link href="/" className="block text-muted-foreground hover:text-primary transition-colors">
-                Generator
+                AI Prompt Generator
               </Link>
               <Link href="/library" className="block text-muted-foreground hover:text-primary transition-colors">
-                Prompt Library
+                AI Prompt Library
               </Link>
               <Link href="/history" className="block text-muted-foreground hover:text-primary transition-colors">
-                History
+                AI Prompt History
               </Link>
               <Link href="/api" className="block text-muted-foreground hover:text-primary transition-colors">
-                API Access
+                AI Prompt API
               </Link>
             </div>
           </div>
 
           {/* Resources */}
           <div className="space-y-4">
-            <h4 className="font-semibold text-base">Resources</h4>
+            <h4 className="font-semibold text-base">AI Prompt Resources</h4>
             <div className="space-y-2 text-sm">
               <Link href="/blog" className="block text-muted-foreground hover:text-primary transition-colors">
-                Blog
+                AI Prompt Blog
               </Link>
               <Link href="/guides" className="block text-muted-foreground hover:text-primary transition-colors">
-                Guides
+                AI Prompt Guides
               </Link>
               <Link href="/docs" className="block text-muted-foreground hover:text-primary transition-colors">
-                Documentation
+                AI Prompt Docs
               </Link>
-              <Link href="/support" className="block text-muted-foreground hover:text-primary transition-colors">
+              <Link href="/contact" className="block text-muted-foreground hover:text-primary transition-colors">
                 Support
               </Link>
             </div>
@@ -98,9 +98,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t text-center">
+        <div className="mt-8 pt-8 border-t text-center space-y-2">
           <p className="text-sm text-muted-foreground">
-            © {currentYear} AI Prompt Gen. All rights reserved. Built with 💜 for the AI community.
+            © {currentYear} AI Prompt Gen — The Best Free AI Prompt Generator. All rights reserved.
+          </p>
+          <p className="text-xs text-muted-foreground/60">
+            AI Prompt Generator for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini. Free AI prompt templates, examples, and engineering tools.
           </p>
         </div>
       </div>

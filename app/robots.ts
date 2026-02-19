@@ -21,7 +21,30 @@ export default function robots(): MetadataRoute.Robots {
           '/portal/',
         ],
       },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/auth/',
+          '/admin/',
+          '/private/',
+          '/history',
+        ],
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: [
+          '/api/',
+          '/auth/',
+          '/admin/',
+          '/private/',
+          '/history',
+        ],
+      },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
   }
 }

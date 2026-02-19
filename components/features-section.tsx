@@ -13,43 +13,43 @@ import {
 const features = [
   {
     icon: Target,
-    title: 'Platform-Specific Optimization',
-    description: 'Tailored prompts for Sora, Veo 3, Midjourney, DALL-E, and Qwen.ai with platform-specific parameters and best practices.'
+    title: 'AI Prompt Optimization',
+    description: 'Generate optimized AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, and Gemini with platform-specific parameters and best practices.'
   },
   {
     icon: Brain,
-    title: 'AI-Powered Suggestions',
-    description: 'Intelligent recommendations based on your input, style preferences, and current AI trends.'
+    title: 'Smart AI Prompt Suggestions',
+    description: 'Intelligent AI prompt recommendations based on your input, style preferences, and current AI model capabilities for better results.'
   },
   {
     icon: Palette,
-    title: 'Advanced Style Control',
-    description: 'Fine-tune every aspect of your prompts with our comprehensive style and parameter controls.'
+    title: 'AI Prompt Style Control',
+    description: 'Fine-tune every aspect of your AI prompts with comprehensive style, mood, lighting, and parameter controls for image, video, and text.'
   },
   {
     icon: History,
-    title: 'Prompt History & Management',
-    description: 'Save, organize, and revisit all your generated prompts with our powerful management tools.'
+    title: 'AI Prompt History & Manager',
+    description: 'Save, organize, and revisit all your generated AI prompts. Manage your AI prompt library with powerful search and categorization.'
   },
   {
     icon: Sparkles,
-    title: 'Real-time Optimization',
-    description: 'Dynamic prompt enhancement that adapts to the latest AI model capabilities and best practices.'
+    title: 'Real-time AI Prompt Enhancement',
+    description: 'Dynamic AI prompt optimization that adapts to the latest AI model capabilities. Get the best AI prompts automatically.'
   },
   {
     icon: Users,
-    title: 'Team Collaboration',
-    description: 'Share prompts, collaborate with team members, and maintain consistent brand guidelines.'
+    title: 'AI Prompt Collaboration',
+    description: 'Share AI prompts with team members, collaborate on prompt engineering projects, and maintain consistent AI prompt guidelines.'
   },
   {
     icon: Shield,
-    title: 'Quality Assurance',
-    description: 'Built-in filters to ensure your prompts meet quality standards and avoid common pitfalls.'
+    title: 'AI Prompt Quality Assurance',
+    description: 'Built-in AI prompt filters ensure your prompts meet quality standards and follow best practices for each AI platform.'
   },
   {
     icon: Zap,
-    title: 'Lightning Fast Generation',
-    description: 'Generate professional-quality prompts in seconds with our optimized AI pipeline.'
+    title: 'Instant AI Prompt Generation',
+    description: 'Generate professional AI prompts in seconds with our optimized pipeline. The fastest free AI prompt generator available.'
   }
 ];
 
@@ -59,10 +59,10 @@ export function FeaturesSection() {
       <div className="container-max section-padding">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl md:text-4xl font-bold gradient-text">
-            Powerful Features for Every Creator
+            AI Prompt Generator Features — Everything You Need
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to create, manage, and optimize AI prompts for professional results.
+            Our free AI prompt generator has every tool you need to create, manage, and optimize AI prompts for professional results across all platforms.
           </p>
         </div>
 

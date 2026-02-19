@@ -12,54 +12,54 @@ interface FAQ {
 
 const faqs: FAQ[] = [
   {
-    question: "How to generate a prompt for AI?",
-    answer: "To generate an effective AI prompt: 1) Be specific and detailed in your description, 2) Include technical parameters (resolution, style, lighting for images), 3) Specify the desired output format, 4) Use our free AI Prompt Generator which automatically optimizes your ideas into professional prompts with 70 free generations monthly.",
+    question: "What is an AI prompt and how does it work?",
+    answer: "An AI prompt is the text instruction you give to an artificial intelligence model (like ChatGPT, Midjourney, DALL-E, or Sora) to generate desired output. A well-crafted AI prompt includes specific details about subject, style, format, and parameters. Our free AI prompt generator automatically creates optimized AI prompts for any platform with 70 free generations monthly.",
     link: "/"
   },
   {
-    question: "What is the best AI prompt generator?",
-    answer: "The best AI prompt generator in 2026 is AIPromptGen.app, offering 70 free monthly generations, support for all major AI platforms (ChatGPT, Midjourney, DALL-E, Sora), and intelligent prompt optimization. It works for text, image, and video generation with proven templates and real-time refinement.",
+    question: "What is the best AI prompt generator in 2026?",
+    answer: "AIPromptGen.app is the best AI prompt generator in 2026, offering 70 free monthly AI prompt generations, support for all major AI platforms (ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini), a curated AI prompt library with 500+ templates, and intelligent prompt optimization. It's the most comprehensive free AI prompt tool available.",
     link: "/"
   },
   {
-    question: "Where can I find free AI prompts?",
-    answer: "Free AI prompts are available at: 1) AIPromptGen.app Library (curated collection of proven prompts), 2) Our daily AI blog with prompt examples, 3) Community platforms like Reddit and Discord, 4) GitHub repositories with open-source prompts. Start with our 70 free monthly credits to generate custom prompts.",
-    link: "/library"
+    question: "How do I write a good AI prompt?",
+    answer: "To write an effective AI prompt: 1) Be specific and detailed in your description, 2) Include technical parameters (resolution, style, lighting for image AI prompts), 3) Specify the desired output format, 4) Use role-based prompting for ChatGPT AI prompts, 5) Add negative prompts to exclude unwanted elements. Or simply use our free AI prompt generator which handles all optimization automatically.",
+    link: "/"
   },
   {
-    question: "Which AI is better than ChatGPT?",
-    answer: "While ChatGPT leads in general-purpose tasks, alternatives excel in specific areas: Claude (complex analysis & long-form content), Google Gemini (multimodal understanding & image analysis), DeepSeek (cost-effective coding), and Llama 3 (open-source flexibility). Choose based on your specific needs - our prompt generator works with all platforms.",
-    link: "/blog/jan-12-2026"
-  },
-  {
-    question: "How do I use an AI prompt generator for images?",
-    answer: "For image generation: 1) Select your AI platform (Midjourney, DALL-E, Stable Diffusion), 2) Describe your desired image with specific details (subject, style, lighting, composition), 3) Add technical parameters (resolution, aspect ratio, quality tags), 4) Use our generator to automatically optimize and enhance your description. Works for portraits, landscapes, products, and digital art.",
-    link: "/blog/jan-09-2026"
-  },
-  {
-    question: "What are AI prompt examples for different use cases?",
-    answer: "Common AI prompt examples: Image: 'Ultra-realistic portrait, cinematic lighting, 8K detail'; Video: 'Drone shot of futuristic city, golden hour, slow pan'; Text: 'Write a technical guide, professional tone, include statistics'; ChatGPT: 'Act as an expert copywriter, create engaging headlines'. Browse our blog for hundreds of proven examples.",
-    link: "/blog"
-  },
-  {
-    question: "Can I generate prompts from existing images?",
-    answer: "Yes! Image-to-prompt tools analyze existing images and generate text descriptions. Upload a reference image to tools like CLIP Interrogator or Midjourney's /describe command. This helps you: recreate styles, learn from successful prompts, and improve your prompt writing skills. Perfect for maintaining consistent visual styles across projects.",
-    link: "/blog/jan-09-2026"
-  },
-  {
-    question: "How much does an AI prompt generator cost?",
-    answer: "AIPromptGen.app offers 70 FREE generations monthly, perfect for regular users. Our Pro plan ($19/month) includes unlimited generations, priority support, and advanced features. Premium ($49/month) adds team collaboration and API access. Unlike other tools charging $50-100/month, we keep AI prompts accessible to everyone.",
+    question: "Is this AI prompt generator really free?",
+    answer: "Yes! AIPromptGen.app offers 70 completely free AI prompt generations per month with no credit card required. You can generate AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini, and Stable Diffusion for free. Pro plans are available for unlimited AI prompt generation starting at $19/month.",
     link: "/pricing"
   },
   {
-    question: "What's the difference between text, image, and video prompts?",
-    answer: "Text prompts focus on content, tone, and structure. Image prompts emphasize visual elements (lighting, composition, style, technical specs). Video prompts add temporal elements (movement, transitions, duration, camera angles). Our generator automatically adapts to your chosen AI platform and output type, optimizing each prompt format accordingly.",
+    question: "Where can I find free AI prompt templates and examples?",
+    answer: "Free AI prompt templates are available at: 1) AIPromptGen.app Prompt Library (500+ curated AI prompt templates), 2) Our daily AI prompt blog with examples and tutorials, 3) Our AI prompt guides with step-by-step instructions. Start with our 70 free monthly credits to generate custom AI prompts instantly.",
+    link: "/library"
+  },
+  {
+    question: "How to use AI prompt generator for image creation?",
+    answer: "For image AI prompts: 1) Select your platform (Midjourney, DALL-E, Stable Diffusion), 2) Describe your desired image with specific details about subject, style, lighting, and composition, 3) Add technical parameters like resolution and aspect ratio, 4) Use our AI prompt generator to automatically optimize your prompt with platform-specific parameters. Works for portraits, landscapes, products, fantasy art, and more.",
+    link: "/guides"
+  },
+  {
+    question: "What AI prompt examples work best for ChatGPT?",
+    answer: "The best ChatGPT AI prompt examples use role-based prompting: 'You are an expert [role] with [years] experience. [Task]. Format: [output structure]. Tone: [style]. Include: [specific requirements].' Our AI prompt generator creates optimized ChatGPT prompts automatically with proven templates for writing, coding, marketing, analysis, and more.",
+    link: "/blog"
+  },
+  {
+    question: "Can I generate AI video prompts for Sora?",
+    answer: "Yes! Our AI prompt generator creates optimized video prompts for Sora, including camera movements, scene descriptions, timing, cinematic styles, and technical parameters. AI video prompts should include: scene description, camera movement, visual style, action/motion details, and duration. Generate free Sora AI prompts at AIPromptGen.app.",
     link: "/"
   },
   {
-    question: "How do I write better AI prompts?",
-    answer: "Pro tips for better prompts: 1) Be specific and detailed, 2) Use technical terminology, 3) Reference established styles (e.g., 'cinematic', 'professional photography'), 4) Include quality parameters (8K, ultra detailed), 5) Test multiple variations, 6) Use negative prompts to exclude unwanted elements. Our AI generator handles this optimization automatically.",
-    link: "/blog/jan-12-2026"
+    question: "How much does an AI prompt generator cost?",
+    answer: "AIPromptGen.app is completely free to start with 70 AI prompt generations per month. For power users, our Pro plan ($19/month) includes unlimited AI prompt generations, priority support, and advanced features. Premium ($49/month) adds team collaboration and API access. We offer the best value for any AI prompt tool.",
+    link: "/pricing"
+  },
+  {
+    question: "What platforms does this AI prompt generator support?",
+    answer: "Our AI prompt generator supports all major AI platforms: ChatGPT (GPT-4, GPT-5), Midjourney (V6, V7), DALL-E (3, 4), Sora (video), Claude (Anthropic), Gemini (Google), Stable Diffusion, DeepSeek, Llama, and more. Each AI prompt is automatically optimized for the selected platform's specific requirements and parameters.",
+    link: "/docs"
   }
 ];
 
@@ -76,10 +76,10 @@ export function FAQSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">
-            Frequently Asked Questions
+            AI Prompt Generator FAQ
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Everything you need to know about AI prompt generators and how to create stunning AI content
+            Everything you need to know about AI prompts, our free AI prompt generator, and how to create the best AI prompts for any platform
           </p>
         </div>
 

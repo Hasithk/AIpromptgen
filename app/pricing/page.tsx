@@ -2,13 +2,17 @@ import { Metadata } from 'next';
 import { PricingPage } from '@/components/pricing-page';
 
 export const metadata: Metadata = {
-  title: 'Pricing Plans - AI Prompt Generator',
-  description: 'Choose the perfect plan for your AI prompt generation needs. Free tier available with Pro and Elite plans for advanced features.',
-  keywords: 'ai prompt generator pricing, subscription plans, pro plan, elite plan, ai tools pricing',
+  title: 'AI Prompt Generator Pricing | Free AI Prompt Tool + Pro Plans',
+  description: 'AI Prompt Generator pricing plans. Start free with 70 AI prompt generations monthly. Pro plan for unlimited AI prompts. Best value AI prompt tool for ChatGPT, Midjourney, DALL-E, Sora.',
+  keywords: 'ai prompt generator pricing, free ai prompt generator, ai prompt tool cost, ai prompt subscription, prompt generator plans',
+  alternates: {
+    canonical: 'https://www.aipromptgen.app/pricing',
+  },
   openGraph: {
-    title: 'AI Prompt Generator - Pricing Plans',
-    description: 'Flexible pricing for creators, professionals, and teams. Start free or upgrade for unlimited generations.',
+    title: 'AI Prompt Generator Pricing - Free + Pro Plans',
+    description: 'Start free with 70 AI prompt generations/month. Upgrade for unlimited AI prompts.',
     type: 'website',
+    url: 'https://www.aipromptgen.app/pricing',
   },
 };
 

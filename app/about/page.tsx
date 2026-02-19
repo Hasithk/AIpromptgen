@@ -4,8 +4,17 @@ import { Zap, Target, Users, Rocket, Mail, Globe } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'About Us',
-  description: 'Learn about AI Prompt Generator and our mission to empower creators with advanced AI tools.',
+  title: 'About AI Prompt Generator - The Best Free AI Prompt Tool',
+  description: 'Learn about AI Prompt Generator, the #1 free AI prompt tool. Our mission is to make AI prompt engineering accessible to everyone with free AI prompt generation for ChatGPT, Midjourney, DALL-E, and Sora.',
+  keywords: 'about ai prompt generator, ai prompt tool, free ai prompt, ai prompt engineering platform',
+  alternates: {
+    canonical: 'https://www.aipromptgen.app/about',
+  },
+  openGraph: {
+    title: 'About AI Prompt Generator - Best Free AI Prompt Tool',
+    description: 'The #1 free AI prompt generator. Create perfect AI prompts for every platform.',
+    url: 'https://www.aipromptgen.app/about',
+  },
 };
 
 export default function AboutPage() {
@@ -18,10 +27,10 @@ export default function AboutPage() {
             About Us
           </Badge>
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-            Empowering Creators with AI
+            The #1 Free AI Prompt Generator
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            AI Prompt Generator is your ultimate platform for creating professional-grade AI prompts for Sora, Midjourney, DALL-E, Veo 3, Qwen.ai, and more.
+            AI Prompt Generator is your ultimate free platform for creating professional AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini, and every major AI platform. Trusted by 50,000+ creators worldwide.
           </p>
         </div>
 

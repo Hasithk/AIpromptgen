@@ -86,10 +86,10 @@ export function BlogPage() {
         {/* Header */}
         <div className="text-center space-y-4 mb-12">
           <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-            AI Blog
+            AI Prompt Blog
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Stay updated with the latest AI news, prompt engineering techniques, and industry insights.
+            Expert AI prompt tips, engineering guides, and examples updated daily. Learn how to write the best AI prompts for ChatGPT, Midjourney, DALL-E, Sora, and every AI platform.
           </p>
         </div>
 
@@ -329,9 +329,9 @@ export function BlogPage() {
           <CardContent className="p-8 text-center">
             <div className="space-y-6 max-w-2xl mx-auto">
               <div className="space-y-2">
-                <h3 className="text-2xl font-bold">Stay Updated</h3>
+                <h3 className="text-2xl font-bold">Get Free AI Prompt Tips Weekly</h3>
                 <p className="text-white/90">
-                  Get the latest AI news and prompt engineering tips delivered to your inbox weekly.
+                  Get the latest AI prompt tips, examples, and prompt engineering techniques delivered to your inbox weekly.
                 </p>
               </div>
               

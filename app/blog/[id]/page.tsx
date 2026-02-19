@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   
   if (!post) {
     return {
-      title: 'Article Not Found | AI Prompt Generator'
+      title: 'Article Not Found | AI Prompt Generator - Best Free AI Prompt Tool'
     };
   }
 
@@ -56,7 +56,10 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   return {
     title: `${post.title} | AI Prompt Generator Blog`,
     description: post.excerpt || '',
-    keywords: post.tags.join(', '),
+    keywords: [...(Array.isArray(post.tags) ? post.tags : [post.tags]), 'ai prompt', 'ai prompt generator', 'free ai prompt'].join(', '),
+    alternates: {
+      canonical: `https://www.aipromptgen.app/blog/${params.id}`,
+    },
     openGraph: {
       title: post.title,
       description: post.excerpt || '',
@@ -64,11 +67,14 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       publishedTime: publishedAt,
       authors: [post.author],
       tags: post.tags,
+      url: `https://www.aipromptgen.app/blog/${params.id}`,
+      siteName: 'AI Prompt Generator',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt || '',
+      creator: '@aipromptgen',
     }
   };
 }
@@ -90,8 +96,75 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Format the content to ensure proper HTML structure
   const formattedContent = formatBlogContent(post.content);
 
+  const publishedDate = typeof post.publishedAt === 'string'
+    ? post.publishedAt
+    : post.publishedAt.toISOString();
+
+  const articleStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": post.title,
+    "description": post.excerpt || '',
+    "author": {
+      "@type": "Organization",
+      "name": post.author,
+      "url": "https://www.aipromptgen.app"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "AI Prompt Generator",
+      "url": "https://www.aipromptgen.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.aipromptgen.app/Aipromptgen.png"
+      }
+    },
+    "datePublished": publishedDate,
+    "dateModified": publishedDate,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://www.aipromptgen.app/blog/${post.id}`
+    },
+    "keywords": Array.isArray(post.tags) ? post.tags.join(', ') : post.tags,
+    "articleSection": post.category,
+    "wordCount": post.content.split(/\s+/).length
+  };
+
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "AI Prompt Generator",
+        "item": "https://www.aipromptgen.app"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "AI Prompt Blog",
+        "item": "https://www.aipromptgen.app/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": post.title,
+        "item": `https://www.aipromptgen.app/blog/${post.id}`
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbData) }}
+      />
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
@@ -164,7 +237,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="mb-8">
             <h3 className="text-lg font-semibold mb-3">Tags</h3>
             <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
+              {(Array.isArray(post.tags) ? post.tags : [post.tags]).map((tag: string) => (
                 <Badge key={tag} variant="outline">
                   {tag}
                 </Badge>

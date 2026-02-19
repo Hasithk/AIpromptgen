@@ -1,8 +1,9 @@
 import { HistoryPage } from '@/components/history-page';
 
 export const metadata = {
-  title: 'Prompt History | AI Prompt Generator',
-  description: 'View and manage your generated AI prompts history.',
+  title: 'AI Prompt History | Manage Your Generated AI Prompts',
+  description: 'View and manage your AI prompt generation history. Track all your AI prompts created with our free AI prompt generator for ChatGPT, Midjourney, DALL-E, and Sora.',
+  keywords: 'ai prompt history, saved ai prompts, prompt manager, ai prompt organizer',
 };
 
 export default function History() {

@@ -4,12 +4,16 @@ import { BookOpen, Video, Image, Sparkles, Zap, TrendingUp } from 'lucide-react'
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'AI Prompt Guides - Learn Prompt Engineering',
-  description: 'Comprehensive guides for creating AI prompts for Sora, Midjourney, DALL-E, Veo 3, and more. Learn prompt engineering best practices.',
+  title: 'AI Prompt Engineering Guides | Learn to Write Perfect AI Prompts',
+  description: 'Comprehensive AI prompt engineering guides for beginners to experts. Learn to write perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora. Step-by-step tutorials with AI prompt examples.',
+  keywords: 'ai prompt guide, ai prompt engineering, how to write ai prompts, ai prompt tutorial, prompt engineering course, chatgpt guide, midjourney guide, ai prompt tips',
+  alternates: {
+    canonical: 'https://www.aipromptgen.app/guides',
+  },
   openGraph: {
-    title: 'AI Prompt Guides - AI Prompt Generator',
-    description: 'Master prompt engineering with our comprehensive guides',
-    url: 'https://aipromptgen.app/guides',
+    title: 'AI Prompt Engineering Guides - Learn to Write Perfect AI Prompts',
+    description: 'Master AI prompt engineering with step-by-step guides and examples.',
+    url: 'https://www.aipromptgen.app/guides',
   },
 };
 
