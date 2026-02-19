@@ -41,7 +41,7 @@ export async function createBlogPost(blogData: {
         content: blogData.content,
         author: blogData.author || 'AI News Bot',
         category: blogData.category || 'AI News',
-        tags: tagsArray,
+        tags: tagsArray.join(', '),
         featured: blogData.featured ?? true,
         readTime: blogData.readTime || calculateReadTime(blogData.content),
       }
