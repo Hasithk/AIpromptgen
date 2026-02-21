@@ -273,13 +273,32 @@ export async function generateAndSaveDailyBlog(
 
   if (news.length === 0) {
     // Generate based on general AI prompt topics if no news available
-    console.log('[BlogGenerator] No news available, generating topic-based content');
+    console.log('[BlogGenerator] No news available, generating topic-based content with fallback topics');
   }
+
+  // Fallback AI topics for when news is unavailable
+  const FALLBACK_TOPICS: NewsArticle[] = [
+    { title: 'How AI Prompt Engineering Is Evolving in 2026', description: 'New techniques in prompt engineering are making AI outputs more accurate, creative, and useful than ever before. Learn the latest strategies for writing effective prompts.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'Best Practices for ChatGPT Prompts in 2026', description: 'Discover proven methods for crafting ChatGPT prompts that deliver consistent, high-quality results for writing, coding, analysis, and creative tasks.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'AI Image Generation: Midjourney, DALL-E and Sora Prompt Tips', description: 'Master the art of writing image and video generation prompts with expert techniques for Midjourney, DALL-E 3, and Sora that produce stunning visuals.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'The Rise of Free AI Prompt Generators and Tools', description: 'Free AI prompt tools are democratizing access to advanced prompt engineering, helping beginners and experts create better prompts faster.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'Advanced Prompt Engineering Techniques: Chain-of-Thought, Few-Shot, and More', description: 'Go beyond basic prompting with advanced techniques like chain-of-thought reasoning, few-shot learning, role-playing, and structured output formatting.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'AI Coding Assistants: How to Write Better Prompts for Code Generation', description: 'Learn how to prompt AI coding tools like GitHub Copilot, Claude, and ChatGPT to generate accurate, production-ready code.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'AI Video Generation with Sora: Complete Prompting Guide', description: 'OpenAI Sora is revolutionizing AI video creation. Learn expert prompt techniques for generating cinematic, realistic videos from text prompts.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'How to Use AI Prompts for Business and Marketing', description: 'AI prompts can transform business workflows. Discover prompt templates for marketing content, email campaigns, social media, and customer engagement.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'Claude, Gemini, and DeepSeek: Comparing AI Models for Prompt Results', description: 'Different AI models respond differently to prompts. Learn which models excel at different tasks and how to optimize your prompts for each.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+    { title: 'AI Prompt Templates: Ready-to-Use Prompts for Every Task', description: 'A comprehensive collection of AI prompt templates for writing, coding, images, analysis, brainstorming, and more — ready to use and customize.', source: 'AI Prompt Gen', url: '', publishedAt: new Date().toISOString() },
+  ];
+
+  // Use fetched news, or pick random fallback topics
+  const topicsToUse = news.length > 0
+    ? news
+    : FALLBACK_TOPICS.sort(() => Math.random() - 0.5).slice(0, 5);
 
   for (let i = 0; i < count; i++) {
     try {
-      // Shuffle news for variety if generating multiple posts
-      const shuffledNews = [...news].sort(() => Math.random() - 0.5);
+      // Shuffle topics for variety if generating multiple posts
+      const shuffledNews = [...topicsToUse].sort(() => Math.random() - 0.5);
       
       // Pick different keywords for each post
       const focusKeywords = options?.focusKeywords || pickSEOKeywords(4);

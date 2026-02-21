@@ -133,7 +133,7 @@ export function BlogPage() {
                     </div>
                     <div className="flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      {formatDate(featuredPost.date)}
+                      {formatDate(featuredPost.date || featuredPost.publishedAt)}
                     </div>
                     <span>{featuredPost.readTime}</span>
                   </div>
@@ -285,7 +285,7 @@ export function BlogPage() {
                   </div>
                   <div className="flex items-center">
                     <Calendar className="h-4 w-4 mr-2" />
-                    {formatDate(post.date)}
+                    {formatDate(post.date || post.publishedAt)}
                   </div>
                 </div>
 

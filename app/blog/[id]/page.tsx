@@ -16,21 +16,32 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
+  const params: { id: string }[] = [];
+  const seenIds = new Set<string>();
+  
   try {
-    const posts = await getBlogPosts();
+    const posts = await getBlogPosts({ limit: 500 });
     if (posts && posts.length > 0) {
-      return posts.map((post) => ({
-        id: post.id,
-      }));
+      for (const post of posts) {
+        if (!seenIds.has(post.id)) {
+          seenIds.add(post.id);
+          params.push({ id: post.id });
+        }
+      }
     }
   } catch (error) {
-    console.log('Using static blog posts for static params');
+    console.log('DB unavailable for static params, using static posts only');
   }
   
-  // Fallback to static posts
-  return staticBlogPosts.map((post) => ({
-    id: post.id,
-  }));
+  // Always include static posts too
+  for (const post of staticBlogPosts) {
+    if (!seenIds.has(post.id)) {
+      seenIds.add(post.id);
+      params.push({ id: post.id });
+    }
+  }
+  
+  return params;
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
@@ -39,7 +50,11 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   try {
     post = await getBlogPostById(params.id);
   } catch (error) {
-    // Try static posts
+    // DB error - will try static below
+  }
+  
+  // If not found in DB, try static posts
+  if (!post) {
     post = staticBlogPosts.find(p => p.id === params.id);
   }
   
@@ -49,14 +64,14 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
     };
   }
 
-  const publishedAt = typeof post.publishedAt === 'string' 
-    ? post.publishedAt 
-    : post.publishedAt.toISOString();
+  const publishedAt = post.publishedAt
+    ? (typeof post.publishedAt === 'string' ? post.publishedAt : post.publishedAt.toISOString())
+    : (post as any).date || '';
 
   return {
     title: `${post.title} | AI Prompt Generator Blog`,
     description: post.excerpt || '',
-    keywords: [...(Array.isArray(post.tags) ? post.tags : [post.tags]), 'ai prompt', 'ai prompt generator', 'free ai prompt'].join(', '),
+    keywords: [...(Array.isArray(post.tags) ? post.tags : typeof post.tags === 'string' ? post.tags.split(',').map(t => t.trim()).filter(Boolean) : []), 'ai prompt', 'ai prompt generator', 'free ai prompt'].join(', '),
     alternates: {
       canonical: `https://www.aipromptgen.app/blog/${params.id}`,
     },
@@ -66,7 +81,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       type: 'article',
       publishedTime: publishedAt,
       authors: [post.author],
-      tags: post.tags,
+      tags: Array.isArray(post.tags) ? post.tags : typeof post.tags === 'string' ? post.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
       url: `https://www.aipromptgen.app/blog/${params.id}`,
       siteName: 'AI Prompt Generator',
     },
@@ -85,7 +100,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   try {
     post = await getBlogPostById(params.id);
   } catch (error) {
-    // Try static posts
+    // DB error - will try static below
+  }
+
+  // If not found in DB, try static posts
+  if (!post) {
     post = staticBlogPosts.find(p => p.id === params.id);
   }
 
@@ -96,9 +115,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // Format the content to ensure proper HTML structure
   const formattedContent = formatBlogContent(post.content);
 
-  const publishedDate = typeof post.publishedAt === 'string'
-    ? post.publishedAt
-    : post.publishedAt.toISOString();
+  const publishedDate = post.publishedAt
+    ? (typeof post.publishedAt === 'string' ? post.publishedAt : post.publishedAt.toISOString())
+    : (post as any).date || new Date().toISOString();
 
   const articleStructuredData = {
     "@context": "https://schema.org",
@@ -125,7 +144,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       "@type": "WebPage",
       "@id": `https://www.aipromptgen.app/blog/${post.id}`
     },
-    "keywords": Array.isArray(post.tags) ? post.tags.join(', ') : post.tags,
+    "keywords": Array.isArray(post.tags) ? post.tags.join(', ') : typeof post.tags === 'string' ? post.tags : '',
     "articleSection": post.category,
     "wordCount": post.content.split(/\s+/).length
   };
@@ -237,7 +256,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <div className="mb-8">
             <h3 className="text-lg font-semibold mb-3">Tags</h3>
             <div className="flex flex-wrap gap-2">
-              {(Array.isArray(post.tags) ? post.tags : [post.tags]).map((tag: string) => (
+              {(Array.isArray(post.tags) ? post.tags : typeof post.tags === 'string' ? post.tags.split(',').map(t => t.trim()).filter(Boolean) : []).map((tag: string) => (
                 <Badge key={tag} variant="outline">
                   {tag}
                 </Badge>
