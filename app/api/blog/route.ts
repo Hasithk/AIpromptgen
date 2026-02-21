@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getBlogPosts, createBlogPost } from '@/lib/prisma';
 import { blogPosts as staticBlogPosts } from '@/data/blog-posts';
 
+// Normalize a database post to match the expected BlogPost interface
+function normalizePost(post: any) {
+  return {
+    ...post,
+    tags: Array.isArray(post.tags)
+      ? post.tags
+      : typeof post.tags === 'string' && post.tags.length > 0
+        ? post.tags.split(',').map((t: string) => t.trim())
+        : [],
+    date: post.date || post.publishedAt || '',
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -13,15 +26,18 @@ export async function GET(request: NextRequest) {
     
     try {
       // Try to get posts from database first
-      posts = await getBlogPosts({
+      const dbPosts = await getBlogPosts({
         category: category !== 'All' ? category : undefined,
         search,
         limit
       });
       
       // If database returns empty, use static posts
-      if (!posts || posts.length === 0) {
+      if (!dbPosts || dbPosts.length === 0) {
         posts = staticBlogPosts;
+      } else {
+        // Normalize database posts (tags is stored as String in DB)
+        posts = dbPosts.map(normalizePost);
       }
     } catch (dbError) {
       // If database fails, use static posts

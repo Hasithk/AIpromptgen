@@ -271,7 +271,7 @@ export function BlogPage() {
 
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-1">
-                  {post.tags.map(tag => (
+                  {(Array.isArray(post.tags) ? post.tags : []).map(tag => (
                     <Badge key={tag} variant="outline" className="text-xs">
                       #{tag}
                     </Badge>
