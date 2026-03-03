@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { AINewsPage } from '@/components/ai-news-page';
 
 export const metadata: Metadata = {
-  title: 'AI News & AI Prompt Updates | Latest AI Trends 2026',
-  description: 'Latest AI news, AI prompt trends, and technology updates. Stay informed about new AI models, prompt engineering breakthroughs, ChatGPT updates, Midjourney releases, and the latest AI prompt techniques.',
+  title: 'AI News 2026',
+  description: 'Latest AI news and prompt updates. Stay informed about new AI models, ChatGPT updates, Midjourney releases, and prompt engineering breakthroughs.',
   keywords: [
     'AI news',
     'ai prompt news',
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     canonical: 'https://www.aipromptgen.app/ai-news',
   },
   openGraph: {
-    title: 'AI News & AI Prompt Updates - Latest 2026',
-    description: 'Stay updated with AI news, prompt engineering breakthroughs, and model releases.',
+    title: 'AI News & Updates 2026 | AI Prompt Generator',
+    description: 'Latest AI news and prompt updates. Stay informed about new AI models, ChatGPT updates, and prompt engineering breakthroughs.',
     type: 'website',
   },
 };
