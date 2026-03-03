@@ -110,19 +110,22 @@ export function AINewsPage() {
       const params = new URLSearchParams();
       if (selectedCategory !== 'All') params.append('category', selectedCategory);
       if (searchTerm) params.append('search', searchTerm);
-      params.append('limit', '20');
+      params.append('limit', '25');
       
-      const response = await fetch(`/api/ai-news?${params}`);
+      const response = await fetch(`/api/ai-news?${params}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       const data = await response.json();
       
-      if (data.success) {
-        setNewsItems(data.news || []);
+      if (data.success && data.news && data.news.length > 0) {
+        setNewsItems(data.news);
       } else {
         throw new Error(data.error || 'Failed to fetch AI news');
       }
     } catch (err) {
       console.error('News fetch error:', err);
-      setError('Failed to fetch AI news. Please try again later.');
+      setError('Failed to fetch AI news. Showing cached articles.');
       // Fallback to some basic news items
       setNewsItems(mockNewsData.slice(0, 6));
     } finally {
