@@ -4,15 +4,15 @@ import { PromptGenerator } from '@/components/prompt-generator';
 import { HeroSection } from '@/components/hero-section';
 
 export const metadata: Metadata = {
-  title: 'AI Prompt Generator | #1 Free AI Prompt Tool for ChatGPT, Midjourney, DALL-E, Sora',
-  description: 'The best free AI prompt generator of 2026. Create perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini. 70 free AI prompt generations monthly. AI prompt templates, examples, and curated prompt library.',
+  title: { absolute: 'AI Prompt Generator | Best Free AI Prompt Tool 2026' },
+  description: 'Create perfect AI prompts for ChatGPT, Midjourney, DALL-E & Sora. Free AI prompt generator with 70 monthly generations. No signup needed.',
   keywords: 'ai prompt, ai prompt generator, free ai prompt, best ai prompt generator, ai prompt generator free, ai prompts, ai prompt examples, chatgpt prompt generator, midjourney prompt generator, dall-e prompt, sora prompt, ai prompt engineering, ai prompt tool, ai prompt maker, ai prompt writer',
   alternates: {
     canonical: 'https://www.aipromptgen.app',
   },
   openGraph: {
-    title: 'AI Prompt Generator - #1 Free AI Prompt Tool 2026',
-    description: 'Create perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora. 70 free generations. Best AI prompt generator.',
+    title: 'AI Prompt Generator - Best Free AI Prompt Tool 2026',
+    description: 'Create perfect AI prompts for ChatGPT, Midjourney, DALL-E & Sora. 70 free AI prompt generations monthly.',
     url: 'https://www.aipromptgen.app',
     type: 'website',
   },

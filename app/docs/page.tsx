@@ -4,15 +4,15 @@ import { BookOpen, Code, Lightbulb, Rocket, FileText, Video } from 'lucide-react
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'AI Prompt Generator Documentation | How to Use AI Prompt Tool',
-  description: 'Complete documentation for AI Prompt Generator. Learn how to create professional AI prompts for ChatGPT, Midjourney, DALL-E, Sora. API docs, tutorials, and AI prompt best practices.',
+  title: 'AI Prompt Docs & Tutorials',
+  description: 'Complete AI Prompt Generator documentation. Learn to create professional AI prompts with tutorials, API docs, and best practices.',
   keywords: 'ai prompt generator docs, ai prompt documentation, how to use ai prompt generator, ai prompt api, prompt engineering docs',
   alternates: {
     canonical: 'https://www.aipromptgen.app/docs',
   },
   openGraph: {
-    title: 'AI Prompt Generator Documentation',
-    description: 'Complete guide to using the best free AI prompt generator.',
+    title: 'AI Prompt Docs & Tutorials',
+    description: 'Complete AI Prompt Generator documentation with tutorials, API docs, and AI prompt best practices.',
     url: 'https://www.aipromptgen.app/docs',
   },
 };

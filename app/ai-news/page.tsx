@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     canonical: 'https://www.aipromptgen.app/ai-news',
   },
   openGraph: {
-    title: 'AI News & Updates 2026 | AI Prompt Generator',
+    title: 'AI News 2026 | AI Prompt Generator',
     description: 'Latest AI news and prompt updates. Stay informed about new AI models, ChatGPT updates, and prompt engineering breakthroughs.',
     type: 'website',
   },

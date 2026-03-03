@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
-  description: 'Terms of Service for AI Prompt Generator. Read our terms and conditions for using our AI prompt generation platform.',
+  description: 'Terms of Service for AI Prompt Generator. Read our terms and conditions for using the AI prompt generation tools and platform.',
 };
 
 export default function TermsPage() {

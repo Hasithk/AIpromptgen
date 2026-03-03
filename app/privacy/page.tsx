@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const metadata = {
   title: 'Privacy Policy',
-  description: 'Privacy Policy for AI Prompt Generator - Learn how we collect, use, and protect your data.',
+  description: 'Privacy Policy for AI Prompt Generator. Learn how we protect your data and handle your AI prompt generation information securely.',
 };
 
 export default function PrivacyPage() {

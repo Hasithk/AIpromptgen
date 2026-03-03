@@ -17,10 +17,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.aipromptgen.app'),
   title: {
-    default: 'AI Prompt Generator | #1 Free AI Prompt Tool for ChatGPT, Midjourney, DALL-E, Sora (2026)',
-    template: '%s | AI Prompt Generator - Best Free AI Prompt Tool'
+    default: 'AI Prompt Generator | Free AI Prompt Tool for ChatGPT & Midjourney 2026',
+    template: '%s | AI Prompt Generator'
   },
-  description: 'The best free AI prompt generator for 2026. Create perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, and Gemini. 70 free AI prompt generations monthly. AI prompt templates, examples, and a curated prompt library. No credit card required.',
+  description: 'Free AI prompt generator for ChatGPT, Midjourney, DALL-E & Sora. Create perfect AI prompts with 70 free monthly generations. Templates, library & guides.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -79,8 +79,8 @@ export const metadata: Metadata = {
   publisher: 'AI Prompt Gen',
   category: 'Technology',
   openGraph: {
-    title: 'AI Prompt Generator - #1 Free AI Prompt Tool | Create Perfect AI Prompts Instantly',
-    description: 'The best free AI prompt generator. Create stunning AI prompts for ChatGPT, Midjourney, DALL-E, Sora. 70 free AI prompt generations monthly. AI prompt templates, library, and examples.',
+    title: 'AI Prompt Generator - Free AI Prompt Tool for ChatGPT & Midjourney',
+    description: 'Free AI prompt generator for ChatGPT, Midjourney, DALL-E & Sora. Create perfect AI prompts with 70 free monthly generations and templates.',
     url: 'https://www.aipromptgen.app',
     siteName: 'AI Prompt Generator - Free AI Prompt Tool',
     type: 'website',
@@ -96,8 +96,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Prompt Generator - #1 Free AI Prompt Tool 2026',
-    description: 'Create perfect AI prompts for ChatGPT, Midjourney, DALL-E, Sora. 70 free AI prompt generations + prompt library + templates.',
+    title: 'AI Prompt Generator - Free AI Prompt Tool 2026',
+    description: 'Create perfect AI prompts for ChatGPT, Midjourney, DALL-E & Sora. 70 free generations plus prompt library and templates.',
     images: ['https://www.aipromptgen.app/Aipromptgen.png'],
     creator: '@aipromptgen'
   },

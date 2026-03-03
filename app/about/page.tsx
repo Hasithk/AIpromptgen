@@ -4,15 +4,15 @@ import { Zap, Target, Users, Rocket, Mail, Globe } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'About AI Prompt Generator - The Best Free AI Prompt Tool',
-  description: 'Learn about AI Prompt Generator, the #1 free AI prompt tool. Our mission is to make AI prompt engineering accessible to everyone with free AI prompt generation for ChatGPT, Midjourney, DALL-E, and Sora.',
+  title: 'About AI Prompt Generator',
+  description: 'Learn about AI Prompt Generator, the #1 free AI prompt tool. We make AI prompt engineering accessible to everyone worldwide.',
   keywords: 'about ai prompt generator, ai prompt tool, free ai prompt, ai prompt engineering platform',
   alternates: {
     canonical: 'https://www.aipromptgen.app/about',
   },
   openGraph: {
-    title: 'About AI Prompt Generator - Best Free AI Prompt Tool',
-    description: 'The #1 free AI prompt generator. Create perfect AI prompts for every platform.',
+    title: 'About AI Prompt Generator',
+    description: 'Learn about AI Prompt Generator, the #1 free AI prompt tool. AI prompt engineering made accessible for everyone.',
     url: 'https://www.aipromptgen.app/about',
   },
 };
