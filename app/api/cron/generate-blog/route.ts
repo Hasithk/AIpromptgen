@@ -34,11 +34,12 @@ export async function GET(req: Request) {
     // Determine base URL for fetching news
     const baseUrl = getBaseUrl(req);
 
-    console.log(`[CRON] Daily blog generation started - generating ${count} post(s)`);
+    console.log(`[CRON] Daily blog generation started - generating ${count} post(s) from high-relevance AI news`);
+    console.log(`[CRON] Primary keyword: AI Prompt`);
 
     const result = await generateAndSaveDailyBlog(baseUrl, { count });
 
-    console.log(`[CRON] Blog generation complete: ${result.posts.length} created, ${result.errors.length} failed`);
+    console.log(`[CRON] Blog generation complete: ${result.posts.length} created from high-relevance news, ${result.errors.length} failed`);
 
     return NextResponse.json({
       success: result.success,
