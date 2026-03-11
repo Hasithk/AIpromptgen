@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { SessionWrapper } from '@/components/session-wrapper-temp';
 
 const navigation = [
@@ -61,13 +60,11 @@ export function Navigation() {
 
         {/* Right Section */}
         <div className="hidden md:flex items-center space-x-4">
-          <ThemeToggle />
           <SessionWrapper />
         </div>
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center space-x-2">
-          <ThemeToggle />
           <Button
             variant="ghost"
             size="sm"
