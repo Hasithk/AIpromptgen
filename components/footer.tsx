@@ -38,6 +38,20 @@ export function Footer() {
                 <Mail className="h-5 w-5" aria-hidden="true" />
               </Link>
             </div>
+            <div className="pt-2">
+              <a
+                href="https://www.producthunt.com/products/aipromptgen?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-aipromptgen"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1096062&theme=light&t=1773293934628"
+                  alt="AIPromptGen - Visual prompt builder for Midjourney, Sora & AI Art | Product Hunt"
+                  width={250}
+                  height={54}
+                />
+              </a>
+            </div>
           </div>
 
           {/* Product */}
