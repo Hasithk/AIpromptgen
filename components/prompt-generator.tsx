@@ -409,12 +409,12 @@ export function PromptGenerator() {
                 </Button>
               ) : credits === 0 ? (
                 <Button 
-                  onClick={() => router.push('/pricing')}
+                  onClick={() => router.push('/contact')}
                   className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 py-6 text-lg font-semibold group"
                   size="lg"
                 >
                   <Zap className="mr-2 h-5 w-5 group-hover:animate-pulse" />
-                  Get Pro Package to Generate
+                  Contact Us for More Credits
                 </Button>
               ) : (
                 <Button 
@@ -504,10 +504,10 @@ export function PromptGenerator() {
                 ) : credits === 0 ? (
                   <Button 
                     className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                    onClick={() => router.push('/pricing')}
+                    onClick={() => router.push('/contact')}
                   >
                     <Zap className="mr-2 h-4 w-4" />
-                    Get Pro Package to Optimize
+                    Contact Us for More Credits
                   </Button>
                 ) : (
                   <Button 

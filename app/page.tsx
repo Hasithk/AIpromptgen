@@ -28,10 +28,6 @@ const FeaturesSection = dynamic(() => import('@/components/features-section').th
   loading: () => <div className="animate-pulse bg-muted rounded-lg h-48" />
 });
 
-const PricingSection = dynamic(() => import('@/components/pricing-section').then(mod => ({ default: mod.PricingSection })), {
-  loading: () => <div className="animate-pulse bg-muted rounded-lg h-96" />
-});
-
 const FAQSection = dynamic(() => import('@/components/faq-section').then(mod => ({ default: mod.FAQSection })), {
   loading: () => <div className="animate-pulse bg-muted rounded-lg h-64" />
 });
@@ -82,7 +78,6 @@ export default function Home() {
       </div>
       <FeaturesSection />
       <FAQSection />
-      <PricingSection />
       
       {/* Bottom SEO Content */}
       <section className="container-max section-padding py-12 bg-muted/5">

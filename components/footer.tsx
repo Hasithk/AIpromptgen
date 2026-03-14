@@ -96,9 +96,6 @@ export function Footer() {
               <Link href="/about" className="block text-muted-foreground hover:text-primary transition-colors">
                 About
               </Link>
-              <Link href="/pricing" className="block text-muted-foreground hover:text-primary transition-colors">
-                Pricing
-              </Link>
               <Link href="/privacy" className="block text-muted-foreground hover:text-primary transition-colors">
                 Privacy
               </Link>

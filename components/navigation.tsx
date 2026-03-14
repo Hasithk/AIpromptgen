@@ -15,7 +15,6 @@ const navigation = [
   { name: 'AI News', href: '/ai-news' },
   { name: 'Library', href: '/library' },
   { name: 'History', href: '/history' },
-  { name: 'Pricing', href: '/pricing' },
 ];
 
 export function Navigation() {

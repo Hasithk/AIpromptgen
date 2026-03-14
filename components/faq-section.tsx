@@ -28,8 +28,8 @@ const faqs: FAQ[] = [
   },
   {
     question: "Is this AI prompt generator really free?",
-    answer: "Yes! AIPromptGen.app offers 70 completely free AI prompt generations per month with no credit card required. You can generate AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini, and Stable Diffusion for free. Pro plans are available for unlimited AI prompt generation starting at $19/month.",
-    link: "/pricing"
+    answer: "Yes! AIPromptGen.app offers 70 completely free AI prompt generations per month with no credit card required. You can generate AI prompts for ChatGPT, Midjourney, DALL-E, Sora, Claude, Gemini, and Stable Diffusion for free.",
+    link: "/"
   },
   {
     question: "Where can I find free AI prompt templates and examples?",
@@ -53,8 +53,8 @@ const faqs: FAQ[] = [
   },
   {
     question: "How much does an AI prompt generator cost?",
-    answer: "AIPromptGen.app is completely free to start with 70 AI prompt generations per month. For power users, our Pro plan ($19/month) includes unlimited AI prompt generations, priority support, and advanced features. Premium ($49/month) adds team collaboration and API access. We offer the best value for any AI prompt tool.",
-    link: "/pricing"
+    answer: "AIPromptGen.app is currently free to use with 70 AI prompt generations per month. Paid plans are temporarily hidden until payment gateway integration is published.",
+    link: "/contact"
   },
   {
     question: "What platforms does this AI prompt generator support?",
