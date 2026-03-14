@@ -34,7 +34,7 @@ export function Footer() {
               <Link href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="View our GitHub repository">
                 <Github className="h-5 w-5" aria-hidden="true" />
               </Link>
-              <Link href="mailto:lookinternationallk@gmail.com" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Send us an email">
+              <Link href="mailto:contact@lookinternational.lk" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Send us an email">
                 <Mail className="h-5 w-5" aria-hidden="true" />
               </Link>
             </div>
@@ -66,9 +66,6 @@ export function Footer() {
               </Link>
               <Link href="/history" className="block text-muted-foreground hover:text-primary transition-colors">
                 AI Prompt History
-              </Link>
-              <Link href="/api" className="block text-muted-foreground hover:text-primary transition-colors">
-                AI Prompt API
               </Link>
             </div>
           </div>

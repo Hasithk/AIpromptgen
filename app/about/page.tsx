@@ -119,7 +119,7 @@ export default function AboutPage() {
                   <Globe className="h-8 w-8 text-white" />
                 </div>
                 <div className="text-left">
-                  <h2 className="text-3xl font-bold text-white">LookInternational</h2>
+                  <h2 className="text-3xl font-bold text-white">Look International</h2>
                   <p className="text-gray-400">Innovative Digital Solutions</p>
                 </div>
               </div>
@@ -130,17 +130,22 @@ export default function AboutPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link 
-                  href="mailto:lookinternationallk@gmail.com"
+                  href="https://www.lookinternational.lk"
                   className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  <Mail className="h-5 w-5" />
-                  lookinternationallk@gmail.com
+                  <Globe className="h-5 w-5" />
+                  www.lookinternational.lk
                 </Link>
                 <Link 
-                  href="/contact"
+                  href="mailto:contact@lookinternational.lk"
                   className="px-6 py-3 bg-white/10 text-white rounded-lg border border-white/20 hover:bg-white/20 transition-all"
                 >
-                  Contact Us
+                  <span className="inline-flex items-center gap-2">
+                    <Mail className="h-5 w-5" />
+                    contact@lookinternational.lk
+                  </span>
                 </Link>
               </div>
             </div>

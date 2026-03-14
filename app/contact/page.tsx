@@ -191,10 +191,10 @@ export default function ContactPage() {
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Email</p>
                     <a 
-                      href="mailto:lookinternationallk@gmail.com" 
+                        href="mailto:contact@lookinternational.lk" 
                       className="text-white hover:text-blue-400 transition-colors break-all"
                     >
-                      lookinternationallk@gmail.com
+                        contact@lookinternational.lk
                     </a>
                   </div>
                 </div>
@@ -206,10 +206,12 @@ export default function ContactPage() {
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Website</p>
                     <a 
-                      href="https://aipromptgen.app" 
+                      href="https://www.lookinternational.lk" 
                       className="text-white hover:text-purple-400 transition-colors"
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      aipromptgen.app
+                      www.lookinternational.lk
                     </a>
                   </div>
                 </div>

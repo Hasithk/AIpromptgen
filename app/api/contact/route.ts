@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     // Send email
     await transporter.sendMail({
       from: `"AI Prompt Gen Contact" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL || 'lookinternationallk@gmail.com',
+      to: process.env.CONTACT_EMAIL || 'contact@lookinternational.lk',
       replyTo: email,
       subject: `Contact Form: ${subject}`,
       html: htmlContent,
@@ -105,7 +105,7 @@ Sent: ${new Date().toLocaleString()}
       `
     });
 
-    console.log('Contact form email sent successfully to lookinternationallk@gmail.com');
+    console.log('Contact form email sent successfully to contact@lookinternational.lk');
     
     return NextResponse.json(
       { 

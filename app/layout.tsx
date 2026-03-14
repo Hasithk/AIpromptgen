@@ -190,7 +190,7 @@ export default function RootLayout({
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "lookinternationallk@gmail.com"
+      "email": "contact@lookinternational.lk"
     }
   };
 
