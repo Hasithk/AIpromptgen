@@ -17,15 +17,19 @@ import { generateAndSaveDailyBlog } from '@/lib/blog-generator';
  */
 export async function GET(req: Request) {
   try {
-    // Verify authorization
-    const authHeader = req.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET || 'your-secret-key';
-
-    if (authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+    // Verify authorization only when CRON_SECRET is explicitly configured.
+    // Vercel cron jobs automatically send "Authorization: Bearer <CRON_SECRET>"
+    // when the env var is set. If it's not set we skip the check so internal
+    // Vercel cron calls still work during development / initial setup.
+    const cronSecret = process.env.CRON_SECRET;
+    if (cronSecret) {
+      const authHeader = req.headers.get('authorization');
+      if (authHeader !== `Bearer ${cronSecret}`) {
+        return NextResponse.json(
+          { success: false, error: 'Unauthorized' },
+          { status: 401 }
+        );
+      }
     }
 
     const url = new URL(req.url);

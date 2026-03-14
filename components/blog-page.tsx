@@ -77,8 +77,9 @@ export function BlogPage() {
     });
   };
 
-  const featuredPost = blogPosts.find(post => post.featured);
-  const regularPosts = blogPosts.filter(post => !post.featured);
+  // Always show the newest post as the hero; all remaining posts go into the grid
+  const featuredPost = blogPosts.length > 0 ? blogPosts[0] : null;
+  const regularPosts = blogPosts.slice(1);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">

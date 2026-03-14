@@ -360,7 +360,19 @@ export async function generateAndSaveDailyBlog(
 
   console.log(`[BlogGenerator] Starting daily blog generation (${count} posts)...`);
 
-  // Step 1: Fetch high-relevance news from the AI news page
+  // Step 1: Fetch existing titles from DB to avoid duplicate posts
+  let existingTitles: Set<string> = new Set();
+  try {
+    const recent = await import('@/lib/prisma').then(m => m.getBlogPosts({ limit: 30 }));
+    for (const p of recent) {
+      existingTitles.add(p.title.toLowerCase().trim());
+    }
+    console.log(`[BlogGenerator] Loaded ${existingTitles.size} existing titles for deduplication`);
+  } catch (_) {
+    // Non-fatal — proceed without dedup
+  }
+
+  // Step 2: Fetch high-relevance news from the AI news page
   const news = await fetchLatestAINews(baseUrl);
   console.log(`[BlogGenerator] Fetched ${news.length} news articles (filtered for high relevance)`);
 
@@ -415,7 +427,15 @@ export async function generateAndSaveDailyBlog(
         blog.tags.unshift('AI Prompt');
       }
 
-      // Step 4: Save to database
+      // Skip if a post with the same title was already saved recently
+      if (existingTitles.has(blog.title.toLowerCase().trim())) {
+        console.log(`[BlogGenerator] Skipping duplicate title: "${blog.title}"`);
+        continue;
+      }
+      existingTitles.add(blog.title.toLowerCase().trim());
+
+      // Step 4: Save to database — auto-generated posts are never featured
+      // (featured flag is reserved for manually curated / static posts)
       const savedPost = await createBlogPost({
         title: blog.title,
         excerpt: blog.excerpt,
@@ -423,7 +443,7 @@ export async function generateAndSaveDailyBlog(
         author: 'AI Prompt Gen Team',
         category: blog.category,
         tags: blog.tags,
-        featured: i === 0, // First post is featured
+        featured: false,
       });
 
       console.log(`[BlogGenerator] ✓ Post saved: "${blog.title}" (ID: ${savedPost.id})`);

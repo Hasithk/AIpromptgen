@@ -42,7 +42,7 @@ export async function createBlogPost(blogData: {
         author: blogData.author || 'AI News Bot',
         category: blogData.category || 'AI News',
         tags: tagsArray.join(', '),
-        featured: blogData.featured ?? true,
+        featured: blogData.featured ?? false,
         readTime: blogData.readTime || calculateReadTime(blogData.content),
       }
     });
