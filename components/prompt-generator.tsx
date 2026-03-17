@@ -16,7 +16,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Wand2, Copy, Download, Heart, Sparkles, LogIn, Zap } from 'lucide-react';
 import { usePromptGenerator } from '@/hooks/use-prompt-generator';
 import { useCredits } from '@/contexts/credit-context';
-import { updateUserCredits } from '@/lib/api';
 import { PLATFORMS, STYLES, MOODS, LIGHTING_OPTIONS } from '@/lib/constants';
 import { trackEvent } from '@/components/analytics';
 import { useToast } from '@/hooks/use-toast';
@@ -63,8 +62,7 @@ export function PromptGenerator() {
   };
 
   const generatePrompt = async () => {
-    // Determine credits to use (doubled cost)
-    const creditsToUse = selectedPlatform.startsWith('sora') ? 10 : 6;
+    const creditsToUse = selectedPlatform.startsWith('sora') ? 10 : 2;
     if (credits < creditsToUse) {
       toast({
         title: "Insufficient Credits",
@@ -108,7 +106,7 @@ export function PromptGenerator() {
 
   const handleOptimizePrompt = async () => {
     if (!manualPrompt) return;
-    const creditsToUse = advancedPlatform.startsWith('sora') ? 10 : 6;
+    const creditsToUse = advancedPlatform.startsWith('sora') ? 10 : 2;
     if (credits < creditsToUse) {
       toast({
         title: "Insufficient Credits",

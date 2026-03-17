@@ -42,7 +42,7 @@ export async function fetchAPI<T = any>(
 
     if (!response.ok) {
       throw new APIError(
-        data.message || 'An error occurred',
+        data.error || data.message || 'An error occurred',
         response.status,
         data.code
       );

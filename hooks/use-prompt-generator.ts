@@ -27,11 +27,11 @@ export function usePromptGenerator() {
       
       const response = await generatePrompt(params);
       
-      if (response.success) {
-        setGeneratedPrompt(response.data.prompt);
+      if (response.success && response.data?.prompt?.trim()) {
+        setGeneratedPrompt(response.data.prompt.trim());
         return response; // Return the response so we can access creditsUsed
       } else {
-        throw new Error(response.error || 'Failed to generate prompt');
+        throw new Error(response.error || 'The prompt generator returned an empty result.');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

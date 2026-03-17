@@ -6,6 +6,108 @@ import { prisma } from '@/lib/prisma';
 import { buildSystemPrompt, buildUserPrompt, getPlatformConfig } from '@/lib/platform-configs';
 // Use process.env for server-side environment variables
 
+function normalizePromptText(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[`"'*_#]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toWordSet(value: string): Set<string> {
+  return new Set(
+    normalizePromptText(value)
+      .split(/[^a-z0-9]+/)
+      .filter(word => word.length > 2)
+  );
+}
+
+function calculateOverlapRatio(source: string, target: string): number {
+  const sourceWords = toWordSet(source);
+  const targetWords = toWordSet(target);
+
+  if (sourceWords.size === 0) {
+    return 0;
+  }
+
+  let overlap = 0;
+  for (const word of Array.from(sourceWords)) {
+    if (targetWords.has(word)) {
+      overlap += 1;
+    }
+  }
+
+  return overlap / sourceWords.size;
+}
+
+function buildFallbackPrompt({
+  platform,
+  subject,
+  styles,
+  mood,
+  lighting,
+  creativity,
+  duration,
+}: {
+  platform: string;
+  subject: string;
+  styles: string[];
+  mood?: string;
+  lighting?: string;
+  creativity: number;
+  duration?: number;
+}): string {
+  const config = getPlatformConfig(platform);
+  const qualityDescriptors = creativity >= 85
+    ? ['cinematic', 'highly detailed', 'visually striking', 'professional quality']
+    : creativity >= 60
+      ? ['detailed', 'polished', 'atmospheric', 'high quality']
+      : ['clean composition', 'clear subject', 'refined details'];
+
+  const styleText = styles.length > 0 ? `${styles.join(', ')} style` : 'tasteful contemporary visual styling';
+  const moodText = mood ? `${mood.toLowerCase()} mood` : 'immersive atmosphere';
+  const lightingText = lighting ? `${lighting.toLowerCase()} lighting` : 'carefully shaped lighting';
+
+  let prompt = '';
+
+  if (config.type === 'video') {
+    const durationText = duration ? `over ${duration} seconds` : 'with a natural cinematic progression';
+    prompt = `${subject.trim()}, ${styleText}, ${moodText}, ${lightingText}, dynamic scene development ${durationText}, smooth camera movement, realistic motion, layered environmental detail, strong sense of depth, ${qualityDescriptors.join(', ')}`;
+  } else {
+    const platformSpecificTail = platform === 'midjourney'
+      ? '--ar 16:9 --v 6'
+      : platform === 'stable-diffusion'
+        ? 'masterpiece, best quality'
+        : 'refined composition';
+
+    prompt = `${subject.trim()}, ${styleText}, ${moodText}, ${lightingText}, rich visual detail, intentional composition, textured surfaces, depth and atmosphere, ${qualityDescriptors.join(', ')}, ${platformSpecificTail}`;
+  }
+
+  if (prompt.length > config.maxLength) {
+    return prompt.slice(0, config.maxLength).trim().replace(/[,:;\-]+$/, '');
+  }
+
+  return prompt;
+}
+
+function shouldUseFallbackPrompt(subject: string, generatedPrompt: string): boolean {
+  const normalizedSubject = normalizePromptText(subject);
+  const normalizedPrompt = normalizePromptText(generatedPrompt);
+
+  if (!normalizedPrompt) {
+    return true;
+  }
+
+  if (normalizedPrompt === normalizedSubject) {
+    return true;
+  }
+
+  const overlapRatio = calculateOverlapRatio(subject, generatedPrompt);
+  const isBarelyExpanded = normalizedPrompt.length < Math.max(normalizedSubject.length + 24, normalizedSubject.length * 1.35);
+
+  return overlapRatio > 0.85 && isBarelyExpanded;
+}
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,7 +132,9 @@ export async function POST(request: NextRequest) {
       includeNegative
     } = body;
 
-    if (!subject || !platform) {
+    const trimmedSubject = typeof subject === 'string' ? subject.trim() : '';
+
+    if (!trimmedSubject || !platform) {
       return NextResponse.json(
         { success: false, error: 'Subject and platform are required' },
         { status: 400 }
@@ -110,7 +214,7 @@ export async function POST(request: NextRequest) {
     const systemPrompt = buildSystemPrompt(platform);
     const userPrompt = buildUserPrompt(
       platform,
-      subject,
+      trimmedSubject,
       styles,
       mood,
       lighting,
@@ -153,7 +257,18 @@ export async function POST(request: NextRequest) {
       }
 
       const result = await response.json();
-      const aiPrompt = result.choices?.[0]?.message?.content || '';
+      const rawAiPrompt = result.choices?.[0]?.message?.content || '';
+      const aiPrompt = shouldUseFallbackPrompt(trimmedSubject, rawAiPrompt)
+        ? buildFallbackPrompt({
+            platform,
+            subject: trimmedSubject,
+            styles,
+            mood,
+            lighting,
+            creativity,
+            duration,
+          })
+        : rawAiPrompt.trim();
 
       // Generate negative prompt if requested (for platforms that support it)
       let negativePrompt = '';

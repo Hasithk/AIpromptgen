@@ -233,7 +233,32 @@ export function getPlatformConfig(platform: string): PlatformConfig {
  */
 export function buildSystemPrompt(platform: string): string {
   const config = getPlatformConfig(platform);
-  return config.systemPrompt;
+  return `${config.systemPrompt}
+
+You turn rough user ideas into polished, production-ready prompts.
+Rules:
+- Return only the final prompt text with no headings, labels, bullet points, quotation marks, or explanations.
+- Materially improve the user's input. Never repeat or lightly paraphrase the original request.
+- Incorporate every provided selection when relevant: style, mood, lighting, duration, and platform-specific format.
+- Make the result vivid, specific, and creative while staying coherent and usable.
+- Respect the platform requirements and keep the output within the requested length limit.
+- If details are sparse, infer tasteful composition, atmosphere, camera, texture, and quality details that fit the request.`;
+}
+
+function getCreativityDirection(creativity: number): string {
+  if (creativity < 35) {
+    return 'Keep the prompt clean, focused, and practical. Avoid stylistic excess.';
+  }
+
+  if (creativity < 70) {
+    return 'Balance clarity with imagination. Add meaningful visual detail, atmosphere, and composition.';
+  }
+
+  if (creativity < 90) {
+    return 'Push for a cinematic, highly descriptive result with strong visual storytelling and distinctive artistic choices.';
+  }
+
+  return 'Be boldly imaginative and richly detailed while remaining precise, coherent, and platform-appropriate.';
 }
 
 /**
@@ -249,33 +274,48 @@ export function buildUserPrompt(
   duration?: number
 ): string {
   const config = getPlatformConfig(platform);
-  
+
+  const trimmedSubject = subject.trim();
+  const selectionLines = [
+    `Primary request: ${trimmedSubject}`,
+    styles.length > 0 ? `Selected styles: ${styles.join(', ')}` : 'Selected styles: none provided',
+    mood ? `Mood: ${mood}` : 'Mood: infer the most suitable mood from the request',
+    lighting ? `Lighting: ${lighting}` : 'Lighting: infer suitable lighting for the scene',
+  ];
+
+  if (duration && config.type === 'video') {
+    selectionLines.push(`Duration: ${duration} seconds`);
+  }
+
   let userPrompt = `${config.formatInstructions}\n\n`;
-  userPrompt += `Subject: ${subject}\n`;
-  
+  userPrompt += `Creative direction: ${getCreativityDirection(creativity)}\n\n`;
+  userPrompt += `User selections:\n${selectionLines.map(line => `- ${line}`).join('\n')}\n`;
+
   if (styles.length > 0) {
-    userPrompt += `Styles: ${styles.join(', ')}\n`;
+    userPrompt += `\nBlend the selected styles naturally instead of listing them mechanically.\n`;
   }
   if (mood) {
-    userPrompt += `Mood: ${mood}\n`;
+    userPrompt += `Ensure the final wording clearly expresses a ${mood.toLowerCase()} emotional tone.\n`;
   }
   if (lighting) {
-    userPrompt += `Lighting: ${lighting}\n`;
+    userPrompt += `Use ${lighting.toLowerCase()} as a meaningful part of the visual direction, not as an afterthought.\n`;
   }
-  if (duration && config.type === 'video') {
-    userPrompt += `Duration: ${duration}s\n`;
-  }
-  
-  userPrompt += `\nCreativity level: ${creativity}% - `;
-  if (creativity < 50) {
-    userPrompt += 'Keep it simple and straightforward.';
-  } else if (creativity < 80) {
-    userPrompt += 'Add moderate creative details.';
+
+  userPrompt += `\nExpansion requirements:\n`;
+  userPrompt += `- Transform the request into a clearly more detailed, more creative final prompt.\n`;
+  userPrompt += `- Add concrete composition, subject detail, atmosphere, materials, color, and quality cues where appropriate.\n`;
+  if (config.type === 'video') {
+    userPrompt += `- Include camera movement, motion detail, temporal progression, and realistic action cues.\n`;
   } else {
-    userPrompt += 'Be highly creative and detailed.';
+    userPrompt += `- Include composition, perspective, visual texture, and image-quality cues.\n`;
   }
-  
-  userPrompt += `\n\nGenerate ONE optimized prompt following the format instructions above. The prompt should be ${config.maxLength} characters or less.`;
+  userPrompt += `- Do not echo the original request verbatim.\n`;
+  userPrompt += `- Output exactly one final prompt of ${config.maxLength} characters or less.\n`;
+
+  if (config.examples.length > 0) {
+    userPrompt += `\nReference the quality level of examples like these, without copying them:\n`;
+    userPrompt += config.examples.map(example => `- ${example}`).join('\n');
+  }
   
   return userPrompt;
 }
