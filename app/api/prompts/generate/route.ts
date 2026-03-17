@@ -40,6 +40,58 @@ function calculateOverlapRatio(source: string, target: string): number {
   return overlap / sourceWords.size;
 }
 
+function countDescriptiveSegments(value: string): number {
+  return value
+    .split(/[,.]/)
+    .map(segment => segment.trim())
+    .filter(Boolean)
+    .length;
+}
+
+function includesAnyTerm(value: string, terms: string[]): boolean {
+  const normalizedValue = normalizePromptText(value);
+  return terms.some(term => normalizedValue.includes(normalizePromptText(term)));
+}
+
+function buildImageDetailPack(styles: string[], mood?: string, lighting?: string, creativity: number = 75): string[] {
+  const detailPack = [
+    'editorial-grade composition',
+    'layered foreground and background depth',
+    'refined material realism',
+    'subtle texture variation',
+  ];
+
+  if (styles.includes('Photorealistic')) {
+    detailPack.push('true-to-life materials', 'natural reflections', 'physically plausible light behavior');
+  }
+
+  if (styles.includes('Cinematic')) {
+    detailPack.push('cinematic framing', 'controlled contrast', 'film-like tonal balance');
+  }
+
+  if (styles.includes('Minimalist')) {
+    detailPack.push('clean spatial rhythm', 'intentional negative space', 'curated decorative restraint');
+  }
+
+  if (styles.includes('Vintage')) {
+    detailPack.push('subtle retro accents', 'warm patina', 'timeless styling cues');
+  }
+
+  if (mood) {
+    detailPack.push(`${mood.toLowerCase()} atmosphere`);
+  }
+
+  if (lighting) {
+    detailPack.push(`${lighting.toLowerCase()} light shaping the scene`);
+  }
+
+  if (creativity >= 80) {
+    detailPack.push('bespoke design details', 'visually memorable focal points');
+  }
+
+  return detailPack;
+}
+
 function buildFallbackPrompt({
   platform,
   subject,
@@ -74,13 +126,14 @@ function buildFallbackPrompt({
     const durationText = duration ? `over ${duration} seconds` : 'with a natural cinematic progression';
     prompt = `${subject.trim()}, ${styleText}, ${moodText}, ${lightingText}, dynamic scene development ${durationText}, smooth camera movement, realistic motion, layered environmental detail, strong sense of depth, ${qualityDescriptors.join(', ')}`;
   } else {
+    const imageDetailPack = buildImageDetailPack(styles, mood, lighting, creativity);
     const platformSpecificTail = platform === 'midjourney'
       ? '--ar 16:9 --v 6'
       : platform === 'stable-diffusion'
         ? 'masterpiece, best quality'
         : 'refined composition';
 
-    prompt = `${subject.trim()}, ${styleText}, ${moodText}, ${lightingText}, rich visual detail, intentional composition, textured surfaces, depth and atmosphere, ${qualityDescriptors.join(', ')}, ${platformSpecificTail}`;
+    prompt = `${subject.trim()}, ${styleText}, ${moodText}, ${lightingText}, ${imageDetailPack.join(', ')}, ${qualityDescriptors.join(', ')}, ${platformSpecificTail}`;
   }
 
   if (prompt.length > config.maxLength) {
@@ -88,6 +141,47 @@ function buildFallbackPrompt({
   }
 
   return prompt;
+}
+
+function isPromptTooSimple({
+  generatedPrompt,
+  subject,
+  styles,
+  mood,
+  lighting,
+  platform,
+}: {
+  generatedPrompt: string;
+  subject: string;
+  styles: string[];
+  mood?: string;
+  lighting?: string;
+  platform: string;
+}): boolean {
+  const config = getPlatformConfig(platform);
+  const normalizedPrompt = normalizePromptText(generatedPrompt);
+  const segmentCount = countDescriptiveSegments(generatedPrompt);
+  const minimumLength = Math.min(Math.round(config.maxLength * 0.62), normalizePromptText(subject).length + 120);
+  const importantTerms = [...styles];
+
+  if (mood) {
+    importantTerms.push(mood);
+  }
+
+  if (lighting) {
+    importantTerms.push(lighting);
+  }
+
+  const matchingSelections = importantTerms.filter(term => includesAnyTerm(generatedPrompt, [term])).length;
+  const expectedSelectionMatches = importantTerms.length === 0 ? 0 : Math.max(1, Math.ceil(importantTerms.length / 2));
+  const lacksImageLanguage = config.type === 'image' && !includesAnyTerm(generatedPrompt, [
+    'composition', 'framing', 'texture', 'material', 'palette', 'depth', 'shadow', 'light', 'surface', 'editorial', 'render'
+  ]);
+
+  return normalizedPrompt.length < minimumLength
+    || segmentCount < 8
+    || matchingSelections < expectedSelectionMatches
+    || lacksImageLanguage;
 }
 
 function shouldUseFallbackPrompt(subject: string, generatedPrompt: string): boolean {
@@ -259,6 +353,14 @@ export async function POST(request: NextRequest) {
       const result = await response.json();
       const rawAiPrompt = result.choices?.[0]?.message?.content || '';
       const aiPrompt = shouldUseFallbackPrompt(trimmedSubject, rawAiPrompt)
+        || isPromptTooSimple({
+          generatedPrompt: rawAiPrompt,
+          subject: trimmedSubject,
+          styles,
+          mood,
+          lighting,
+          platform,
+        })
         ? buildFallbackPrompt({
             platform,
             subject: trimmedSubject,

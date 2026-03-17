@@ -22,21 +22,23 @@ export const PLATFORM_CONFIGS: Record<string, PlatformConfig> = {
     value: 'nanobanana',
     type: 'image',
     promptStyle: 'detailed',
-    maxLength: 250,
+    maxLength: 420,
     includeParameters: false,
-    systemPrompt: 'You are an expert at creating detailed, effective prompts for NanoBanana AI image generation. Create comprehensive prompts with clear descriptions.',
-    formatInstructions: `Generate a DETAILED prompt (max 250 characters) for NanoBanana. 
+    systemPrompt: 'You are an expert at creating richly detailed prompts for NanoBanana AI image generation. NanoBanana performs best with vivid scene descriptions, material realism, layered composition, and strong lighting direction.',
+    formatInstructions: `Generate a richly detailed prompt (max 420 characters) for NanoBanana.
 Focus on: 
 - Main subject (clear and detailed)
 - Visual elements and composition
 - Style and artistic direction
 - Lighting and atmosphere
+- Material, texture, and surface realism
+- Depth, framing, and point of view
 - Quality descriptors
-Provide rich details while keeping the language natural.`,
+Provide rich details while keeping the language natural and visually specific.`,
     examples: [
-      'A sleek red sports car on a winding coastal highway at sunset, dramatic ocean views, golden hour lighting, photorealistic, highly detailed',
-      'Cozy coffee shop interior with vintage furniture, warm ambient lighting, people reading, steam rising from cups, inviting atmosphere, detailed',
-      'Majestic mountain landscape at sunrise, misty valleys, golden light rays, pine forests, dramatic sky, ultra detailed nature photography'
+      'Bright Scandinavian living room with floor-to-ceiling windows, pale oak floors, linen sofa, sculptural furniture, warm golden sunlight, soft shadow gradients, refined neutral palette, photorealistic interior render, ultra-detailed materials, editorial composition',
+      'A sleek red sports car on a winding coastal highway at sunset, dramatic ocean views, reflective paint, crisp body lines, golden hour lighting, cinematic framing, photorealistic, highly detailed',
+      'Cozy coffee shop interior with vintage furniture, warm ambient lighting, people reading, steam rising from cups, layered foreground and background detail, textured wood and fabric surfaces, inviting atmosphere, editorial realism'
     ]
   },
   
@@ -308,9 +310,11 @@ export function buildUserPrompt(
     userPrompt += `- Include camera movement, motion detail, temporal progression, and realistic action cues.\n`;
   } else {
     userPrompt += `- Include composition, perspective, visual texture, and image-quality cues.\n`;
+    userPrompt += `- For interiors, products, or architecture, explicitly describe materials, surfaces, spatial depth, styling accents, and the framing of the scene.\n`;
   }
   userPrompt += `- Do not echo the original request verbatim.\n`;
-  userPrompt += `- Output exactly one final prompt of ${config.maxLength} characters or less.\n`;
+  userPrompt += `- Aim to use most of the available detail budget instead of writing a minimal answer.\n`;
+  userPrompt += `- Output exactly one final prompt between ${Math.round(config.maxLength * 0.7)} and ${config.maxLength} characters when possible.\n`;
 
   if (config.examples.length > 0) {
     userPrompt += `\nReference the quality level of examples like these, without copying them:\n`;
