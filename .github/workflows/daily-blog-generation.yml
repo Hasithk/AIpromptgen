@@ -14,15 +14,29 @@ on:
 jobs:
   generate-blog:
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ vars.PUBLIC_BASE_URL || 'https://www.aipromptgen.app' }}
+      CRON_SECRET: ${{ secrets.CRON_SECRET }}
     steps:
       - name: Generate Daily Blog Posts
         run: |
+          set -euo pipefail
+
+          if [ -z "${CRON_SECRET}" ]; then
+            echo "❌ Missing GitHub secret: CRON_SECRET"
+            exit 1
+          fi
+
           COUNT=${{ github.event.inputs.count || '2' }}
           echo "🚀 Generating ${COUNT} daily blog post(s)..."
+          echo "🌐 Base URL: ${BASE_URL}"
           
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET \
-            "https://aipromptgen.app/api/cron/generate-blog?count=${COUNT}" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}")
+          RESPONSE=$(curl -sS -L --retry 3 --retry-all-errors --retry-delay 5 \
+            --connect-timeout 20 --max-time 180 \
+            -w "\n%{http_code}" -X GET \
+            "${BASE_URL}/api/cron/generate-blog?count=${COUNT}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "Accept: application/json")
           
           HTTP_CODE=$(echo "$RESPONSE" | tail -1)
           BODY=$(echo "$RESPONSE" | head -n -1)
