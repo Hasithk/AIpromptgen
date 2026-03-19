@@ -305,6 +305,11 @@ export default function RootLayout({
             data-cfasync="false"
             src="https://pl28526069.effectivegatecpm.com/1c/f5/8d/1cf58d3395fabf144c267a7f2b0d43a4.js"
           />
+          {/* Profitable CPM Rate Network */}
+          <script
+            async
+            src="https://pl28942192.profitablecpmratenetwork.com/79/e6/40/79e640da576d916279327702d511007f.js"
+          />
           
           <div className="flex flex-col min-h-screen">
             <Suspense fallback={<div className="h-16 bg-background border-b" />}>
