@@ -935,17 +935,16 @@ export function LibraryPage() {
     setExpandedPromptIds(updatedExpanded);
   };
 
-  const sharePromptOnPinterest = (title: string, promptText: string) => {
-    const pageUrl = typeof window !== 'undefined' ? window.location.href : 'https://www.aipromptgen.app/library';
-    const description = `${title} | ${promptText}`;
-    const pinterestUrl = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(pageUrl)}&description=${encodeURIComponent(description)}`;
+  const openPromptUniqueUrl = (promptId: number, title: string) => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.aipromptgen.app';
+    const promptUrl = `${baseUrl}/library#prompt-${promptId}`;
 
-    trackEvent.externalLinkClick(pinterestUrl, 'pinterest_share');
-    window.open(pinterestUrl, '_blank', 'noopener,noreferrer');
+    trackEvent.externalLinkClick(promptUrl, 'prompt_unique_url');
+    window.open(promptUrl, '_blank', 'noopener,noreferrer');
 
     toast({
-      title: 'Pinterest Opened',
-      description: 'Pin composer opened in a new tab for your campaign.',
+      title: 'Prompt Link Opened',
+      description: `Opened unique URL for "${title}".`,
     });
   };
 
@@ -1061,6 +1060,7 @@ export function LibraryPage() {
               return (
             <Card 
               key={prompt.id}
+              id={`prompt-${prompt.id}`}
               className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in ${
                 prompt.featured ? 'ring-2 ring-primary/20' : ''
               }`}
@@ -1145,8 +1145,8 @@ export function LibraryPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => sharePromptOnPinterest(prompt.title, prompt.prompt)}
-                    aria-label={`Share ${prompt.title} on Pinterest`}
+                    onClick={() => openPromptUniqueUrl(prompt.id, prompt.title)}
+                    aria-label={`Open unique URL for ${prompt.title}`}
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
