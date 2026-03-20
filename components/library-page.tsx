@@ -855,6 +855,8 @@ export function LibraryPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedPlatform, setSelectedPlatform] = useState('All Platforms');
   const [sortBy, setSortBy] = useState('popular');
+  const [likedPromptIds, setLikedPromptIds] = useState<number[]>([]);
+  const [expandedPromptIds, setExpandedPromptIds] = useState<number[]>([]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);
@@ -872,7 +874,19 @@ export function LibraryPage() {
 
   const copyToClipboard = async (text: string, title: string, platform: string) => {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
       
       // Track the copy event
       trackEvent.promptCopied(title, platform);
@@ -888,6 +902,51 @@ export function LibraryPage() {
         variant: "destructive",
       });
     }
+  };
+
+  const isPromptLiked = (promptId: number) => likedPromptIds.includes(promptId);
+
+  const togglePromptLike = (promptId: number, title: string) => {
+    const liked = isPromptLiked(promptId);
+    const updatedLikes = liked
+      ? likedPromptIds.filter((id) => id !== promptId)
+      : [...likedPromptIds, promptId];
+
+    setLikedPromptIds(updatedLikes);
+
+    trackEvent.ctaClick(liked ? 'unlike_prompt' : 'like_prompt', 'library_card');
+
+    toast({
+      title: liked ? 'Removed Reaction' : 'Reaction Saved',
+      description: liked
+        ? `You removed your reaction from "${title}".`
+        : `You reacted to "${title}".`,
+    });
+  };
+
+  const isPromptExpanded = (promptId: number) => expandedPromptIds.includes(promptId);
+
+  const togglePromptExpansion = (promptId: number) => {
+    const expanded = isPromptExpanded(promptId);
+    const updatedExpanded = expanded
+      ? expandedPromptIds.filter((id) => id !== promptId)
+      : [...expandedPromptIds, promptId];
+
+    setExpandedPromptIds(updatedExpanded);
+  };
+
+  const sharePromptOnPinterest = (title: string, promptText: string) => {
+    const pageUrl = typeof window !== 'undefined' ? window.location.href : 'https://www.aipromptgen.app/library';
+    const description = `${title} | ${promptText}`;
+    const pinterestUrl = `https://www.pinterest.com/pin/create/button/?url=${encodeURIComponent(pageUrl)}&description=${encodeURIComponent(description)}`;
+
+    trackEvent.externalLinkClick(pinterestUrl, 'pinterest_share');
+    window.open(pinterestUrl, '_blank', 'noopener,noreferrer');
+
+    toast({
+      title: 'Pinterest Opened',
+      description: 'Pin composer opened in a new tab for your campaign.',
+    });
   };
 
   const filteredPrompts = prompts.filter(prompt => {
@@ -995,6 +1054,11 @@ export function LibraryPage() {
         {/* Prompt Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedPrompts.map((prompt, index) => (
+            (() => {
+              const liked = isPromptLiked(prompt.id);
+              const expanded = isPromptExpanded(prompt.id);
+
+              return (
             <Card 
               key={prompt.id}
               className={`group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 animate-fade-in ${
@@ -1020,17 +1084,31 @@ export function LibraryPage() {
                     </CardTitle>
                     <CardDescription>{prompt.description}</CardDescription>
                   </div>
-                  <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Heart className="h-4 w-4" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
+                    onClick={() => togglePromptLike(prompt.id, prompt.title)}
+                    aria-label={liked ? `Remove reaction from ${prompt.title}` : `React to ${prompt.title}`}
+                  >
+                    <Heart className={`h-4 w-4 ${liked ? 'fill-primary text-primary' : ''}`} />
                   </Button>
                 </div>
               </CardHeader>
 
               <CardContent className="space-y-4">
                 <div className="bg-muted/50 p-3 rounded-lg">
-                  <p className="text-sm font-mono leading-relaxed line-clamp-3">
+                  <p className={`text-sm font-mono leading-relaxed whitespace-pre-wrap break-words ${expanded ? '' : 'line-clamp-3'}`}>
                     {prompt.prompt}
                   </p>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    className="h-auto px-0 mt-2"
+                    onClick={() => togglePromptExpansion(prompt.id)}
+                  >
+                    {expanded ? 'Show less' : 'Show full prompt'}
+                  </Button>
                 </div>
 
                 <div className="flex flex-wrap gap-1">
@@ -1044,8 +1122,8 @@ export function LibraryPage() {
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center space-x-4">
                     <div className="flex items-center">
-                      <Heart className="h-4 w-4 mr-1" />
-                      {prompt.likes}
+                      <Heart className={`h-4 w-4 mr-1 ${liked ? 'fill-primary text-primary' : ''}`} />
+                      {prompt.likes + (liked ? 1 : 0)}
                     </div>
                     <div className="flex items-center">
                       <Star className="h-4 w-4 mr-1 fill-primary text-primary" />
@@ -1064,12 +1142,19 @@ export function LibraryPage() {
                     <Copy className="mr-2 h-4 w-4" />
                     Use Prompt
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => sharePromptOnPinterest(prompt.title, prompt.prompt)}
+                    aria-label={`Share ${prompt.title} on Pinterest`}
+                  >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
                 </div>
               </CardContent>
             </Card>
+              );
+            })()
           ))}
         </div>
 
