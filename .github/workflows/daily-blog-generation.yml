@@ -34,6 +34,40 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate environment
+        run: |
+          set -euo pipefail
+
+          MISSING=0
+          for VAR in DATABASE_URL NEWS_API_KEY DEEPSEEK_API_KEY; do
+            if [ -z "${!VAR:-}" ]; then
+              echo "::error::Missing required GitHub secret: ${VAR}"
+              MISSING=1
+            fi
+          done
+
+          if [ "$MISSING" -ne 0 ]; then
+            exit 1
+          fi
+
+          # Handle accidental quote wrapping in GitHub secrets.
+          SANITIZED_DATABASE_URL="${DATABASE_URL%\"}"
+          SANITIZED_DATABASE_URL="${SANITIZED_DATABASE_URL#\"}"
+
+          case "${SANITIZED_DATABASE_URL}" in
+            postgresql://*|postgres://*) ;;
+            *)
+              echo "::error::DATABASE_URL must start with postgresql:// or postgres://"
+              exit 1
+              ;;
+          esac
+
+          if [[ "${DEEPSEEK_API_KEY}" != sk-* ]]; then
+            echo "::warning::DEEPSEEK_API_KEY does not look like a DeepSeek key (expected to start with sk-)"
+          fi
+
+          echo "DATABASE_URL=${SANITIZED_DATABASE_URL}" >> "$GITHUB_ENV"
+
       - name: Generate Daily Blog Posts
         run: |
           set -euo pipefail
@@ -42,7 +76,7 @@ jobs:
           echo "🚀 Generating ${COUNT} daily blog post(s)..."
           
           # Push schema to database and run blog generation
-          npx prisma db push --skip-generate || true
+          npx prisma db push --skip-generate
           node ./scripts/generate-blog-direct.js "$COUNT"
 
       - name: Log Result
