@@ -105,15 +105,22 @@ async function generateAndSaveBlogPosts(count = 2) {
           continue;
         }
 
+        const safeExcerpt = (
+          content.excerpt ||
+          article.description ||
+          `Latest AI update: ${article.title}`
+        ).slice(0, 200);
+
+        const tags = ['AI', 'News', 'ChatGPT', 'AI Prompt'].join(', ');
+
         const post = await prisma.blogPost.create({
           data: {
             title: content.title || article.title,
-            excerpt: content.excerpt || article.description.substring(0, 200),
+            excerpt: safeExcerpt,
             content: content.content || article.description,
             category: 'AI News',
-            tags: ['AI', 'News', 'ChatGPT', 'AI Prompt'],
+            tags,
             author: 'AI News Generator',
-            published: true,
           },
         });
 
