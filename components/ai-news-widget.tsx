@@ -12,11 +12,25 @@ export function AINewsWidget() {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const mobile = window.innerWidth < 1024;
+    setIsMobile(mobile);
+
+    // Don't fetch news on mobile to improve performance
+    if (mobile) {
+      setLoading(false);
+      return;
+    }
+
     const fetchNews = async () => {
       try {
         setLoading(true);
+        // Add a small delay to prevent blocking initial render
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
         const response = await getLatestNews();
         if (response.success) {
           setNews(response.data);
@@ -32,6 +46,11 @@ export function AINewsWidget() {
 
     fetchNews();
   }, []);
+
+  // If mobile, return a minimal version
+  if (isMobile) {
+    return null;
+  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

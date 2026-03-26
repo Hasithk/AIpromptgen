@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import { Suspense } from 'react';
 import { Providers } from './providers';
 import { ClientNavigation } from '@/components/client-navigation';
@@ -272,11 +273,23 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#3b82f6" />
         <meta name="google-adsense-account" content="ca-pub-7361470858189605" />
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7361470858189605"
-          crossOrigin="anonymous"
-        />
+        
+        {/* Preconnect to ad networks for faster loading */}
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://pl28526069.effectivegatecpm.com" />
+        <link rel="preconnect" href="https://pl28942192.profitablecpmratenetwork.com" />
+        <link rel="preconnect" href="https://pl28340926.effectivegatecpm.com" />
+        
+        {/* Preconnect to image domains for faster image loading */}
+        <link rel="preconnect" href="https://images.pexels.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="preconnect" href="https://api.producthunt.com" />
+        
+        {/* DNS prefetch for analytics */}
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.clarity.ms" />
+        
+        {/* Defer Google AdSense - load after page renders */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -299,18 +312,6 @@ export default function RootLayout({
           <AnalyticsProvider />
         </Suspense>
         <Providers>
-          {/* Adstera Social Bar */}
-          <script 
-            async
-            data-cfasync="false"
-            src="https://pl28526069.effectivegatecpm.com/1c/f5/8d/1cf58d3395fabf144c267a7f2b0d43a4.js"
-          />
-          {/* Profitable CPM Rate Network */}
-          <script
-            async
-            src="https://pl28942192.profitablecpmratenetwork.com/79/e6/40/79e640da576d916279327702d511007f.js"
-          />
-          
           <div className="flex flex-col min-h-screen">
             <Suspense fallback={<div className="h-16 bg-background border-b" />}>
               <ClientNavigation />
@@ -322,11 +323,31 @@ export default function RootLayout({
           </div>
         </Providers>
         
+        {/* Load third-party ad scripts after page renders (afterInteractive) */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7361470858189605"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+        
+        {/* Adstera Social Bar */}
+        <Script
+          src="https://pl28526069.effectivegatecpm.com/1c/f5/8d/1cf58d3395fabf144c267a7f2b0d43a4.js"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
+        
+        {/* Profitable CPM Rate Network */}
+        <Script
+          src="https://pl28942192.profitablecpmratenetwork.com/79/e6/40/79e640da576d916279327702d511007f.js"
+          strategy="afterInteractive"
+        />
+        
         {/* Adstera Native Banner */}
-        <script 
-          async
-          data-cfasync="false" 
+        <Script 
           src="https://pl28340926.effectivegatecpm.com/b5f74cb024e464af5087017b5cf56ec6/invoke.js"
+          strategy="afterInteractive"
+          data-cfasync="false"
         />
         <div id="container-b5f74cb024e464af5087017b5cf56ec6"></div>
       </body>

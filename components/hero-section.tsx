@@ -2,47 +2,66 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Zap, Target, Code2, Image as ImageIcon } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { trackEvent } from '@/components/analytics';
 
 export function HeroSection() {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Detect mobile
+    const mobile = window.innerWidth < 1024;
+    setIsMobile(mobile);
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setIsReducedMotion(prefersReducedMotion);
+
     // Add floating animation with CSS transforms
     const floatingElements = document.querySelectorAll('.floating-screen');
     floatingElements.forEach((el, index) => {
       const element = el as HTMLElement;
-      element.style.animationDelay = `${index * 0.5}s`;
+      if (!isReducedMotion) {
+        element.style.animationDelay = `${index * 0.5}s`;
+      }
     });
-  }, []);
+  }, [isReducedMotion]);
 
   return (
-    <section className="relative overflow-hidden min-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      {/* Liquid Glass Background Effect */}
+    <section className={`relative overflow-hidden min-h-[90vh] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 ${isMobile ? 'min-h-[85vh]' : ''}`}>
+      {/* Liquid Glass Background Effect - Simplified for mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10 backdrop-blur-3xl" />
-        <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+        {/* Reduced blur on mobile for better performance */}
+        <div className={`absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10 ${isMobile ? 'blur-sm' : 'backdrop-blur-3xl'}`} />
+        
+        {/* Hide animated blobs on mobile to save performance */}
+        {!isMobile && (
+          <>
+            <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" />
+            <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000" />
+            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000" />
+          </>
+        )}
       </div>
 
-      {/* Glass Morphism Overlay */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
+      {/* Glass Morphism Overlay - Reduced blur on mobile */}
+      <div className={`absolute inset-0 ${isMobile ? 'bg-black/10' : 'bg-black/20 backdrop-blur-sm'}`} />
 
-      <div className="relative container-max section-padding py-20 md:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative container-max section-padding py-12 md:py-20 lg:py-32">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
-          <div className="text-white space-y-8 animate-fade-in z-10">
-            <div className="space-y-6">
-              <div className="inline-flex items-center space-x-2 glass-morphism rounded-full px-6 py-3 text-sm font-medium border border-white/20 shadow-lg">
-                <Sparkles className="h-4 w-4 text-blue-400" />
+          <div className={`text-white space-y-6 lg:space-y-8 ${!isReducedMotion ? 'animate-fade-in' : ''} z-10`}>
+            <div className="space-y-4 lg:space-y-6">
+              <div className="inline-flex items-center space-x-2 glass-morphism rounded-full px-4 py-2 lg:px-6 lg:py-3 text-xs lg:text-sm font-medium border border-white/20 shadow-lg">
+                <Sparkles className="h-3 w-3 lg:h-4 lg:w-4 text-blue-400 flex-shrink-0" />
                 <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                   #1 Free AI Prompt Generator 2026
                 </span>
               </div>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight leading-tight">
                 AI Prompt
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -50,7 +69,7 @@ export function HeroSection() {
                 </span>
               </h1>
               
-              <p className="text-lg md:text-xl text-slate-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
                 The <strong>best AI prompt generator</strong> for 2026. Create perfect <strong>AI prompts</strong> for 
                 <strong> ChatGPT, Midjourney, DALL-E, Sora, Claude, and Gemini</strong>. 
                 Our free AI prompt tool generates optimized prompts for image, video, text, and code — with 70 free monthly credits. 
@@ -58,24 +77,24 @@ export function HeroSection() {
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4">
               <Button 
                 size="lg" 
-                className="glass-morphism border border-white/20 text-white hover:bg-white/20 font-semibold px-8 py-6 text-lg group shadow-2xl"
+                className="glass-morphism border border-white/20 text-white hover:bg-white/20 font-semibold px-6 py-5 lg:px-8 lg:py-6 text-base lg:text-lg group shadow-2xl"
                 onClick={() => {
-                  trackEvent.ctaClick('Generate Free AI Prompts', 'Hero Section');
+                  if (trackEvent?.ctaClick) trackEvent.ctaClick('Generate Free AI Prompts', 'Hero Section');
                   window.location.href = '/#generator';
                 }}
               >
                 Generate Free AI Prompts
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5 group-hover:translate-x-1 transition-transform hidden sm:inline" />
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="glass-morphism border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg"
+                className="glass-morphism border-white/30 text-white hover:bg-white/10 px-6 py-5 lg:px-8 lg:py-6 text-base lg:text-lg"
                 onClick={() => {
-                  trackEvent.ctaClick('View Free Prompt Examples', 'Hero Section');
+                  if (trackEvent?.ctaClick) trackEvent.ctaClick('View Free Prompt Examples', 'Hero Section');
                   window.location.href = '/library';
                 }}
               >
@@ -83,7 +102,8 @@ export function HeroSection() {
               </Button>
             </div>
 
-            <div className="pt-4">
+            {/* Product Hunt Badge - Hide on very small screens */}
+            <div className="pt-2 lg:pt-4 hidden sm:block">
               <a
                 href="https://www.producthunt.com/products/aipromptgen?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-aipromptgen"
                 target="_blank"
@@ -94,11 +114,12 @@ export function HeroSection() {
                   alt="AIPromptGen - Visual prompt builder for Midjourney, Sora & AI Art | Product Hunt"
                   width={250}
                   height={54}
+                  loading="lazy"
                 />
               </a>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 pt-8">
+            <div className="grid grid-cols-3 gap-3 lg:gap-6 pt-4 lg:pt-8">
               {[
                 {
                   icon: Target,
@@ -118,20 +139,20 @@ export function HeroSection() {
               ].map((feature, index) => (
                 <div 
                   key={feature.title} 
-                  className="text-center space-y-2 animate-fade-in"
-                  style={{ animationDelay: `${index * 200}ms` }}
+                  className={`text-center space-y-1 lg:space-y-2 ${!isReducedMotion ? 'animate-fade-in' : ''}`}
+                  style={{ animationDelay: !isReducedMotion ? `${index * 200}ms` : undefined }}
                 >
-                  <div className="w-12 h-12 glass-morphism border border-white/20 rounded-xl mx-auto flex items-center justify-center shadow-lg">
-                    <feature.icon className="h-5 w-5 text-blue-400" />
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 glass-morphism border border-white/20 rounded-xl mx-auto flex items-center justify-center shadow-lg">
+                    <feature.icon className="h-4 w-4 lg:h-5 lg:w-5 text-blue-400" />
                   </div>
-                  <h3 className="font-semibold text-sm">{feature.title}</h3>
-                  <p className="text-xs text-slate-400">{feature.description}</p>
+                  <h3 className="font-semibold text-xs lg:text-sm">{feature.title}</h3>
+                  <p className="text-xs text-slate-400 hidden sm:block">{feature.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right Content - 3D Floating Screens */}
+          {/* Right Content - 3D Floating Screens (Desktop only) */}
           <div className="relative h-[600px] hidden lg:block" ref={canvasRef}>
             {/* Phone Screen - Code Editor */}
             <div className="floating-screen absolute top-20 left-10 w-64 h-96 transform -rotate-12 hover:rotate-0 transition-all duration-500">
